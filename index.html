@@ -3,481 +3,3059 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yellow Duck Studio — Production Desk</title>
-  <style>
-    :root {
-      --bg: #fffdf5;
-      --surface: #ffffff;
-      --surface-soft: #fff8dc;
-      --banner-grad: linear-gradient(135deg, #ffe680 0%, #ffd23f 100%);
-      --text: #1e1b18;
-      --muted: #6b6257;
-      --border: #f0e2b6;
-      --primary: #f59e0b;
-      --primary-hover: #d97706;
-      --danger: #dc2626;
-      --ok: #16a34a;
-      --shadow: 0 10px 25px -10px rgba(245, 158, 11, 0.25);
-    }
-
-    body.dark {
-      --bg: #12110e;
-      --surface: #1c1a15;
-      --surface-soft: #262218;
-      --banner-grad: linear-gradient(135deg, #3b2f0b 0%, #261e07 100%);
-      --text: #f7f4eb;
-      --muted: #b5aa96;
-      --border: #38301e;
-      --primary: #fbbf24;
-      --primary-hover: #f59e0b;
-      --shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.6);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 20px; transition: background 0.2s, color 0.2s; }
-    .container { max-width: 1050px; margin: 0 auto; }
-
-    header {
-      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-      gap: 12px; margin-bottom: 20px;
-    }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo {
-      width: 46px; height: 46px; border-radius: 14px; object-fit: cover;
-      background: #fde047; border: 2px solid var(--primary);
-    }
-    .brand h1 { font-size: 1.25rem; font-weight: 800; }
-    .brand p { font-size: 0.85rem; color: var(--muted); }
-
-    .top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    button {
-      border: none; border-radius: 12px; padding: 10px 14px; font-weight: 700;
-      cursor: pointer; font-size: 0.9rem; transition: transform 0.1s, opacity 0.15s;
-    }
-    button:active { transform: scale(0.98); }
-    .btn-primary { background: var(--primary); color: #1a1405; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-danger { background: #fee2e2; color: var(--danger); padding: 6px 10px; font-size: 0.8rem; border-radius: 8px; }
-
-    .hero-banner {
-      background: var(--banner-grad); border: 1px solid var(--border);
-      border-radius: 24px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 22px;
-    }
-    .hero-tag { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; margin-bottom: 6px; }
-    .hero-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
-    .hero-sub { font-size: 0.95rem; margin-bottom: 14px; line-height: 1.5; }
-
-    .coach-box {
-      background: rgba(255, 255, 255, 0.72); color: #1e1b18;
-      border-radius: 16px; padding: 14px 16px; margin-bottom: 14px; border: 1px solid rgba(0,0,0,0.06);
-    }
-    body.dark .coach-box { background: rgba(18, 17, 14, 0.75); color: #f7f4eb; border-color: rgba(255,255,255,0.08); }
-    .coach-label { font-size: 0.78rem; font-weight: 800; color: #b45309; margin-bottom: 4px; }
-    body.dark .coach-label { color: #fbbf24; }
-    .coach-text { font-size: 0.95rem; line-height: 1.55; }
-
-    .chat-row { display: flex; gap: 8px; margin-bottom: 14px; }
-    .chat-row input {
-      flex: 1; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border);
-      background: var(--surface); color: var(--text); font-size: 0.92rem;
-    }
-
-    .hero-btns { display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .kpi-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px; margin-bottom: 22px;
-    }
-    .kpi-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 18px; padding: 16px;
-    }
-    .kpi-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; }
-    .kpi-val { font-size: 1.25rem; font-weight: 800; }
-
-    .panel {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 20px; margin-bottom: 20px;
-    }
-    .panel h2 { font-size: 1.05rem; margin-bottom: 14px; }
-
-    .form-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px; margin-bottom: 12px;
-    }
-    input, select {
-      width: 100%; padding: 10px 12px; border-radius: 10px;
-      border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.9rem;
-    }
-
-    .project-list { display: grid; gap: 10px; }
-    .project-item {
-      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-      gap: 10px; padding: 14px; border-radius: 14px; background: var(--surface-soft);
-      border: 1px solid var(--border);
-    }
-    .badge {
-      display: inline-block; padding: 3px 9px; border-radius: 999px;
-      font-size: 0.75rem; font-weight: 700; background: #fef3c7; color: #92400e;
-    }
-    .badge.urgent { background: #fee2e2; color: #b91c1c; }
-    .badge.done { background: #dcfce7; color: #15803d; }
-
-    .toast {
-      position: fixed; bottom: 20px; right: 20px; background: #1e1b18; color: #fff;
-      padding: 12px 16px; border-radius: 12px; font-size: 0.88rem; font-weight: 600;
-      opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 99;
-    }
-    .toast.show { opacity: 1; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <img
-          src="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg"
-          alt="Yellow Duck Studio"
-          class="brand-logo"
-          onerror="this.style.display='none'"
-        />
-        <div>
-          <h1>Yellow Duck Studio</h1>
-          <p>Production Desk • Santai, Rapi & Terkendali</p>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="btn-ghost" onclick="toggleTheme()">🌙 Dark / Light</button>
-        <button class="btn-ghost" onclick="exportData()">💾 Backup JSON</button>
-      </div>
-    </header>
-
-    <!-- BANNER UTAMA + ASISTEN LOKAL (TANPA API KEY / TANPA ERROR 403) -->
-    <section class="hero-banner">
-      <div class="hero-tag">🦆 Yellow Duck Studio • Asisten Santai & Pengingat</div>
-      <div class="hero-title" id="heroTitle">Semangat ngonten & ngedit hari ini!</div>
-      <p class="hero-sub">Catat project, pantau deadline & DP, lalu pakai asisten di bawah buat ngingetin tenggat, kasih ide, dan nyemangatin kamu.</p>
-
-      <div class="coach-box">
-        <div class="coach-label">✨ Catatan Asisten Buat Kamu:</div>
-        <div class="coach-text" id="coachMessage">Memuat catatan...</div>
-      </div>
-
-      <div class="chat-row">
-        <input id="coachInput" type="text" placeholder="Ketik misal: 'ide hook', 'ingetin deadline', atau 'lagi capek'..." onkeydown="if(event.key==='Enter') askLocalCoach()" />
-        <button class="btn-primary" onclick="askLocalCoach()">Kirim</button>
-      </div>
-
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="focusNewProject()">+ Project Baru</button>
-        <button class="btn-ghost" onclick="cycleIdeaAndBoost()">💡 Ide & Semangat Baru</button>
-        <button class="btn-ghost" onclick="copySummaryAndOpenChatGPT()">📋 Salin Ringkasan & Buka ChatGPT</button>
-      </div>
-    </section>
-
-    <!-- KPI KEUANGAN -->
-    <section class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Total Nilai Kontrak</div>
-        <div class="kpi-val" id="kpiTotal">Rp 0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Sudah Diterima (DP / Lunas)</div>
-        <div class="kpi-val" id="kpiPaid">Rp 0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Sisa Tagihan Klien</div>
-        <div class="kpi-val" id="kpiRemaining">Rp 0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Jumlah Project Aktif</div>
-        <div class="kpi-val" id="kpiCount">0 Project</div>
-      </div>
-    </section>
-
-    <!-- FORM TAMBAH PROJECT -->
-    <section class="panel" id="newProjectPanel">
-      <h2>Tambah / Catat Project</h2>
-      <div class="form-grid">
-        <input id="pTitle" type="text" placeholder="Nama project (cth: Edit Reels Kopi)" />
-        <input id="pClient" type="text" placeholder="Nama klien" />
-        <input id="pPrice" type="number" placeholder="Tarif (Rp, cth: 1500000)" />
-        <input id="pPaid" type="number" placeholder="Sudah dibayar DP (Rp)" />
-        <input id="pDeadline" type="date" />
-        <select id="pStatus">
-          <option value="Editing">Editing</option>
-          <option value="Revisi">Revisi</option>
-          <option value="Selesai">Selesai</option>
-        </select>
-      </div>
-      <button class="btn-primary" onclick="addProject()">Simpan Project</button>
-    </section>
-
-    <!-- DAFTAR PROJECT -->
-    <section class="panel">
-      <h2>Daftar Project Kamu</h2>
-      <div class="project-list" id="projectList"></div>
-    </section>
-  </div>
-
-  <div class="toast" id="toast"></div>
+  <meta name="theme-color" content="#FEF3C7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Yellow Duck Studio" />
+  <title>Yellow Duck Studio — Video Editor Agency Dashboard</title>
+  <link id="dynamicFavicon" rel="icon" type="image/jpeg" href="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg" />
+  <link id="dynamicAppleIcon" rel="apple-touch-icon" href="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const STORAGE_KEY = "yds_dashboard_v1";
-    const THEME_KEY = "yds_theme_v1";
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            duck: {
+              50: '#FFFDF5',
+              100: '#FEF3C7',
+              200: '#FDE68A',
+              300: '#FCD34D',
+              400: '#FBBF24',
+              500: '#F59E0B',
+              600: '#D97706',
+              700: '#B45309',
+            },
+            pastelBlue: {
+              50: '#F2F7FD',
+              100: '#E6F0FA',
+              500: '#3B82F6',
+            },
+            pastelPeach: {
+              50: '#FFF6F2',
+              100: '#FFECE3',
+              500: '#EA580C',
+            },
+            pastelLavender: {
+              50: '#F8F5FF',
+              100: '#EFE8FA',
+              500: '#8B5CF6',
+            },
+            ink: '#1C1917',
+            mutedInk: '#57534E',
+            canvasBg: '#FAFAF7',
+            sidebarBg: '#F7F6F2',
+            darkBg: '#141311',
+            darkCard: '#1E1C18',
+            darkBorder: '#2E2B25',
+          },
+          boxShadow: {
+            'soft': '0 4px 22px -2px rgba(28, 25, 23, 0.05)',
+            'card': '0 2px 12px rgba(28, 25, 23, 0.03)',
+          }
+        }
+      }
+    }
+  </script>
 
-    const ideasAndBoosts = [
-      "💡 Ide Hook: Mulai video dengan hasil akhirnya dulu (1.5 detik pertama), baru tunjukkan proses di balik layarnya.",
-      "🔥 Semangat: Pelan-pelan aja asal jalan terus. Satu cut yang rapi hari ini udah bikin project makin dekat ke beres!",
-      "🎬 Ide Editing: Pakai jeda hening 0,2 detik sebelum punchline atau transisi biar penonton nggak skip.",
-      "💛 Semangat: Kamu udah sampai sejauh ini—jangan lupa minum air putih dan istirahatkan mata sebentar ya!",
-      "✨ Ide Klien: Kirim preview singkat dengan watermark/draft biar klien tenang dan revisinya lebih terarah."
-    ];
+  <style>
+    :root {
+      --ios-spring: cubic-bezier(0.32, 0.72, 0, 1);
+      --ios-bounce: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-    let ideaIdx = 0;
-    let state = { projects: [] };
+    body {
+      background-color: #FAFAF7;
+      color: #1C1917;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.32s var(--ios-spring), color 0.32s var(--ios-spring);
+    }
+
+    html.dark body {
+      background-color: #141311;
+      color: #F5F5F4;
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E7E5E0;
+      border-radius: 9999px;
+    }
+    html.dark ::-webkit-scrollbar-thumb {
+      background: #33302A;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D6D3CD;
+    }
+    html.dark ::-webkit-scrollbar-thumb:hover {
+      background: #47433B;
+    }
+
+    /* iOS Glassmorphism Header */
+    .ios-glass-header {
+      background: rgba(255, 255, 255, 0.84);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(28, 25, 23, 0.06);
+      transition: background-color 0.32s var(--ios-spring), border-color 0.32s var(--ios-spring);
+    }
+    html.dark .ios-glass-header {
+      background: rgba(30, 28, 24, 0.82);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .ios-glass-sidebar {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      transition: background-color 0.32s var(--ios-spring), border-color 0.32s var(--ios-spring), transform 0.3s var(--ios-spring);
+    }
+    html.dark .ios-glass-sidebar {
+      background: rgba(24, 22, 19, 0.92);
+    }
+
+    /* iOS Tactile Press & Spring Transitions */
+    .ios-tap {
+      transition: transform 0.28s var(--ios-spring), background-color 0.25s ease, box-shadow 0.28s var(--ios-spring), opacity 0.2s ease, border-color 0.25s ease;
+      will-change: transform;
+    }
+    .ios-tap:active {
+      transform: scale(0.97);
+    }
+
+    .ios-card {
+      transition: transform 0.38s var(--ios-spring), box-shadow 0.38s var(--ios-spring), background-color 0.3s ease, border-color 0.3s ease;
+      will-change: transform;
+    }
+    .ios-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px -6px rgba(28, 25, 23, 0.07);
+    }
+    html.dark .ios-card:hover {
+      box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.45);
+    }
+    .ios-card:active {
+      transform: scale(0.985);
+    }
+
+    /* Warm Buttercream & Golden Amber Hero Banner */
+    .hero-duck-card {
+      background: linear-gradient(125deg, #FFFBEB 0%, #FEF3C7 48%, #FDE68A 100%);
+      border: 1px solid rgba(245, 158, 11, 0.22);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s var(--ios-spring), box-shadow 0.4s var(--ios-spring), background 0.35s ease;
+    }
+    html.dark .hero-duck-card {
+      background: linear-gradient(125deg, #2B2416 0%, #362C19 52%, #42351C 100%);
+      border: 1px solid rgba(251, 191, 36, 0.18);
+    }
+    .hero-duck-card::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -40px;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.26) 0%, rgba(245, 158, 11, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    html.dark .hero-duck-card::after {
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.18) 0%, rgba(251, 191, 36, 0) 70%);
+    }
+
+    /* Circular progress transition */
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.85s var(--ios-spring), stroke 0.32s ease;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    .progress-ring-track {
+      stroke: #FEF3C7;
+      transition: stroke 0.32s ease;
+    }
+    html.dark .progress-ring-track {
+      stroke: #302B22;
+    }
+
+    /* View entrance animation */
+    @keyframes iosViewFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.992);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .ios-view-enter {
+      animation: iosViewFadeIn 0.38s var(--ios-bounce) forwards;
+    }
+
+    /* iOS Modal Backdrop & Sheet Spring */
+    .ios-modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      transition: opacity 0.32s var(--ios-spring), backdrop-filter 0.32s var(--ios-spring);
+    }
+    .ios-modal-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+    }
+    .ios-modal-panel {
+      opacity: 0;
+      transform: translateY(24px) scale(0.95);
+      transition: transform 0.42s var(--ios-spring), opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .ios-modal-backdrop.is-open .ios-modal-panel {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* iOS Segmented Control Sliding Pill */
+    .ios-segmented {
+      position: relative;
+      display: inline-flex;
+      background: #F2F0EA;
+      padding: 4px;
+      border-radius: 16px;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    html.dark .ios-segmented {
+      background: #141311;
+      border: 1px solid #2E2B25;
+    }
+    .ios-segmented-pill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(28, 25, 23, 0.04);
+      transition: transform 0.38s var(--ios-spring), width 0.38s var(--ios-spring), background-color 0.3s ease;
+      pointer-events: none;
+    }
+    html.dark .ios-segmented-pill {
+      background: #2C2922;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.38);
+    }
+
+    /* iOS Dark Mode Switch Pill */
+    .ios-theme-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: #F2F0EA;
+      border: 1px solid rgba(28, 25, 23, 0.08);
+      border-radius: 9999px;
+      padding: 3px;
+      width: 68px;
+      height: 36px;
+      cursor: pointer;
+      transition: background-color 0.32s var(--ios-spring), border-color 0.32s var(--ios-spring);
+    }
+    html.dark .ios-theme-switch {
+      background: #26231D;
+      border-color: #38342C;
+    }
+    .ios-theme-thumb {
+      position: absolute;
+      left: 3px;
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.38s var(--ios-spring), background-color 0.32s ease;
+    }
+    html.dark .ios-theme-thumb {
+      transform: translateX(32px);
+      background: #3D3628;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Dynamic Island Top Toast */
+    .ios-dynamic-toast {
+      transform: translate(-50%, -130%) scale(0.88);
+      opacity: 0;
+      transition: transform 0.46s var(--ios-spring), opacity 0.28s ease;
+    }
+    .ios-dynamic-toast.is-visible {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+    }
+
+    /* Media & embeds always scale down to fit their container */
+    img, video, iframe, embed, object, canvas {
+      max-width: 100%;
+    }
+    video {
+      height: auto;
+    }
+
+    /* ==================== PHONES & TABLETS (below the lg / 1024px desktop breakpoint) ====================
+       Everything in this block only applies to the mobile layout, so the desktop layout is unchanged.
+       Selectors are prefixed with `html` so they win over the Tailwind utilities injected at runtime. */
+    @media (max-width: 1023.98px) {
+      /* Never let the page scroll sideways */
+      html, body {
+        max-width: 100%;
+        overflow-x: clip;
+      }
+      main, #sidebar, .ios-modal-panel, #toast {
+        overflow-wrap: break-word;
+      }
+      html .grid > * {
+        min-width: 0;
+      }
+
+      /* Body text: at least 16px (also stops iOS from zooming into form fields) */
+      html :is(.text-xs, .text-sm, .text-\[11px\], .text-\[10px\]),
+      html :is(input, select, textarea) {
+        font-size: 1rem;
+      }
+      html :is(.text-xs, .text-sm, .text-\[11px\], .text-\[10px\]):not([class*="leading-"]) {
+        line-height: 1.5rem;
+      }
+      /* Small UI labels (uppercase eyebrows, table headers, tiny badges, code) stay compact but readable */
+      html :is(.uppercase, th, code, .text-\[10px\], #mobileBrandSubtitle) {
+        font-size: 0.8125rem;
+        line-height: 1.25rem;
+      }
+
+      /* Tap targets: at least 44 x 44px */
+      html :is(button, a[href], select, label.cursor-pointer, .filter-pill):not(.ios-theme-switch),
+      html input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
+        min-height: 44px;
+      }
+      html :is(button, a[href], label.cursor-pointer):not(.ios-theme-switch) {
+        min-width: 44px;
+      }
+      /* Bare text/icon buttons (no display utility) center their content in the larger box */
+      html :is(button, a[href]):not([class*="flex"]):not([class*="block"]):not([class*="grid"]):not([class*="hidden"]):not(.ios-theme-switch) {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* The theme switch keeps its pill shape; its touch area is extended invisibly to 44px */
+      .ios-theme-switch::before {
+        content: "";
+        position: absolute;
+        inset: -5px -2px;
+      }
+      /* Tappable list rows */
+      html .ios-tap[onclick]:not(button) {
+        min-height: 44px;
+      }
+
+      /* Slide-out navigation drawer: fit the visible screen and scroll if needed */
+      #sidebar {
+        height: 100vh;
+        height: 100dvh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      /* Modals: never taller than the screen, scroll inside */
+      .ios-modal-backdrop {
+        overflow-y: auto;
+      }
+      .ios-modal-panel {
+        max-height: calc(100vh - 2rem);
+        max-height: calc(100dvh - 2rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      /* Toast never wider than the screen */
+      #toast {
+        max-width: calc(100vw - 2rem);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row bg-canvasBg dark:bg-darkBg text-ink dark:text-[#F5F5F4] selection:bg-duck-200 selection:text-ink dark:selection:bg-duck-600 dark:selection:text-white">
+
+  <!-- MOBILE GLASS HEADER -->
+  <header class="lg:hidden flex items-center justify-between gap-2 px-4 sm:px-5 py-2 ios-glass-header sticky top-0 z-30">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div id="mobileLogoContainer" class="w-10 h-10 rounded-2xl bg-[#FAF8F4] dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/25 flex items-center justify-center shadow-2xs shrink-0 overflow-hidden">
+        <!-- Watercolor Rubber Duck Logo SVG -->
+        <svg class="w-9 h-9" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="mobileWash1" cx="58%" cy="34%" r="36%">
+              <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.72"/>
+              <stop offset="70%" stop-color="#FEF3C7" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#FEF3C7" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="mobileWash2" cx="44%" cy="62%" r="44%">
+              <stop offset="0%" stop-color="#FDE047" stop-opacity="0.48"/>
+              <stop offset="75%" stop-color="#FEF08A" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#FEF08A" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="mobileDuckBody" cx="45%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#FDE68A"/>
+              <stop offset="55%" stop-color="#FACC15"/>
+              <stop offset="100%" stop-color="#EAB308"/>
+            </radialGradient>
+            <linearGradient id="mobileDuckBeak" x1="0%" y1="0%" x2="100%" y2="80%">
+              <stop offset="0%" stop-color="#FB923C"/>
+              <stop offset="100%" stop-color="#EA580C"/>
+            </linearGradient>
+          </defs>
+          <circle cx="72" cy="40" r="34" fill="url(#mobileWash1)"/>
+          <ellipse cx="52" cy="70" rx="44" ry="34" fill="url(#mobileWash2)"/>
+          <!-- Duck Body & Head facing right -->
+          <path d="M44 41C44 28.5 54 19 66.5 19C78.2 19 87.5 27.5 88.2 38.8C88.5 43.8 86.2 48.2 82.5 51.2C89.8 54.6 94.5 61.8 94.5 70.5C94.5 86.5 79.5 97 58.5 97C36.5 97 23 85.2 23 68.5C23 61.2 25.2 54.5 28.4 51.8C30.2 50.3 32.8 51.2 35.5 53.5C38.4 55.9 42.5 56.5 46.8 55.2C48.5 54.6 49.4 52.8 48.2 51.1C45.5 47.8 44 44.5 44 41Z" fill="url(#mobileDuckBody)" stroke="#D97706" stroke-opacity="0.35" stroke-width="1.4"/>
+          <!-- Soft Wing Contour -->
+          <path d="M36 67C39 61.5 47.5 60.5 56.5 62.5C63.5 64 68.5 68 67.5 72.5C66.5 77 58.5 79.5 49 78.5C41.5 77.6 34.2 72.8 36 67Z" fill="#F59E0B" fill-opacity="0.22" stroke="#D97706" stroke-opacity="0.32" stroke-width="1.2"/>
+          <!-- Cute Dark Eye -->
+          <circle cx="73.5" cy="34.5" r="3.1" fill="#292524"/>
+          <circle cx="72.6" cy="33.5" r="0.85" fill="#FFFBEB"/>
+          <!-- Orange Beak -->
+          <path d="M84.2 39.2C86.2 37.4 88.6 37.6 91.2 39.4C94.5 41.6 99.8 42.6 102.2 44.2C103.5 45.1 103.2 46.8 101.6 48.1C97.8 51.2 91.2 52.4 85.2 51.4C82.4 50.9 81.2 48.6 82.2 45.8C82.9 43.8 83.2 40.5 84.2 39.2Z" fill="url(#mobileDuckBeak)" stroke="#C2410C" stroke-opacity="0.4" stroke-width="1.1"/>
+        </svg>
+      </div>
+      <div class="min-w-0">
+        <span id="mobileBrandName" class="font-bold text-base tracking-tight text-ink dark:text-[#F5F5F4] block leading-none truncate">Yellow Duck Studio</span>
+        <span id="mobileBrandSubtitle" class="text-[11px] text-mutedInk dark:text-[#A8A29E] block truncate mt-0.5">Video Editor Agency</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <button onclick="toggleTheme()" aria-label="Toggle Dark Mode" class="ios-tap max-[399px]:hidden p-2 rounded-full bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder text-ink dark:text-duck-400">
+        <i data-lucide="sun" class="w-4 h-4 dark:hidden"></i>
+        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+      </button>
+      <button onclick="openProjectModal()" class="ios-tap px-3.5 py-2 rounded-full bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-xs">
+        + Project
+      </button>
+      <button id="mobileMenuBtn" type="button" onclick="toggleMobileSidebar()" aria-label="Buka menu navigasi" aria-controls="sidebar" aria-expanded="false" class="ios-tap p-2 rounded-full bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder text-ink dark:text-[#F5F5F4]">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE OVERLAY -->
+  <div id="mobileOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-ink/30 dark:bg-black/60 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity"></div>
+
+  <!-- LEFT NAVIGATION SIDEBAR -->
+  <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-64 max-lg:w-72 max-lg:max-w-[85vw] ios-glass-sidebar border-r border-stone-200/70 dark:border-darkBorder flex flex-col justify-between p-5 -translate-x-full lg:translate-x-0 shrink-0">
+    <div>
+      <!-- Customizable Agency Brand Logo -->
+      <div onclick="openSettingsModal()" title="Klik untuk ubah logo, nama brand & studio" class="ios-tap cursor-pointer flex items-center gap-3 px-2 py-1.5 mb-7 rounded-2xl hover:bg-duck-50 dark:hover:bg-darkCard group">
+        <div id="sidebarLogoContainer" class="w-12 h-12 rounded-2xl bg-[#FAF8F4] dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/25 flex items-center justify-center shadow-2xs shrink-0 overflow-hidden">
+          <!-- Watercolor Rubber Duck Logo SVG -->
+          <svg class="w-11 h-11" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sideWash1" cx="58%" cy="34%" r="36%">
+                <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.72"/>
+                <stop offset="70%" stop-color="#FEF3C7" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#FEF3C7" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="sideWash2" cx="44%" cy="62%" r="44%">
+                <stop offset="0%" stop-color="#FDE047" stop-opacity="0.48"/>
+                <stop offset="75%" stop-color="#FEF08A" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#FEF08A" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="sideDuckBody" cx="45%" cy="35%" r="60%">
+                <stop offset="0%" stop-color="#FDE68A"/>
+                <stop offset="55%" stop-color="#FACC15"/>
+                <stop offset="100%" stop-color="#EAB308"/>
+              </radialGradient>
+              <linearGradient id="sideDuckBeak" x1="0%" y1="0%" x2="100%" y2="80%">
+                <stop offset="0%" stop-color="#FB923C"/>
+                <stop offset="100%" stop-color="#EA580C"/>
+              </linearGradient>
+            </defs>
+            <circle cx="72" cy="40" r="34" fill="url(#sideWash1)"/>
+            <ellipse cx="52" cy="70" rx="44" ry="34" fill="url(#sideWash2)"/>
+            <!-- Duck Body & Head facing right -->
+            <path d="M44 41C44 28.5 54 19 66.5 19C78.2 19 87.5 27.5 88.2 38.8C88.5 43.8 86.2 48.2 82.5 51.2C89.8 54.6 94.5 61.8 94.5 70.5C94.5 86.5 79.5 97 58.5 97C36.5 97 23 85.2 23 68.5C23 61.2 25.2 54.5 28.4 51.8C30.2 50.3 32.8 51.2 35.5 53.5C38.4 55.9 42.5 56.5 46.8 55.2C48.5 54.6 49.4 52.8 48.2 51.1C45.5 47.8 44 44.5 44 41Z" fill="url(#sideDuckBody)" stroke="#D97706" stroke-opacity="0.35" stroke-width="1.4"/>
+            <!-- Soft Wing Contour -->
+            <path d="M36 67C39 61.5 47.5 60.5 56.5 62.5C63.5 64 68.5 68 67.5 72.5C66.5 77 58.5 79.5 49 78.5C41.5 77.6 34.2 72.8 36 67Z" fill="#F59E0B" fill-opacity="0.22" stroke="#D97706" stroke-opacity="0.32" stroke-width="1.2"/>
+            <!-- Cute Dark Eye -->
+            <circle cx="73.5" cy="34.5" r="3.1" fill="#292524"/>
+            <circle cx="72.6" cy="33.5" r="0.85" fill="#FFFBEB"/>
+            <!-- Orange Beak -->
+            <path d="M84.2 39.2C86.2 37.4 88.6 37.6 91.2 39.4C94.5 41.6 99.8 42.6 102.2 44.2C103.5 45.1 103.2 46.8 101.6 48.1C97.8 51.2 91.2 52.4 85.2 51.4C82.4 50.9 81.2 48.6 82.2 45.8C82.9 43.8 83.2 40.5 84.2 39.2Z" fill="url(#sideDuckBeak)" stroke="#C2410C" stroke-opacity="0.4" stroke-width="1.1"/>
+          </svg>
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1">
+            <h1 id="sidebarBrandName" class="font-extrabold text-base tracking-tight text-ink dark:text-[#F5F5F4] leading-tight truncate">Yellow Duck Studio</h1>
+          </div>
+          <p id="sidebarBrandSubtitle" class="text-xs text-mutedInk dark:text-[#A8A29E] font-medium truncate">Video Editor Agency</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1.5" id="navMenu">
+        <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-btn ios-tap w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-bold bg-duck-100 dark:bg-[#332A18] text-duck-700 dark:text-duck-300 shadow-2xs">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('projects')" data-tab="projects" class="nav-btn ios-tap w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]">
+          <i data-lucide="video" class="w-4 h-4"></i>
+          <span>Project Tracker</span>
+          <span id="navProjectCount" class="ml-auto text-xs bg-white dark:bg-darkBg px-2 py-0.5 rounded-full text-mutedInk dark:text-[#A8A29E] border border-stone-200/80 dark:border-darkBorder font-semibold">0</span>
+        </button>
+        <button onclick="switchTab('expenses')" data-tab="expenses" class="nav-btn ios-tap w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]">
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+          <span>Expenses & Biaya</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Bottom Sidebar Utilities -->
+    <div class="space-y-1.5 pt-4 border-t border-stone-200/70 dark:border-darkBorder">
+      <button onclick="toggleTheme()" class="ios-tap w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]">
+        <span class="flex items-center gap-3.5">
+          <i data-lucide="moon" class="w-4 h-4 text-duck-600 dark:text-duck-400 dark:hidden"></i>
+          <i data-lucide="sun" class="w-4 h-4 text-duck-400 hidden dark:block"></i>
+          <span id="sidebarThemeLabel">Dark Mode</span>
+        </span>
+        <span class="text-[11px] px-2 py-0.5 rounded-full bg-duck-100 dark:bg-[#332A18] text-duck-700 dark:text-duck-300 font-bold" id="sidebarThemeBadge">Off</span>
+      </button>
+      <button onclick="openBackupModal()" class="ios-tap w-full flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]">
+        <i data-lucide="database-backup" class="w-4 h-4 text-duck-600 dark:text-duck-400"></i>
+        <span>Backup & Restore</span>
+      </button>
+      <button onclick="openSyncModal()" class="ios-tap w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-sm font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-950/50 hover:bg-emerald-100/80 dark:hover:bg-emerald-950/80">
+        <span class="flex items-center gap-3.5">
+          <i data-lucide="cloud" class="w-4 h-4"></i>
+          <span>Sync Laptop & iPhone</span>
+        </span>
+        <span id="sidebarSyncDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+      </button>
+      <button onclick="openInstallModal()" class="ios-tap w-full flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-bold text-duck-700 dark:text-duck-300 bg-duck-100/80 dark:bg-[#332A18] hover:bg-duck-100 dark:hover:bg-[#3E331D]">
+        <i data-lucide="monitor-down" class="w-4 h-4"></i>
+        <span>Install ke Desktop / iPhone</span>
+      </button>
+      <button onclick="openSettingsModal()" class="ios-tap w-full flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]">
+        <i data-lucide="settings" class="w-4 h-4"></i>
+        <span>Pengaturan & Brand</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT WORKSPACE -->
+  <main class="flex-1 min-w-0 max-w-[1440px] mx-auto w-full pb-10">
+    
+    <!-- FLOATING iOS GLASS TOP BAR -->
+    <div class="sticky top-[61px] lg:top-0 z-20 ios-glass-header px-5 sm:px-8 py-4 lg:py-5 mb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <p id="greetingSubtitle" class="text-xs sm:text-sm text-mutedInk dark:text-[#A8A29E] font-medium">Selamat Malam,</p>
+          <h2 id="editorNameDisplay" class="text-2xl sm:text-3xl font-extrabold text-ink dark:text-[#F5F5F4] tracking-tight">Sam</h2>
+          <p class="text-xs text-mutedInk dark:text-[#A8A29E] mt-0.5 hidden sm:block">Pantau tarif per project, DP & pelunasan klien, revisi, dan link Canva brief.</p>
+        </div>
+
+        <div class="flex items-center gap-3 self-start md:self-center w-full md:w-auto">
+          <!-- Cloud Auto-Sync Live Pill -->
+          <button type="button" onclick="openSyncModal()" id="syncStatusPill" title="Klik untuk atur & samakan Kode Studio antara Laptop & iPhone" class="ios-tap inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white dark:bg-darkCard border border-stone-200/90 dark:border-darkBorder text-xs font-bold text-ink dark:text-[#F5F5F4] shadow-2xs shrink-0">
+            <span id="syncStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="syncStatusText" class="whitespace-nowrap">Menghubungkan...</span>
+          </button>
+
+          <!-- Search Pill -->
+          <div class="relative flex-1 md:w-64">
+            <i data-lucide="search" class="w-4 h-4 text-stone-400 dark:text-[#78716C] absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="globalSearch" 
+              oninput="handleSearch(this.value)"
+              placeholder="Cari project atau klien..." 
+              class="w-full pl-10 pr-4 py-2.5 rounded-full bg-white dark:bg-darkCard border border-stone-200/90 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-duck-400/40 transition-all"
+            />
+          </div>
+
+          <!-- iOS Animated Theme Switch -->
+          <button type="button" onclick="toggleTheme()" aria-label="Ganti Tema Terang / Gelap" title="Ganti Light / Dark Mode" class="ios-theme-switch ios-tap hidden sm:inline-flex shrink-0">
+            <span class="w-1/2 flex items-center justify-center text-duck-500">
+              <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+            </span>
+            <span class="w-1/2 flex items-center justify-center text-duck-300">
+              <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+            </span>
+            <span class="ios-theme-thumb">
+              <i data-lucide="sun" class="w-3.5 h-3.5 text-duck-500 dark:hidden"></i>
+              <i data-lucide="moon" class="w-3.5 h-3.5 text-duck-300 hidden dark:block"></i>
+            </span>
+          </button>
+
+          <!-- Studio Avatar Badge -->
+          <button onclick="openSettingsModal()" title="Pengaturan Studio & Brand" class="ios-tap hidden sm:flex w-10 h-10 rounded-full bg-duck-100 dark:bg-[#332A18] border border-duck-300/70 dark:border-amber-500/30 items-center justify-center text-duck-700 dark:text-duck-300 font-extrabold text-xs shadow-2xs shrink-0 overflow-hidden" id="headerAvatarBtn">
+            YD
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-5 sm:px-8">
+
+      <!-- ==================== TAB 1: DASHBOARD VIEW ==================== -->
+      <div id="view-dashboard" class="tab-view ios-view-enter grid grid-cols-1 xl:grid-cols-12 gap-7">
+        
+        <!-- CENTER COLUMN (8 cols on XL) -->
+        <div class="xl:col-span-8 space-y-7">
+          
+          <!-- HERO FOCUS BANNER (Warm Buttercream & Golden Amber) -->
+          <div class="hero-duck-card rounded-[26px] p-6 sm:p-7 flex flex-col lg:flex-row lg:items-stretch justify-between gap-5 shadow-soft">
+            <div class="relative z-10 flex-1 min-w-0">
+              <span id="heroAgencyPill" class="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wider uppercase text-duck-700 dark:text-duck-300 mb-1.5">
+                <span class="w-2 h-2 rounded-full bg-duck-500"></span>
+                YELLOW DUCK STUDIO • PRODUCTION DESK
+              </span>
+              <h3 id="heroHeadline" class="text-xl sm:text-2xl font-extrabold text-ink dark:text-[#F5F5F4] leading-snug">
+                3 project aktif sedang berjalan dengan ritme terkendali.
+              </h3>
+
+              <!-- SMART PRIORITY & DEADLINE ALERT PANEL -->
+              <div id="heroPriorityBox" class="mt-3.5 rounded-2xl bg-white/85 dark:bg-darkCard/85 backdrop-blur-md border border-amber-300/60 dark:border-amber-500/25 p-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span id="heroPriorityHeader" class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-duck-300">
+                    <i data-lucide="bell-ring" class="w-3.5 h-3.5 text-amber-600 dark:text-duck-400"></i>
+                    Perhatian Khusus & Pengingat Deadline
+                  </span>
+                  <span id="heroPriorityCountBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-[#332A18] text-amber-800 dark:text-duck-300 tabular-nums">
+                    0 item
+                  </span>
+                </div>
+                <div id="heroPriorityList" class="flex flex-wrap gap-2">
+                  <!-- Rendered dynamically via renderHeroPriorityAlerts() -->
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap items-center gap-2.5">
+                <button onclick="openProjectModal()" class="ios-tap inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-xs">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  + Project Baru
+                </button>
+                <button onclick="switchTab('projects')" class="ios-tap inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/90 dark:bg-darkCard hover:bg-white dark:hover:bg-[#292620] text-ink dark:text-[#F5F5F4] text-xs font-bold shadow-2xs border border-duck-200/60 dark:border-darkBorder">
+                  Lihat Project Tracker
+                </button>
+              </div>
+            </div>
+
+            <div class="relative z-10 hidden sm:flex flex-col items-end justify-between text-right shrink-0">
+              <span class="italic font-serif text-duck-700 dark:text-duck-300 text-sm font-semibold">Crafted Frame by Frame ✨</span>
+              <div class="mt-6 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white dark:border-darkBorder shadow-2xs">
+                <p class="text-[11px] text-mutedInk dark:text-[#A8A29E] font-medium">Rata-rata Tarif / Project</p>
+                <p id="avgProjectRate" class="text-base font-extrabold text-ink dark:text-[#F5F5F4] tabular-nums">Rp 0</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 PASTEL KPI CARDS -->
+          <div>
+            <div class="flex items-center justify-between mb-3.5">
+              <h3 class="text-base font-bold text-ink dark:text-[#F5F5F4]">Ringkasan Keuangan Agency</h3>
+              <button onclick="openSettingsModal()" class="ios-tap text-xs font-bold text-duck-600 dark:text-duck-400 hover:underline">Edit Target / Brand</button>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <!-- Card 1: Warm Buttercream Yellow - Total Nilai Kontrak (Gross Revenue) -->
+              <div onclick="switchTab('projects')" class="ios-card cursor-pointer bg-duck-100/85 dark:bg-[#2B2416] border border-duck-200/70 dark:border-amber-500/20 rounded-[24px] p-4 flex flex-col justify-between">
+                <div>
+                  <div class="w-9 h-9 rounded-full bg-white dark:bg-[#3D331E] flex items-center justify-center text-duck-600 dark:text-duck-400 mb-3 shadow-2xs">
+                    <i data-lucide="briefcase" class="w-4 h-4"></i>
+                  </div>
+                  <p id="kpiGrossRevenue" class="text-lg font-extrabold text-ink dark:text-[#F5F5F4] tracking-tight tabular-nums">Rp 0</p>
+                  <p class="text-xs font-semibold text-mutedInk dark:text-[#A8A29E] mt-0.5">Total Nilai Kontrak</p>
+                </div>
+                <div class="mt-4">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-duck-700 dark:text-duck-300 mb-1">
+                    <span id="kpiTotalProjectsLabel">0 project</span>
+                    <span id="kpiTargetShare" class="tabular-nums">0%</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-white/80 dark:bg-black/35 rounded-full overflow-hidden">
+                    <div id="barGrossShare" class="h-full bg-duck-500 dark:bg-duck-400 rounded-full transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Soft Sky Blue - Sudah Cair (Paid) -->
+              <div onclick="switchTab('projects')" class="ios-card cursor-pointer bg-pastelBlue-100/90 dark:bg-[#18232E] border border-blue-200/50 dark:border-sky-500/20 rounded-[24px] p-4 flex flex-col justify-between">
+                <div>
+                  <div class="w-9 h-9 rounded-full bg-white dark:bg-[#223344] flex items-center justify-center text-blue-600 dark:text-sky-300 mb-3 shadow-2xs">
+                    <i data-lucide="badge-check" class="w-4 h-4"></i>
+                  </div>
+                  <p id="kpiPaidAmount" class="text-lg font-extrabold text-ink dark:text-[#F5F5F4] tracking-tight tabular-nums">Rp 0</p>
+                  <p class="text-xs font-semibold text-mutedInk dark:text-[#A8A29E] mt-0.5">Sudah Cair (Paid/DP)</p>
+                </div>
+                <div class="mt-4">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-blue-700 dark:text-sky-300 mb-1">
+                    <span>Terkumpul</span>
+                    <span id="kpiPaidPercent" class="tabular-nums">0%</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-white/80 dark:bg-black/35 rounded-full overflow-hidden">
+                    <div id="barPaidPercent" class="h-full bg-blue-500 dark:bg-sky-400 rounded-full transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Gentle Peach/Coral - Sisa Tagihan / Piutang -->
+              <div onclick="switchTab('projects'); setProjectFilter('UNPAID')" class="ios-card cursor-pointer bg-pastelPeach-100/90 dark:bg-[#2B1F19] border border-orange-200/60 dark:border-orange-500/20 rounded-[24px] p-4 flex flex-col justify-between">
+                <div>
+                  <div class="w-9 h-9 rounded-full bg-white dark:bg-[#3D2B22] flex items-center justify-center text-orange-600 dark:text-orange-300 mb-3 shadow-2xs">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                  </div>
+                  <p id="kpiPendingAmount" class="text-lg font-extrabold text-ink dark:text-[#F5F5F4] tracking-tight tabular-nums">Rp 0</p>
+                  <p class="text-xs font-semibold text-mutedInk dark:text-[#A8A29E] mt-0.5">Sisa Tagihan / Piutang</p>
+                </div>
+                <div class="mt-4">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-orange-700 dark:text-orange-300 mb-1">
+                    <span id="kpiUnpaidCount">0 invoice</span>
+                    <span id="kpiPendingPercent" class="tabular-nums">0%</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-white/80 dark:bg-black/35 rounded-full overflow-hidden">
+                    <div id="barPendingPercent" class="h-full bg-orange-500 dark:bg-orange-300 rounded-full transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: Soft Lavender - Keuntungan Bersih (Net Profit) -->
+              <div onclick="switchTab('expenses')" class="ios-card cursor-pointer bg-pastelLavender-100/90 dark:bg-[#231D2E] border border-purple-200/60 dark:border-violet-500/20 rounded-[24px] p-4 flex flex-col justify-between">
+                <div>
+                  <div class="w-9 h-9 rounded-full bg-white dark:bg-[#322842] flex items-center justify-center text-purple-600 dark:text-violet-300 mb-3 shadow-2xs">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                  </div>
+                  <p id="kpiNetProfit" class="text-lg font-extrabold text-ink dark:text-[#F5F5F4] tracking-tight tabular-nums">Rp 0</p>
+                  <p class="text-xs font-semibold text-mutedInk dark:text-[#A8A29E] mt-0.5">Keuntungan Bersih</p>
+                </div>
+                <div class="mt-4">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-purple-700 dark:text-violet-300 mb-1">
+                    <span>Net Margin</span>
+                    <span id="kpiProfitMargin" class="tabular-nums">0%</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-white/80 dark:bg-black/35 rounded-full overflow-hidden">
+                    <div id="barProfitMargin" class="h-full bg-purple-500 dark:bg-violet-400 rounded-full transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTIVE PROJECTS GRID -->
+          <div>
+            <div class="flex items-center justify-between mb-3.5">
+              <div>
+                <h3 class="text-base font-bold text-ink dark:text-[#F5F5F4]">Project Aktif & Terbaru</h3>
+                <p class="text-xs text-mutedInk dark:text-[#A8A29E]">Tap badge status untuk ganti cepat, atur revisi `- / +`, atau buka Canva Brief.</p>
+              </div>
+              <button onclick="switchTab('projects')" class="ios-tap text-xs font-bold text-duck-600 dark:text-duck-400 hover:underline">Lihat Semua →</button>
+            </div>
+
+            <div id="dashboardProjectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Dynamically rendered project cards -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT PANEL (4 cols on XL) -->
+        <div class="xl:col-span-4 space-y-6">
+          
+          <!-- MONTHLY REVENUE PROGRESS CARD -->
+          <div class="ios-card bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder rounded-[26px] p-5 shadow-card">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-bold text-ink dark:text-[#F5F5F4]">Target Bulanan</h3>
+              <button onclick="openSettingsModal()" class="ios-tap text-xs font-bold text-duck-600 dark:text-duck-400 hover:underline">Edit Target / Brand</button>
+            </div>
+
+            <div class="flex items-center gap-5">
+              <!-- Circular Progress Gauge -->
+              <div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
+                <svg class="w-24 h-24" viewBox="0 0 100 100">
+                  <circle class="progress-ring-track" cx="50" cy="50" r="40" fill="none" stroke-width="10" />
+                  <circle id="targetRingCircle" class="progress-ring-circle" cx="50" cy="50" r="40" fill="none" stroke="#F59E0B" stroke-width="10" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2" />
+                </svg>
+                <span id="targetRingText" class="absolute text-lg font-extrabold text-ink dark:text-[#F5F5F4] tabular-nums">0%</span>
+              </div>
+
+              <div>
+                <p id="targetStatusTitle" class="text-sm font-bold text-ink dark:text-[#F5F5F4]">On track bulan ini!</p>
+                <p class="text-xs text-mutedInk dark:text-[#A8A29E] mt-1 leading-relaxed">
+                  Nilai kontrak <span id="targetCurrentLabel" class="font-bold text-ink dark:text-[#F5F5F4] tabular-nums">Rp 0</span> dari target <span id="targetGoalLabel" class="font-bold text-duck-600 dark:text-duck-400 tabular-nums">Rp 0</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUICK ACTIONS 2x2 PASTEL GRID -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-base font-bold text-ink dark:text-[#F5F5F4]">Quick Actions</h3>
+            </div>
+            <div class="grid grid-cols-2 max-[419px]:grid-cols-1 gap-3">
+              <button onclick="openProjectModal()" class="ios-tap flex items-center gap-2.5 p-3.5 rounded-[20px] bg-duck-100/90 dark:bg-[#2B2416] hover:bg-duck-100 dark:hover:bg-[#362D1B] border border-duck-200/70 dark:border-amber-500/20 text-ink dark:text-[#F5F5F4] text-left shadow-2xs">
+                <span class="w-8 h-8 rounded-full bg-white dark:bg-[#3D331E] flex items-center justify-center text-duck-600 dark:text-duck-400 shrink-0 shadow-2xs">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                </span>
+                <span class="text-xs font-bold leading-tight">+ Tambah Project Baru</span>
+              </button>
+
+              <button onclick="openExpenseModal()" class="ios-tap flex items-center gap-2.5 p-3.5 rounded-[20px] bg-pastelPeach-100/90 dark:bg-[#2B1F19] hover:bg-pastelPeach-100 dark:hover:bg-[#36271F] border border-orange-200/60 dark:border-orange-500/20 text-ink dark:text-[#F5F5F4] text-left shadow-2xs">
+                <span class="w-8 h-8 rounded-full bg-white dark:bg-[#3D2B22] flex items-center justify-center text-orange-600 dark:text-orange-300 shrink-0 shadow-2xs">
+                  <i data-lucide="receipt" class="w-4 h-4"></i>
+                </span>
+                <span class="text-xs font-bold leading-tight">Catat Pengeluaran</span>
+              </button>
+
+              <button onclick="openBackupModal()" class="ios-tap flex items-center gap-2.5 p-3.5 rounded-[20px] bg-pastelLavender-100/90 dark:bg-[#231D2E] hover:bg-pastelLavender-100 dark:hover:bg-[#2C243A] border border-purple-200/60 dark:border-violet-500/20 text-ink dark:text-[#F5F5F4] text-left shadow-2xs">
+                <span class="w-8 h-8 rounded-full bg-white dark:bg-[#322842] flex items-center justify-center text-purple-600 dark:text-violet-300 shrink-0 shadow-2xs">
+                  <i data-lucide="database-backup" class="w-4 h-4"></i>
+                </span>
+                <span class="text-xs font-bold leading-tight">Backup Data (.json)</span>
+              </button>
+
+              <button onclick="exportProjectsCSV()" class="ios-tap flex items-center gap-2.5 p-3.5 rounded-[20px] bg-pastelBlue-100/90 dark:bg-[#18232E] hover:bg-pastelBlue-100 dark:hover:bg-[#1F2E3D] border border-blue-200/60 dark:border-sky-500/20 text-ink dark:text-[#F5F5F4] text-left shadow-2xs">
+                <span class="w-8 h-8 rounded-full bg-white dark:bg-[#223344] flex items-center justify-center text-blue-600 dark:text-sky-300 shrink-0 shadow-2xs">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                </span>
+                <span class="text-xs font-bold leading-tight">Export Excel / CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- UPCOMING DEADLINES + AGENCY NOTE CARD -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-base font-bold text-ink dark:text-[#F5F5F4]">Upcoming Deadlines</h3>
+              <button onclick="switchTab('projects')" class="ios-tap text-xs font-bold text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">Semua</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch">
+              <!-- Timeline list -->
+              <div id="upcomingDeadlinesList" class="sm:col-span-7 bg-white dark:bg-darkCard rounded-[22px] p-3.5 space-y-2.5 border border-stone-200/80 dark:border-darkBorder shadow-card">
+                <!-- Rendered via JS -->
+              </div>
+
+              <!-- Warm Buttercream Quote Box -->
+              <div class="sm:col-span-5 bg-duck-100/85 dark:bg-[#2B2416] border border-duck-200/70 dark:border-amber-500/20 rounded-[22px] p-4 flex flex-col justify-between">
+                <span class="text-2xl font-serif text-duck-600 dark:text-duck-400 leading-none">“</span>
+                <p class="text-xs font-semibold text-ink/85 dark:text-[#E7E5E4] leading-relaxed my-2">
+                  Sharp cuts, smooth pacing, happy clients.
+                </p>
+                <span id="quoteAgencyTag" class="text-[10px] font-extrabold text-duck-700 dark:text-duck-300 uppercase tracking-wider">Yellow Duck</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== TAB 2: FULL PROJECT TRACKER ==================== -->
+      <div id="view-projects" class="tab-view ios-view-enter hidden space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white dark:bg-darkCard p-3.5 rounded-[22px] border border-stone-200/80 dark:border-darkBorder shadow-card">
+          <!-- iOS Segmented Control with Sliding Pill -->
+          <div class="overflow-x-auto max-w-full pb-1 md:pb-0">
+            <div id="projectSegmentedControl" class="ios-segmented">
+              <div id="segmentedPillIndicator" class="ios-segmented-pill"></div>
+              <button type="button" onclick="setProjectFilter('ALL')" data-filter="ALL" class="filter-pill relative z-10 px-3.5 py-1.5 rounded-xl text-xs font-bold text-ink dark:text-[#F5F5F4] transition-colors whitespace-nowrap">Semua</button>
+              <button type="button" onclick="setProjectFilter('ACTIVE')" data-filter="ACTIVE" class="filter-pill relative z-10 px-3.5 py-1.5 rounded-xl text-xs font-medium text-mutedInk dark:text-[#A8A29E] transition-colors whitespace-nowrap">Aktif</button>
+              <button type="button" onclick="setProjectFilter('REVISI')" data-filter="REVISI" class="filter-pill relative z-10 px-3.5 py-1.5 rounded-xl text-xs font-medium text-mutedInk dark:text-[#A8A29E] transition-colors whitespace-nowrap">Revisi</button>
+              <button type="button" onclick="setProjectFilter('UNPAID')" data-filter="UNPAID" class="filter-pill relative z-10 px-3.5 py-1.5 rounded-xl text-xs font-medium text-mutedInk dark:text-[#A8A29E] transition-colors whitespace-nowrap">Belum Lunas</button>
+              <button type="button" onclick="setProjectFilter('DONE')" data-filter="DONE" class="filter-pill relative z-10 px-3.5 py-1.5 rounded-xl text-xs font-medium text-mutedInk dark:text-[#A8A29E] transition-colors whitespace-nowrap">Selesai</button>
+            </div>
+          </div>
+
+          <div class="flex max-lg:flex-wrap items-center gap-2 shrink-0">
+            <button onclick="exportProjectsCSV()" class="ios-tap inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg hover:bg-duck-50 dark:hover:bg-[#26231D] border border-stone-200/80 dark:border-darkBorder text-ink dark:text-[#F5F5F4] text-xs font-bold">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              Export CSV
+            </button>
+            <button onclick="openProjectModal()" class="ios-tap inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-2xs">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              + Project Baru
+            </button>
+          </div>
+        </div>
+
+        <!-- Responsive Table Wrapper -->
+        <div class="bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder rounded-[26px] shadow-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-sidebarBg dark:bg-[#191714] border-b border-stone-200/70 dark:border-darkBorder text-[11px] font-bold uppercase tracking-wider text-mutedInk dark:text-[#A8A29E]">
+                  <th class="py-3.5 px-4">ID & Project / Klien</th>
+                  <th class="py-3.5 px-3">Kategori</th>
+                  <th class="py-3.5 px-3">Deadline</th>
+                  <th class="py-3.5 px-3">Status Produksi</th>
+                  <th class="py-3.5 px-3">Content Brief (Canva)</th>
+                  <th class="py-3.5 px-3">Revisi</th>
+                  <th class="py-3.5 px-3">Harga & DP</th>
+                  <th class="py-3.5 px-3">Sisa & Status</th>
+                  <th class="py-3.5 px-3">Profit Project</th>
+                  <th class="py-3.5 px-4 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="projectsTableBody" class="divide-y divide-stone-100 dark:divide-darkBorder text-sm">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 3: EXPENSES & BIAYA ==================== -->
+      <div id="view-expenses" class="tab-view ios-view-enter hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-duck-100/80 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 p-5 rounded-[26px]">
+          <div>
+            <h3 class="text-lg font-extrabold text-ink dark:text-[#F5F5F4]">Expenses & Biaya Operasional Studio</h3>
+            <p class="text-xs text-mutedInk dark:text-[#D6D3D1] mt-0.5">Software editing, aset musik/stock, storage SSD, internet, dan fee sub-editor otomatis memotong Keuntungan Bersih.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="text-right mr-1">
+              <span class="text-[11px] text-mutedInk dark:text-[#A8A29E] block">Total Biaya Operasional</span>
+              <span id="expensesTotalHeader" class="text-lg font-extrabold text-duck-700 dark:text-duck-300 tabular-nums">Rp 0</span>
+            </div>
+            <button onclick="exportExpensesCSV()" class="ios-tap px-3.5 py-2.5 rounded-2xl bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder text-ink dark:text-[#F5F5F4] text-xs font-bold hover:bg-duck-50">
+              Export CSV
+            </button>
+            <button onclick="openExpenseModal()" class="ios-tap px-4 py-2.5 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-2xs">
+              + Catat Biaya
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder rounded-[26px] shadow-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-sidebarBg dark:bg-[#191714] border-b border-stone-200/70 dark:border-darkBorder text-[11px] font-bold uppercase tracking-wider text-mutedInk dark:text-[#A8A29E]">
+                  <th class="py-3.5 px-5">Tanggal</th>
+                  <th class="py-3.5 px-4">Keterangan Biaya</th>
+                  <th class="py-3.5 px-4">Kategori</th>
+                  <th class="py-3.5 px-4">Nominal</th>
+                  <th class="py-3.5 px-5 text-right">Hapus</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody" class="divide-y divide-stone-100 dark:divide-darkBorder text-sm">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== MODAL: ADD / EDIT PROJECT ==================== -->
+  <div id="projectModal" onclick="if(event.target===this) closeProjectModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4 overflow-y-auto">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-2xl w-full p-6 sm:p-7 shadow-2xl border border-stone-200/80 dark:border-darkBorder my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-darkBorder">
+        <div>
+          <h3 id="projectModalTitle" class="text-lg font-extrabold text-ink dark:text-[#F5F5F4]">Tambah Project Video Baru</h3>
+          <p class="text-xs text-mutedInk dark:text-[#A8A29E]">Atur tarif per project, DP, jatah revisi, dan kolom kosong siap tempel Link Canva Brief.</p>
+        </div>
+        <button onclick="closeProjectModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="projectForm" onsubmit="saveProject(event)" class="mt-5 space-y-4">
+        <input type="hidden" id="editProjectIndex" value="-1" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">ID Project</label>
+            <input type="text" id="fId" required class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm font-bold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Nama Project / Judul Video *</label>
+            <input type="text" id="fName" required placeholder="Contoh: YouTube Tech Review Q4" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Nama Klien / Brand *</label>
+            <input type="text" id="fClient" required placeholder="Contoh: Nusantara Tech" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Kategori Video</label>
+            <select id="fCategory" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400">
+              <option value="YouTube Long-form">YouTube Long-form</option>
+              <option value="Reels/TikTok">Reels/TikTok</option>
+              <option value="Ads/Commercial">Ads/Commercial</option>
+              <option value="Company Profile">Company Profile</option>
+              <option value="Event">Event</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Deadline *</label>
+            <input type="date" id="fDeadline" required class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+        </div>
+
+        <!-- LINK CONTENT BRIEF CANVA (KOSONG BY DEFAULT) & RAW FOOTAGE -->
+        <div class="p-4 rounded-2xl bg-pastelBlue-50 dark:bg-[#18232E] border border-blue-200/60 dark:border-sky-500/20 space-y-3">
+          <div class="flex items-center justify-between text-blue-800 dark:text-sky-300">
+            <div class="flex items-center gap-2">
+              <i data-lucide="palette" class="w-4 h-4"></i>
+              <span class="text-xs font-bold uppercase tracking-wider">Link Content Brief (Canva) & Footage</span>
+            </div>
+            <button type="button" onclick="pasteCanvaFromClipboard()" class="ios-tap inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-[#223344] hover:bg-blue-100/70 dark:hover:bg-[#2B4055] text-blue-700 dark:text-sky-300 text-[11px] font-bold border border-blue-200/70 dark:border-sky-800/60">
+              <i data-lucide="clipboard-paste" class="w-3 h-3"></i>
+              Tempel Link Canva
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Link Content Brief (Canva)</label>
+              <input type="url" id="fCanvaLink" placeholder="Kosongkan dulu jika belum ada link Canva..." class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-darkBg border border-blue-200/80 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Link Raw Footage / Drive</label>
+              <input type="url" id="fDriveLink" placeholder="Tempel link Google Drive / Frame.io..." class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-darkBg border border-blue-200/80 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+        </div>
+
+        <!-- HARGA PER PROJECT, DP, STATUS BAYAR -->
+        <div class="p-4 rounded-2xl bg-duck-50 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 space-y-3">
+          <div class="flex items-center gap-2 text-duck-700 dark:text-duck-300">
+            <i data-lucide="banknote" class="w-4 h-4"></i>
+            <span class="text-xs font-bold uppercase tracking-wider">Tarif Per Project & Pembayaran (Rp)</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Harga Project (Rp) *</label>
+              <input type="number" id="fPrice" min="0" step="1000" required placeholder="2500000" oninput="syncPaymentPreview()" class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-darkBg border border-duck-200 dark:border-darkBorder text-sm font-bold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">DP Masuk (Rp)</label>
+              <input type="number" id="fDp" min="0" step="1000" value="0" oninput="syncPaymentPreview()" class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-darkBg border border-duck-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Status Bayar</label>
+              <select id="fPayStatus" onchange="syncPaymentPreview()" class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-darkBg border border-duck-200 dark:border-darkBorder text-sm font-semibold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400">
+                <option value="Belum DP">Belum DP</option>
+                <option value="DP Paid">DP Paid</option>
+                <option value="Lunas">Lunas</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-xs pt-1 text-duck-700 dark:text-duck-300">
+            <span>Estimasi Sisa Tagihan Klien:</span>
+            <span id="modalRemainingPreview" class="font-extrabold text-sm tabular-nums">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- STATUS PRODUKSI, REVISI & BIAYA KHUSUS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Status Produksi</label>
+            <select id="fProdStatus" class="w-full px-3 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400">
+              <option value="Antre">Antre</option>
+              <option value="Rough Cut">Rough Cut</option>
+              <option value="Revisi">Revisi</option>
+              <option value="Final">Final</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Revisi Terpakai</label>
+            <input type="number" id="fRevUsed" min="0" value="0" class="w-full px-3 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Jatah Revisi</label>
+            <input type="number" id="fRevMax" min="0" value="2" class="w-full px-3 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Biaya Khusus (Rp)</label>
+            <input type="number" id="fExtraCost" min="0" step="1000" value="0" placeholder="0" class="w-full px-3 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Catatan / Paket Deliverables</label>
+          <input type="text" id="fNotes" placeholder="Contoh: 1 Video 12 menit + Thumbnail + 2x Revisi" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-stone-100 dark:border-darkBorder">
+          <button type="button" onclick="closeProjectModal()" class="ios-tap px-4 py-2.5 rounded-2xl text-xs font-bold text-mutedInk dark:text-[#A8A29E] hover:bg-sidebarBg dark:hover:bg-[#26231D]">Batal</button>
+          <button type="submit" class="ios-tap px-5 py-2.5 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-xs">Simpan Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD EXPENSE ==================== -->
+  <div id="expenseModal" onclick="if(event.target===this) closeExpenseModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-md w-full p-6 shadow-2xl border border-stone-200/80 dark:border-darkBorder">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-darkBorder">
+        <h3 class="text-base font-extrabold text-ink dark:text-[#F5F5F4]">Catat Pengeluaran Studio</h3>
+        <button onclick="closeExpenseModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form onsubmit="saveExpense(event)" class="mt-4 space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Tanggal</label>
+          <input type="date" id="eDate" required class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4]" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Keterangan Pengeluaran *</label>
+          <input type="text" id="eTitle" required placeholder="Contoh: Adobe Creative Cloud / Artlist" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] placeholder:text-stone-400 dark:placeholder:text-[#78716C]" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Kategori</label>
+            <select id="eCategory" class="w-full px-3 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4]">
+              <option value="Software/Plugin">Software/Plugin</option>
+              <option value="Stock Asset/Music">Stock Asset/Music</option>
+              <option value="Hardware/Storage">Hardware/Storage</option>
+              <option value="Internet/Operasional">Internet/Operasional</option>
+              <option value="Sub-Editor/Freelancer">Sub-Editor/Freelancer</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Nominal (Rp) *</label>
+            <input type="number" id="eAmount" min="0" step="1000" required placeholder="350000" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm font-bold text-ink dark:text-[#F5F5F4]" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeExpenseModal()" class="ios-tap px-4 py-2 rounded-2xl text-xs font-bold text-mutedInk dark:text-[#A8A29E] hover:bg-sidebarBg dark:hover:bg-[#26231D]">Batal</button>
+          <button type="submit" class="ios-tap px-5 py-2 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold">Simpan Biaya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SETTINGS, BRAND & MONTHLY TARGET ==================== -->
+  <div id="settingsModal" onclick="if(event.target===this) closeSettingsModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4 overflow-y-auto">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-md w-full p-6 shadow-2xl border border-stone-200/80 dark:border-darkBorder my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-darkBorder">
+        <div>
+          <h3 class="text-base font-extrabold text-ink dark:text-[#F5F5F4]">Pengaturan Studio & Target</h3>
+          <p class="text-[11px] text-mutedInk dark:text-[#A8A29E]">Ubah logo, nama agency, subjudul, sapaan editor, dan target bulanan.</p>
+        </div>
+        <button onclick="closeSettingsModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form onsubmit="saveSettings(event)" class="mt-4 space-y-3.5">
+        <!-- Custom Logo Uploader -->
+        <div class="p-3.5 rounded-2xl bg-duck-50/80 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 flex items-center gap-3.5">
+          <div id="settingsLogoPreview" class="w-14 h-14 rounded-2xl bg-[#FAF8F4] dark:bg-darkBg border border-duck-200 dark:border-darkBorder flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-extrabold text-ink dark:text-[#F5F5F4]">Logo Agency</p>
+            <p class="text-[11px] text-mutedInk dark:text-[#A8A29E] leading-tight mt-0.5">Default bebek cat air atau unggah file gambar milikmu.</p>
+            <div class="flex flex-wrap items-center gap-2 mt-2">
+              <label class="ios-tap cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-duck-500 hover:bg-duck-600 text-white text-[11px] font-bold shadow-2xs">
+                <i data-lucide="image-plus" class="w-3.5 h-3.5"></i>
+                Upload Gambar
+                <input type="file" id="sLogoFileInput" accept="image/*" onchange="handleLogoFileUpload(event)" class="hidden" />
+              </label>
+              <button type="button" id="resetLogoBtn" onclick="resetCustomLogo()" class="ios-tap hidden px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-[11px] font-bold text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">
+                Pakai Bebek Default
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Nama Brand / Agency</label>
+          <input type="text" id="sBrandName" required placeholder="Yellow Duck Studio" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm font-bold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Subjudul Brand</label>
+          <input type="text" id="sBrandSubtitle" required placeholder="Video Editor Agency" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Nama Sapaan Editor</label>
+          <input type="text" id="sEditorName" required placeholder="Sam" class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-ink dark:text-[#E7E5E4] mb-1">Target Pendapatan Bulanan (Rp)</label>
+          <input type="number" id="sMonthlyTarget" min="100000" step="100000" required class="w-full px-3.5 py-2.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200 dark:border-darkBorder text-sm font-extrabold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-sidebarBg dark:bg-darkBg border border-stone-200/70 dark:border-darkBorder flex items-center justify-between gap-2">
+          <div>
+            <p class="text-xs font-bold text-ink dark:text-[#F5F5F4]">Dark Mode (Warm Charcoal)</p>
+            <p class="text-[11px] text-mutedInk dark:text-[#A8A29E]">Nyaman untuk editing di ruang gelap.</p>
+          </div>
+          <button type="button" onclick="toggleTheme()" aria-label="Toggle Dark Mode" class="ios-theme-switch ios-tap shrink-0">
+            <span class="w-1/2 flex items-center justify-center text-duck-500">
+              <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+            </span>
+            <span class="w-1/2 flex items-center justify-center text-duck-300">
+              <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+            </span>
+            <span class="ios-theme-thumb">
+              <i data-lucide="sun" class="w-3.5 h-3.5 text-duck-500 dark:hidden"></i>
+              <i data-lucide="moon" class="w-3.5 h-3.5 text-duck-300 hidden dark:block"></i>
+            </span>
+          </button>
+        </div>
+
+        <div class="pt-2 border-t border-stone-100 dark:border-darkBorder flex max-lg:flex-wrap max-lg:gap-2 items-center justify-between">
+          <button type="button" onclick="resetDemoData()" class="ios-tap text-xs font-bold text-red-600 dark:text-red-400 hover:underline">Reset Data Contoh</button>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeSettingsModal()" class="ios-tap px-4 py-2 rounded-2xl text-xs font-bold text-mutedInk dark:text-[#A8A29E] hover:bg-sidebarBg dark:hover:bg-[#26231D]">Batal</button>
+            <button type="submit" class="ios-tap px-5 py-2 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold">Simpan Perubahan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: BACKUP & RESTORE (.JSON) ==================== -->
+  <div id="backupModal" onclick="if(event.target===this) closeBackupModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-stone-200/80 dark:border-darkBorder">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-darkBorder">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-duck-100 dark:bg-[#332A18] text-duck-600 dark:text-duck-400 flex items-center justify-center">
+            <i data-lucide="database-backup" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-ink dark:text-[#F5F5F4]">Backup & Restore Data</h3>
+            <p class="text-[11px] text-mutedInk dark:text-[#A8A29E]">Simpan cadangan file .json sebelum update atau pindah perangkat</p>
+          </div>
+        </div>
+        <button onclick="closeBackupModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <!-- Backup Section -->
+        <div class="p-4 rounded-2xl bg-duck-50 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider">1. Unduh Backup (.json)</h4>
+            <p class="text-xs text-mutedInk dark:text-[#D6D3D1] mt-1">
+              Mencadangkan <strong id="backupSummaryText" class="text-ink dark:text-[#F5F5F4]">0 project & 0 pengeluaran</strong> beserta pengaturan brand & tema.
+            </p>
+          </div>
+          <button onclick="downloadJsonBackup()" class="ios-tap shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-2xs">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Backup Data
+          </button>
+        </div>
+
+        <!-- Restore Section -->
+        <div class="p-4 rounded-2xl bg-pastelBlue-50 dark:bg-[#18232E] border border-blue-200/60 dark:border-sky-500/20 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider">2. Restore dari File (.json)</h4>
+              <p class="text-xs text-mutedInk dark:text-[#A8A29E] mt-1">
+                Pilih file <code class="bg-white dark:bg-darkBg px-1.5 py-0.5 rounded text-[11px] border dark:border-darkBorder">yellow-duck-studio-backup-*.json</code>.
+              </p>
+            </div>
+            <label class="ios-tap shrink-0 cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-ink dark:bg-[#223344] hover:opacity-90 text-white text-xs font-bold shadow-2xs">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+              Pilih File JSON
+              <input type="file" id="restoreFileInput" accept=".json,application/json" onchange="handleRestoreFileSelect(event)" class="hidden" />
+            </label>
+          </div>
+
+          <!-- Confirmation Panel -->
+          <div id="restoreConfirmBox" class="hidden p-3.5 rounded-xl bg-white dark:bg-darkBg border border-blue-200 dark:border-sky-800/60 space-y-2.5">
+            <div class="flex items-start gap-2.5">
+              <i data-lucide="info" class="w-4 h-4 text-blue-600 dark:text-sky-300 shrink-0 mt-0.5"></i>
+              <div class="text-xs text-mutedInk dark:text-[#D6D3D1] leading-relaxed">
+                <p class="font-bold text-ink dark:text-[#F5F5F4]">Konfirmasi Restore Data:</p>
+                <p id="restorePreviewDetails" class="mt-0.5"></p>
+                <p class="text-[11px] text-orange-600 dark:text-orange-300 font-semibold mt-1">Data saat ini akan diganti dengan isi dari file backup tersebut.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-end gap-2 pt-1">
+              <button type="button" onclick="cancelPendingRestore()" class="ios-tap px-3 py-1.5 rounded-xl text-xs font-bold text-mutedInk dark:text-[#A8A29E] hover:bg-sidebarBg dark:hover:bg-[#26231D]">Batal</button>
+              <button type="button" onclick="confirmRestoreData()" class="ios-tap px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-2xs">
+                Ya, Pulihkan Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Box -->
+          <div id="restoreErrorBox" class="hidden p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 font-semibold"></div>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button onclick="closeBackupModal()" class="ios-tap px-5 py-2 rounded-2xl bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] text-ink dark:text-[#F5F5F4] text-xs font-bold">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: AUTO-SYNC LAPTOP & IPHONE ==================== -->
+  <div id="syncModal" onclick="if(event.target===this) closeSyncModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4 overflow-y-auto">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-stone-200/80 dark:border-darkBorder my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-darkBorder">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+            <i data-lucide="cloud" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-ink dark:text-[#F5F5F4]">Sinkronisasi Otomatis Laptop & iPhone</h3>
+            <p class="text-[11px] text-mutedInk dark:text-[#A8A29E]">Setiap perubahan langsung tersimpan & muncul otomatis di Safari iPhone</p>
+          </div>
+        </div>
+        <button onclick="closeSyncModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <!-- Status Banner -->
+        <div class="p-3.5 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/45 border border-emerald-200/80 dark:border-emerald-800/50 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span id="modalSyncDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+            <div class="min-w-0">
+              <p id="modalSyncStateTitle" class="text-xs font-extrabold text-emerald-900 dark:text-emerald-200">Auto-Sync Cloud Aktif</p>
+              <p id="modalSyncLastTime" class="text-[11px] text-emerald-700 dark:text-emerald-300 truncate">Menunggu sinkronisasi...</p>
+            </div>
+          </div>
+          <button type="button" onclick="forcePushCloudSync()" class="ios-tap shrink-0 px-3 py-1.5 rounded-xl bg-white dark:bg-darkBg border border-emerald-200 dark:border-emerald-700/60 text-emerald-800 dark:text-emerald-200 text-xs font-bold shadow-2xs">
+            Sync Sekarang
+          </button>
+        </div>
+
+        <!-- Studio Sync Code -->
+        <div class="p-4 rounded-2xl bg-duck-50 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 space-y-3">
+          <div>
+            <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider">Kode Studio (Samakan di Laptop & iPhone)</h4>
+            <p class="text-xs text-mutedInk dark:text-[#D6D3D1] mt-1 leading-relaxed">
+              Masukkan <strong>Kode Studio</strong> yang sama persis di laptop dan di iPhone (Safari / Home Screen) agar kedua perangkat terhubung ke ruang data yang sama.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="studioSyncCodeInput" placeholder="Contoh: yellowduck-sam" class="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-duck-300/80 dark:border-darkBorder text-sm font-extrabold text-ink dark:text-[#F5F5F4] tracking-wide focus:outline-none focus:ring-2 focus:ring-duck-400" />
+            <button type="button" onclick="copyStudioSyncCode()" class="ios-tap px-3.5 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-duck-200 dark:border-darkBorder text-xs font-bold text-ink dark:text-[#F5F5F4]">
+              Salin Kode
+            </button>
+            <button type="button" onclick="applyStudioSyncCode()" class="ios-tap px-4 py-2.5 rounded-xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-2xs">
+              Hubungkan
+            </button>
+          </div>
+        </div>
+
+        <!-- Safari iPhone Home Screen Guide -->
+        <div class="p-4 rounded-2xl bg-pastelBlue-50 dark:bg-[#18232E] border border-blue-200/60 dark:border-sky-500/20 space-y-2">
+          <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="smartphone" class="w-3.5 h-3.5 text-blue-600 dark:text-sky-300"></i>
+            Cara Pakai di Safari iPhone (Add to Home Screen)
+          </h4>
+          <ol class="list-decimal list-inside space-y-1 text-xs text-mutedInk dark:text-[#D6D3D1] leading-relaxed">
+            <li>Buka link website dashboard ini di <strong>Safari iPhone</strong>, lalu masukkan <strong>Kode Studio</strong> di atas.</li>
+            <li>Ketuk tombol <strong>Share (<span class="font-bold">↑</span>)</strong> di bar bawah Safari → pilih <strong>Add to Home Screen</strong>.</li>
+            <li>Buka ikon <strong>Yellow Duck Studio</strong> dari Home Screen iPhone — setiap kali kamu tambah/edit project di laptop atau iPhone, datanya langsung tersinkron otomatis!</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button onclick="closeSyncModal()" class="ios-tap px-5 py-2 rounded-2xl bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] text-ink dark:text-[#F5F5F4] text-xs font-bold">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: INSTALL TO DESKTOP GUIDE ==================== -->
+  <div id="installModal" onclick="if(event.target===this) closeInstallModal()" class="ios-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-ink/35 dark:bg-black/65 p-4">
+    <div class="ios-modal-panel bg-white dark:bg-darkCard rounded-[30px] max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-stone-200/80 dark:border-darkBorder">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-darkBorder">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-duck-100 dark:bg-[#332A18] text-duck-600 dark:text-duck-400 flex items-center justify-center">
+            <i data-lucide="monitor-down" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-extrabold text-ink dark:text-[#F5F5F4]">Install ke Desktop & iPhone Home Screen</h3>
+        </div>
+        <button onclick="closeInstallModal()" class="ios-tap w-8 h-8 rounded-full bg-sidebarBg dark:bg-[#26231D] hover:bg-stone-200/70 dark:hover:bg-[#332F27] flex items-center justify-center text-mutedInk dark:text-[#A8A29E]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-3 text-xs sm:text-sm text-mutedInk dark:text-[#D6D3D1] leading-relaxed">
+        <p>Aplikasi <strong id="installModalBrandName" class="text-ink dark:text-[#F5F5F4]">Yellow Duck Studio</strong> tersinkron otomatis di cloud dan bisa dipasang sebagai aplikasi mandiri di laptop maupun iPhone.</p>
+        
+        <div class="p-4 rounded-2xl bg-duck-50 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 space-y-2.5">
+          <p class="font-extrabold text-ink dark:text-[#F5F5F4] text-xs uppercase tracking-wider">1. Di Laptop (Chrome / Edge):</p>
+          <ol class="list-decimal list-inside space-y-1 text-xs text-ink/90 dark:text-[#E7E5E4]">
+            <li>Buka URL website dashboard ini di Chrome atau Edge.</li>
+            <li>Klik menu titik tiga kanan atas → <strong>Cast, save, and share &gt; Create shortcut...</strong> (atau <strong>Apps &gt; Install this site as an app</strong>) dan centang <strong>"Open as window"</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-pastelBlue-50 dark:bg-[#18232E] border border-blue-200/60 dark:border-sky-500/20 space-y-2">
+          <p class="font-extrabold text-ink dark:text-[#F5F5F4] text-xs uppercase tracking-wider">2. Di iPhone (Safari → Add to Home Screen):</p>
+          <ol class="list-decimal list-inside space-y-1 text-xs text-ink/90 dark:text-[#E7E5E4]">
+            <li>Buka URL website yang sama di <strong>Safari iPhone</strong>, ketuk ikon <strong>Share (↑)</strong> → <strong>Add to Home Screen</strong>.</li>
+            <li>Pastikan <strong>Kode Studio</strong> di menu <em>Sync Laptop & iPhone</em> sama di kedua perangkat.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end gap-2.5">
+        <button id="nativeInstallBtn" onclick="triggerNativeInstall()" class="ios-tap hidden px-4 py-2.5 rounded-2xl bg-duck-500 text-white text-xs font-bold shadow-xs">
+          Install Sekarang
+        </button>
+        <button onclick="closeInstallModal()" class="ios-tap px-5 py-2.5 rounded-2xl bg-ink dark:bg-duck-500 text-white text-xs font-bold">Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS DYNAMIC ISLAND TOP NOTIFICATION -->
+  <div id="toast" class="ios-dynamic-toast fixed top-4 left-1/2 z-[60] bg-ink/95 dark:bg-[#2B261E]/95 backdrop-blur-xl text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xl border border-white/10 dark:border-amber-400/25 flex items-center gap-2.5">
+    <span class="w-5 h-5 rounded-full bg-duck-500/30 flex items-center justify-center text-duck-300 shrink-0">
+      <i data-lucide="check" class="w-3.5 h-3.5"></i>
+    </span>
+    <span id="toastMsg">Tersimpan!</span>
+  </div>
+
+  <!-- FIREBASE REAL-TIME AUTO-SYNC ENGINE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const SYNC_CODE_STORAGE_KEY = 'yellow_duck_studio_sync_code_v1';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'yellow-duck-studio-prod';
+
+    function sanitizeSyncCode(raw) {
+      const cleaned = String(raw || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      return cleaned || 'yellowduck-sam';
+    }
+
+    function getStudioSyncCode() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const fromUrl = params.get('studio');
+        if (fromUrl) {
+          const normalized = sanitizeSyncCode(fromUrl);
+          localStorage.setItem(SYNC_CODE_STORAGE_KEY, normalized);
+          return normalized;
+        }
+        const saved = localStorage.getItem(SYNC_CODE_STORAGE_KEY);
+        if (saved) return sanitizeSyncCode(saved);
+      } catch (e) {}
+      return 'yellowduck-sam';
+    }
+
+    window.cloudSyncState = {
+      ready: false,
+      user: null,
+      db: null,
+      syncCode: getStudioSyncCode(),
+      unsubscribe: null,
+      lastSyncedAt: null,
+      isApplyingRemote: false
+    };
+
+    function updateSyncUi(status, labelText, detailText = '') {
+      const dot = document.getElementById('syncStatusDot');
+      const text = document.getElementById('syncStatusText');
+      const sideDot = document.getElementById('sidebarSyncDot');
+      const modalDot = document.getElementById('modalSyncDot');
+      const modalTitle = document.getElementById('modalSyncStateTitle');
+      const modalLast = document.getElementById('modalSyncLastTime');
+
+      if (text) text.textContent = labelText;
+
+      if (status === 'synced') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+        if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+        if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0';
+        if (modalTitle) modalTitle.textContent = `Tersinkron Otomatis (${window.cloudSyncState.syncCode})`;
+      } else if (status === 'syncing') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+        if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0';
+        if (modalTitle) modalTitle.textContent = 'Menyinkronkan perubahan...';
+      } else {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-orange-400';
+        if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-orange-400';
+        if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-orange-400 shrink-0';
+        if (modalTitle) modalTitle.textContent = 'Mode Lokal / Offline';
+      }
+
+      if (modalLast && detailText) {
+        modalLast.textContent = detailText;
+      }
+    }
+
+    function getWorkspaceDocRef() {
+      return doc(
+        window.cloudSyncState.db,
+        'artifacts',
+        appId,
+        'public',
+        'data',
+        'studio_workspaces',
+        window.cloudSyncState.syncCode
+      );
+    }
+
+    window.pushStateToCloud = async function(silent = true) {
+      if (!window.cloudSyncState.ready || !window.cloudSyncState.user || !window.cloudSyncState.db) return;
+      if (window.cloudSyncState.isApplyingRemote) return;
+
+      try {
+        updateSyncUi('syncing', 'Menyimpan...', 'Mengirim perubahan ke cloud...');
+        const nowIso = new Date().toISOString();
+        const payload = {
+          syncCode: window.cloudSyncState.syncCode,
+          updatedAt: nowIso,
+          settingsJson: JSON.stringify(window.appState.settings || {}),
+          projectsJson: JSON.stringify(window.appState.projects || []),
+          expensesJson: JSON.stringify(window.appState.expenses || [])
+        };
+        await setDoc(getWorkspaceDocRef(), payload, { merge: true });
+        window.cloudSyncState.lastSyncedAt = nowIso;
+        const timeStr = new Date(nowIso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        updateSyncUi('synced', 'Auto-Sync Aktif', `Terakhir sinkron pukul ${timeStr} WIB`);
+        if (!silent && typeof window.showToast === 'function') {
+          window.showToast('Data berhasil disinkronkan ke cloud!');
+        }
+      } catch (err) {
+        console.warn('Cloud push skipped:', err);
+        updateSyncUi('offline', 'Offline (Lokal)', 'Tersimpan di perangkat ini, akan sinkron saat online.');
+      }
+    };
+
+    function subscribeToWorkspace() {
+      if (!window.cloudSyncState.ready || !window.cloudSyncState.user || !window.cloudSyncState.db) return;
+      if (typeof window.cloudSyncState.unsubscribe === 'function') {
+        window.cloudSyncState.unsubscribe();
+      }
+
+      updateSyncUi('syncing', 'Menghubungkan...', `Memuat ruang studio "${window.cloudSyncState.syncCode}"...`);
+
+      window.cloudSyncState.unsubscribe = onSnapshot(
+        getWorkspaceDocRef(),
+        async (snap) => {
+          if (!snap.exists()) {
+            // Inisialisasi dokumen cloud dari data lokal saat ini
+            await window.pushStateToCloud(true);
+            return;
+          }
+
+          const remote = snap.data() || {};
+          if (remote.updatedAt && remote.updatedAt === window.cloudSyncState.lastSyncedAt) {
+            return;
+          }
+
+          try {
+            window.cloudSyncState.isApplyingRemote = true;
+            const parsedSettings = remote.settingsJson ? JSON.parse(remote.settingsJson) : null;
+            const parsedProjects = remote.projectsJson ? JSON.parse(remote.projectsJson) : null;
+            const parsedExpenses = remote.expensesJson ? JSON.parse(remote.expensesJson) : null;
+
+            if (parsedSettings && Array.isArray(parsedProjects) && Array.isArray(parsedExpenses)) {
+              window.appState = {
+                settings: Object.assign({}, window.appState.settings, parsedSettings),
+                projects: parsedProjects,
+                expenses: parsedExpenses
+              };
+              try {
+                localStorage.setItem('yellow_duck_studio_v1', JSON.stringify(window.appState));
+              } catch (e) {}
+
+              if (typeof window.renderAll === 'function') {
+                window.renderAll();
+              }
+            }
+
+            window.cloudSyncState.lastSyncedAt = remote.updatedAt || new Date().toISOString();
+            const timeStr = new Date(window.cloudSyncState.lastSyncedAt).toLocaleTimeString('id-ID', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+            updateSyncUi('synced', 'Auto-Sync Aktif', `Tersinkron real-time • ${timeStr} WIB`);
+          } catch (parseErr) {
+            console.error('Failed to parse remote workspace:', parseErr);
+          } finally {
+            window.cloudSyncState.isApplyingRemote = false;
+          }
+        },
+        (err) => {
+          console.warn('Firestore snapshot error:', err);
+          updateSyncUi('offline', 'Offline (Lokal)', 'Koneksi cloud terganggu; data aman tersimpan lokal.');
+        }
+      );
+    }
+
+    window.changeStudioSyncCode = function(newRawCode) {
+      const normalized = sanitizeSyncCode(newRawCode);
+      window.cloudSyncState.syncCode = normalized;
+      window.cloudSyncState.lastSyncedAt = null;
+      try {
+        localStorage.setItem(SYNC_CODE_STORAGE_KEY, normalized);
+      } catch (e) {}
+      subscribeToWorkspace();
+    };
+
+    (async function initCloudSync() {
+      try {
+        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+          updateSyncUi('offline', 'Tersimpan Lokal', 'Konfigurasi cloud tidak tersedia di mode offline.');
+          return;
+        }
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        if (!auth.currentUser) {
+          updateSyncUi('offline', 'Tersimpan Lokal', 'Autentikasi cloud belum aktif.');
+          return;
+        }
+
+        window.cloudSyncState.user = auth.currentUser;
+        window.cloudSyncState.db = db;
+        window.cloudSyncState.ready = true;
+        subscribeToWorkspace();
+      } catch (e) {
+        console.warn('Cloud sync init fallback to local:', e);
+        updateSyncUi('offline', 'Tersimpan Lokal', 'Berjalan dalam mode penyimpanan lokal perangkat.');
+      }
+    })();
+
+    // Auto-pull & re-sync saat iPhone / Safari kembali aktif dari background
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && window.cloudSyncState.ready) {
+        subscribeToWorkspace();
+      }
+    });
+    window.addEventListener('online', () => {
+      if (window.cloudSyncState.ready) {
+        window.pushStateToCloud(true);
+      }
+    });
+  </script>
+
+  <script>
+    // ==================== DARK MODE THEME ENGINE ====================
+    const THEME_KEY = 'yellow_duck_studio_theme';
+
+    function applyTheme(theme, silent = false) {
+      const isDark = theme === 'dark';
+      document.documentElement.classList.toggle('dark', isDark);
+
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.setAttribute('content', isDark ? '#141311' : '#FEF3C7');
+
+      const ringCircle = document.getElementById('targetRingCircle');
+      if (ringCircle) ringCircle.setAttribute('stroke', isDark ? '#FBBF24' : '#F59E0B');
+
+      const sidebarLabel = document.getElementById('sidebarThemeLabel');
+      const sidebarBadge = document.getElementById('sidebarThemeBadge');
+      if (sidebarLabel) sidebarLabel.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+      if (sidebarBadge) sidebarBadge.textContent = isDark ? 'On' : 'Off';
+
+      try {
+        localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+      } catch (e) {}
+
+      if (!silent) {
+        showToast(isDark ? 'Dark Mode aktif 🌙' : 'Light Mode aktif ☀️');
+      }
+    }
+
+    function toggleTheme() {
+      const currentlyDark = document.documentElement.classList.contains('dark');
+      applyTheme(currentlyDark ? 'light' : 'dark');
+    }
+
+    (function initTheme() {
+      let saved = 'light';
+      try {
+        saved = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      } catch (e) {}
+      applyTheme(saved, true);
+    })();
+
+    // ==================== PWA MANIFEST INJECTION ====================
+    (function setupManifest() {
+      try {
+        const duckSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#FAF8F4"/><circle cx="72" cy="40" r="34" fill="#FDE68A" fill-opacity="0.65"/><ellipse cx="52" cy="70" rx="44" ry="34" fill="#FDE047" fill-opacity="0.45"/><path d="M44 41C44 28.5 54 19 66.5 19C78.2 19 87.5 27.5 88.2 38.8C88.5 43.8 86.2 48.2 82.5 51.2C89.8 54.6 94.5 61.8 94.5 70.5C94.5 86.5 79.5 97 58.5 97C36.5 97 23 85.2 23 68.5C23 61.2 25.2 54.5 28.4 51.8C30.2 50.3 32.8 51.2 35.5 53.5C38.4 55.9 42.5 56.5 46.8 55.2C48.5 54.6 49.4 52.8 48.2 51.1C45.5 47.8 44 44.5 44 41Z" fill="#FACC15" stroke="#D97706" stroke-width="1.5"/><circle cx="73.5" cy="34.5" r="3.2" fill="#292524"/><path d="M84.2 39.2C86.2 37.4 88.6 37.6 91.2 39.4C94.5 41.6 99.8 42.6 102.2 44.2C103.5 45.1 103.2 46.8 101.6 48.1C97.8 51.2 91.2 52.4 85.2 51.4C82.4 50.9 81.2 48.6 82.2 45.8C82.9 43.8 83.2 40.5 84.2 39.2Z" fill="#F97316"/></svg>`;
+        const fallbackDuckUrl = 'data:image/svg+xml;base64,' + btoa(duckSvg);
+
+        // Fallback otomatis jika file Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg tidak berada di folder yang sama
+        const testImg = new Image();
+        testImg.onerror = function() {
+          const fav = document.getElementById('dynamicFavicon');
+          const apple = document.getElementById('dynamicAppleIcon');
+          if (fav && !appState.settings.customLogo) {
+            fav.type = 'image/svg+xml';
+            fav.href = fallbackDuckUrl;
+          }
+          if (apple && !appState.settings.customLogo) {
+            apple.href = fallbackDuckUrl;
+          }
+        };
+        testImg.src = 'Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg';
+
+        const manifest = {
+          name: "Yellow Duck Studio — Video Editor Agency",
+          short_name: "Yellow Duck",
+          start_url: ".",
+          display: "standalone",
+          background_color: "#FAFAF7",
+          theme_color: "#FEF3C7",
+          icons: [
+            { src: "Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg", sizes: "512x512", type: "image/jpeg" },
+            { src: fallbackDuckUrl, sizes: "128x128", type: "image/svg+xml" }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = URL.createObjectURL(blob);
+        document.head.appendChild(link);
+      } catch (e) {
+        console.warn("Manifest setup skipped:", e);
+      }
+    })();
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('nativeInstallBtn');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    function triggerNativeInstall() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        closeInstallModal();
+      });
+    }
+
+    // ==================== STATE & DEFAULT DATA ====================
+    const STORAGE_KEY = 'yellow_duck_studio_v1';
+
+    function getOffsetDate(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    const defaultState = {
+      settings: {
+        brandName: 'Yellow Duck Studio',
+        brandSubtitle: 'Video Editor Agency',
+        editorName: 'Sam',
+        monthlyTarget: 15000000,
+        customLogo: ''
+      },
+      projects: [
+        {
+          id: 'PRJ-001',
+          name: 'YouTube Documentary: Kopi Nusantara',
+          client: 'Kopi Arus Media',
+          category: 'YouTube Long-form',
+          deadline: getOffsetDate(2),
+          prodStatus: 'Rough Cut',
+          price: 3500000,
+          dp: 1750000,
+          payStatus: 'DP Paid',
+          revUsed: 1,
+          revMax: 2,
+          extraCost: 200000,
+          canvaLink: 'https://www.canva.com',
+          driveLink: 'https://drive.google.com',
+          notes: '1 Video 15 menit + Color Grading + Thumbnail'
+        },
+        {
+          id: 'PRJ-002',
+          name: 'Bundle 6 Reels & TikTok Launch',
+          client: 'Nara Skincare ID',
+          category: 'Reels/TikTok',
+          deadline: getOffsetDate(4),
+          prodStatus: 'Revisi',
+          price: 3600000,
+          dp: 1800000,
+          payStatus: 'DP Paid',
+          revUsed: 1,
+          revMax: 2,
+          extraCost: 0,
+          canvaLink: '', // Empty by default so user can paste Canva link anytime
+          driveLink: 'https://drive.google.com',
+          notes: '6x Reels vertikal 9:16 + motion subtitle'
+        },
+        {
+          id: 'PRJ-003',
+          name: 'Digital Ads Campaign 30s',
+          client: 'Veloce E-Bike',
+          category: 'Ads/Commercial',
+          deadline: getOffsetDate(6),
+          prodStatus: 'Antre',
+          price: 4500000,
+          dp: 0,
+          payStatus: 'Belum DP',
+          revUsed: 0,
+          revMax: 3,
+          extraCost: 350000,
+          canvaLink: '', // Empty by default
+          driveLink: '',
+          notes: 'Master 16:9 + Cutdown 9:16 & 1:1'
+        },
+        {
+          id: 'PRJ-004',
+          name: 'Company Profile & Factory Tour',
+          client: 'PT Karya Logam Mandiri',
+          category: 'Company Profile',
+          deadline: getOffsetDate(-2),
+          prodStatus: 'Delivered',
+          price: 4000000,
+          dp: 4000000,
+          payStatus: 'Lunas',
+          revUsed: 2,
+          revMax: 2,
+          extraCost: 150000,
+          canvaLink: 'https://www.canva.com',
+          driveLink: 'https://drive.google.com',
+          notes: '4K Master + Voice Over Bahasa Indonesia'
+        }
+      ],
+      expenses: [
+        { id: 'EXP-1', date: getOffsetDate(-9), title: 'Adobe Creative Cloud All Apps', category: 'Software/Plugin', amount: 380000 },
+        { id: 'EXP-2', date: getOffsetDate(-5), title: 'Artlist Music & SFX Pro', category: 'Stock Asset/Music', amount: 290000 },
+        { id: 'EXP-3', date: getOffsetDate(-2), title: 'Internet Fiber & Cloud Storage 2TB', category: 'Internet/Operasional', amount: 450000 }
+      ]
+    };
+
+    let appState = loadState();
+    let currentTab = 'dashboard';
+    let currentFilter = 'ALL';
+    let searchQuery = '';
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed.projects)) state = parsed;
+          return {
+            settings: Object.assign({}, defaultState.settings, parsed.settings || {}),
+            projects: Array.isArray(parsed.projects) ? parsed.projects : defaultState.projects,
+            expenses: Array.isArray(parsed.expenses) ? parsed.expenses : defaultState.expenses
+          };
         }
       } catch (e) {
-        state = { projects: [] };
+        console.error(e);
       }
+      return JSON.parse(JSON.stringify(defaultState));
+    }
 
-      if (localStorage.getItem(THEME_KEY) === "dark") {
-        document.body.classList.add("dark");
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error(e);
+      }
+      if (typeof window.pushStateToCloud === 'function') {
+        window.pushStateToCloud(true);
       }
     }
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    // ==================== HELPERS & NAVIGATION ====================
+    function formatRupiah(num) {
+      const val = Number(num) || 0;
+      return 'Rp ' + val.toLocaleString('id-ID');
     }
 
-    function showToast(msg) {
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+    function getRemainingAmount(project) {
+      if (project.payStatus === 'Lunas') return 0;
+      const rem = (Number(project.price) || 0) - (Number(project.dp) || 0);
+      return Math.max(0, rem);
     }
 
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-      localStorage.setItem(THEME_KEY, document.body.classList.contains("dark") ? "dark" : "light");
+    function getPaidAmount(project) {
+      if (project.payStatus === 'Lunas') return Number(project.price) || 0;
+      return Number(project.dp) || 0;
     }
 
-    function formatRp(num) {
-      return "Rp " + Number(num || 0).toLocaleString("id-ID");
+    function getProjectProfit(project) {
+      return (Number(project.price) || 0) - (Number(project.extraCost) || 0);
     }
 
-    function daysUntil(dateStr) {
-      if (!dateStr) return null;
+    function formatDateIndo(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function getDaysUntil(dateStr) {
+      if (!dateStr) return 999;
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const target = new Date(dateStr + "T00:00:00");
+      const target = new Date(dateStr + 'T00:00:00');
       return Math.round((target - today) / (1000 * 60 * 60 * 24));
     }
 
-    function focusNewProject() {
-      document.getElementById("newProjectPanel").scrollIntoView({ behavior: "smooth" });
-      document.getElementById("pTitle").focus();
-    }
-
-    function addProject() {
-      const title = document.getElementById("pTitle").value.trim();
-      const client = document.getElementById("pClient").value.trim() || "Klien";
-      const price = Number(document.getElementById("pPrice").value || 0);
-      const paid = Number(document.getElementById("pPaid").value || 0);
-      const deadline = document.getElementById("pDeadline").value;
-      const status = document.getElementById("pStatus").value;
-
-      if (!title) {
-        showToast("Isi dulu nama project-nya ya!");
-        return;
+    function switchTab(tabName) {
+      currentTab = tabName;
+      document.querySelectorAll('.tab-view').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('ios-view-enter');
+      });
+      const activeView = document.getElementById('view-' + tabName);
+      if (activeView) {
+        activeView.classList.remove('hidden');
+        void activeView.offsetWidth;
+        activeView.classList.add('ios-view-enter');
       }
 
-      state.projects.unshift({
-        id: Date.now(),
-        title,
-        client,
-        price,
-        paid,
-        deadline,
-        status
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isTarget = btn.getAttribute('data-tab') === tabName;
+        if (isTarget) {
+          btn.className = 'nav-btn ios-tap w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-bold bg-duck-100 dark:bg-[#332A18] text-duck-700 dark:text-duck-300 shadow-2xs';
+        } else {
+          btn.className = 'nav-btn ios-tap w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-medium text-mutedInk dark:text-[#A8A29E] hover:bg-duck-50 dark:hover:bg-darkCard hover:text-ink dark:hover:text-[#F5F5F4]';
+        }
       });
 
-      saveState();
-      renderAll();
-
-      document.getElementById("pTitle").value = "";
-      document.getElementById("pClient").value = "";
-      document.getElementById("pPrice").value = "";
-      document.getElementById("pPaid").value = "";
-      document.getElementById("pDeadline").value = "";
-      showToast("Project tersimpan!");
-    }
-
-    function deleteProject(id) {
-      state.projects = state.projects.filter(p => p.id !== id);
-      saveState();
-      renderAll();
-      showToast("Project dihapus.");
-    }
-
-    function buildDeadlineReminder() {
-      const active = state.projects.filter(p => p.status !== "Selesai");
-      if (!active.length) {
-        return "Belum ada project aktif yang nunggu deadline. Santai dulu atau tambah project baru kalau ada!";
+      if (tabName === 'projects') {
+        requestAnimationFrame(updateSegmentedPill);
       }
 
-      const urgent = active
-        .map(p => ({ ...p, d: daysUntil(p.deadline) }))
-        .filter(p => p.d !== null && p.d <= 3)
-        .sort((a, b) => a.d - b.d);
-
-      if (urgent.length > 0) {
-        const listText = urgent.map(u => {
-          const label = u.d < 0 ? `lewat ${Math.abs(u.d)} hari` : (u.d === 0 ? "HARI INI" : `H-${u.d}`);
-          return `• "${u.title}" (${label}, status: ${u.status})`;
-        }).join(" | ");
-        return `⏰ Pengingat deadline dekat: ${listText}. Fokus beresin yang paling mepet dulu ya!`;
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        toggleMobileSidebar();
       }
+    }
 
-      const revisi = active.filter(p => p.status === "Revisi");
-      if (revisi.length > 0) {
-        return `✏️ Ada ${revisi.length} project berstatus Revisi (${revisi.map(r => r.title).join(", ")}). Cek poin revisi kliennya satu per satu ya!`;
+    // ==================== AUTO-SYNC MODAL HELPERS ====================
+    function openSyncModal() {
+      const input = document.getElementById('studioSyncCodeInput');
+      if (input && window.cloudSyncState) {
+        input.value = window.cloudSyncState.syncCode || 'yellowduck-sam';
       }
-
-      return `📌 Kamu punya ${active.length} project aktif dan belum ada yang H-3. Enak banget buat nyicil pelan-pelan!`;
+      showIosModal('syncModal');
+      lucide.createIcons();
     }
 
-    function refreshCoachDefault() {
-      const reminder = buildDeadlineReminder();
-      const tip = ideasAndBoosts[ideaIdx % ideasAndBoosts.length];
-      document.getElementById("coachMessage").textContent = `${reminder} — ${tip}`;
+    function closeSyncModal() {
+      hideIosModal('syncModal');
     }
 
-    function cycleIdeaAndBoost() {
-      ideaIdx = (ideaIdx + 1) % ideasAndBoosts.length;
-      refreshCoachDefault();
-      showToast("Ide & semangat baru ditampilkan!");
+    function applyStudioSyncCode() {
+      const input = document.getElementById('studioSyncCodeInput');
+      if (!input) return;
+      const val = input.value.trim();
+      if (!val) {
+        showToast('Masukkan Kode Studio terlebih dahulu!');
+        return;
+      }
+      if (typeof window.changeStudioSyncCode === 'function') {
+        window.changeStudioSyncCode(val);
+        input.value = window.cloudSyncState.syncCode;
+        showToast(`Terhubung ke studio: ${window.cloudSyncState.syncCode}`);
+      }
     }
 
-    function askLocalCoach() {
-      const inputEl = document.getElementById("coachInput");
-      const q = inputEl.value.trim().toLowerCase();
-      if (!q) {
-        refreshCoachDefault();
+    function copyStudioSyncCode() {
+      const input = document.getElementById('studioSyncCodeInput');
+      const code = (input && input.value.trim()) || (window.cloudSyncState && window.cloudSyncState.syncCode) || 'yellowduck-sam';
+      const temp = document.createElement('textarea');
+      temp.value = code;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand('copy');
+        showToast(`Kode "${code}" disalin! Tempel di iPhone.`);
+      } catch (e) {
+        showToast(`Kode Studio: ${code}`);
+      }
+      document.body.removeChild(temp);
+    }
+
+    function forcePushCloudSync() {
+      if (typeof window.pushStateToCloud === 'function') {
+        window.pushStateToCloud(false);
+      }
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobileOverlay');
+      if (!sidebar || !overlay) return;
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      if (menuBtn) menuBtn.setAttribute('aria-expanded', isClosed ? 'true' : 'false');
+    }
+
+    // Close the mobile navigation drawer with the Escape key
+    document.addEventListener('keydown', (e) => {
+      const sidebar = document.getElementById('sidebar');
+      if (e.key === 'Escape' && sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        toggleMobileSidebar();
+      }
+    });
+
+    function setProjectFilter(filterVal) {
+      currentFilter = filterVal;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        const isSelected = btn.getAttribute('data-filter') === filterVal;
+        if (isSelected) {
+          btn.classList.remove('font-medium', 'text-mutedInk', 'dark:text-[#A8A29E]');
+          btn.classList.add('font-bold', 'text-ink', 'dark:text-[#F5F5F4]');
+        } else {
+          btn.classList.remove('font-bold', 'text-ink', 'dark:text-[#F5F5F4]');
+          btn.classList.add('font-medium', 'text-mutedInk', 'dark:text-[#A8A29E]');
+        }
+      });
+      updateSegmentedPill();
+      renderProjectsTable();
+    }
+
+    function updateSegmentedPill() {
+      const activeBtn = document.querySelector(`.filter-pill[data-filter="${currentFilter}"]`);
+      const pill = document.getElementById('segmentedPillIndicator');
+      if (!activeBtn || !pill) return;
+      pill.style.width = activeBtn.offsetWidth + 'px';
+      pill.style.transform = `translateX(${activeBtn.offsetLeft - 4}px)`;
+    }
+
+    window.addEventListener('resize', () => {
+      if (currentTab === 'projects') updateSegmentedPill();
+    });
+
+    function handleSearch(val) {
+      searchQuery = (val || '').trim().toLowerCase();
+      renderDashboardCards();
+      renderProjectsTable();
+    }
+
+    const metricCache = {};
+    function animateMetric(elId, targetVal, formatter) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const startVal = typeof metricCache[elId] === 'number' ? metricCache[elId] : targetVal;
+      metricCache[elId] = targetVal;
+      if (startVal === targetVal) {
+        el.textContent = formatter(targetVal);
+        return;
+      }
+      const duration = 380;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(startVal + (targetVal - startVal) * eased);
+        el.textContent = formatter(current);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toastMsg');
+      if (!toast || !msgEl) return;
+      msgEl.textContent = message;
+      toast.classList.add('is-visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('is-visible');
+      }, 2400);
+    }
+
+    // ==================== CUSTOM WATERCOLOR DUCK LOGO & UPLOADER ====================
+    let pendingCustomLogo = null;
+
+    function getWatercolorDuckSvg(uid, sizeClass = 'w-11 h-11') {
+      return `
+        <svg class="${sizeClass}" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="wash1_${uid}" cx="58%" cy="34%" r="36%">
+              <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.72"/>
+              <stop offset="70%" stop-color="#FEF3C7" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#FEF3C7" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="wash2_${uid}" cx="44%" cy="62%" r="44%">
+              <stop offset="0%" stop-color="#FDE047" stop-opacity="0.48"/>
+              <stop offset="75%" stop-color="#FEF08A" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#FEF08A" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="body_${uid}" cx="45%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#FDE68A"/>
+              <stop offset="55%" stop-color="#FACC15"/>
+              <stop offset="100%" stop-color="#EAB308"/>
+            </radialGradient>
+            <linearGradient id="beak_${uid}" x1="0%" y1="0%" x2="100%" y2="80%">
+              <stop offset="0%" stop-color="#FB923C"/>
+              <stop offset="100%" stop-color="#EA580C"/>
+            </linearGradient>
+          </defs>
+          <circle cx="72" cy="40" r="34" fill="url(#wash1_${uid})"/>
+          <ellipse cx="52" cy="70" rx="44" ry="34" fill="url(#wash2_${uid})"/>
+          <path d="M44 41C44 28.5 54 19 66.5 19C78.2 19 87.5 27.5 88.2 38.8C88.5 43.8 86.2 48.2 82.5 51.2C89.8 54.6 94.5 61.8 94.5 70.5C94.5 86.5 79.5 97 58.5 97C36.5 97 23 85.2 23 68.5C23 61.2 25.2 54.5 28.4 51.8C30.2 50.3 32.8 51.2 35.5 53.5C38.4 55.9 42.5 56.5 46.8 55.2C48.5 54.6 49.4 52.8 48.2 51.1C45.5 47.8 44 44.5 44 41Z" fill="url(#body_${uid})" stroke="#D97706" stroke-opacity="0.35" stroke-width="1.4"/>
+          <path d="M36 67C39 61.5 47.5 60.5 56.5 62.5C63.5 64 68.5 68 67.5 72.5C66.5 77 58.5 79.5 49 78.5C41.5 77.6 34.2 72.8 36 67Z" fill="#F59E0B" fill-opacity="0.22" stroke="#D97706" stroke-opacity="0.32" stroke-width="1.2"/>
+          <circle cx="73.5" cy="34.5" r="3.1" fill="#292524"/>
+          <circle cx="72.6" cy="33.5" r="0.85" fill="#FFFBEB"/>
+          <path d="M84.2 39.2C86.2 37.4 88.6 37.6 91.2 39.4C94.5 41.6 99.8 42.6 102.2 44.2C103.5 45.1 103.2 46.8 101.6 48.1C97.8 51.2 91.2 52.4 85.2 51.4C82.4 50.9 81.2 48.6 82.2 45.8C82.9 43.8 83.2 40.5 84.2 39.2Z" fill="url(#beak_${uid})" stroke="#C2410C" stroke-opacity="0.4" stroke-width="1.1"/>
+        </svg>
+      `;
+    }
+
+    function renderBrandLogo() {
+      const logoSrc = appState.settings.customLogo;
+      const sideEl = document.getElementById('sidebarLogoContainer');
+      const mobEl = document.getElementById('mobileLogoContainer');
+      const avatarBtn = document.getElementById('headerAvatarBtn');
+      const favEl = document.getElementById('dynamicFavicon');
+      const appleEl = document.getElementById('dynamicAppleIcon');
+
+      if (logoSrc) {
+        if (sideEl) sideEl.innerHTML = `<img src="${logoSrc}" alt="Agency Logo" class="w-full h-full object-cover" />`;
+        if (mobEl) mobEl.innerHTML = `<img src="${logoSrc}" alt="Agency Logo" class="w-full h-full object-cover" />`;
+        if (avatarBtn) avatarBtn.innerHTML = `<img src="${logoSrc}" alt="Agency Logo" class="w-full h-full object-cover" />`;
+        if (favEl) { favEl.type = 'image/png'; favEl.href = logoSrc; }
+        if (appleEl) { appleEl.href = logoSrc; }
+      } else {
+        if (sideEl) sideEl.innerHTML = getWatercolorDuckSvg('side_dyn', 'w-11 h-11');
+        if (mobEl) mobEl.innerHTML = getWatercolorDuckSvg('mob_dyn', 'w-9 h-9');
+        if (avatarBtn) avatarBtn.innerHTML = getWatercolorDuckSvg('hdr_dyn', 'w-9 h-9');
+      }
+    }
+
+    function updateSettingsLogoPreview() {
+      const previewEl = document.getElementById('settingsLogoPreview');
+      const resetBtn = document.getElementById('resetLogoBtn');
+      if (!previewEl) return;
+
+      if (pendingCustomLogo) {
+        previewEl.innerHTML = `<img src="${pendingCustomLogo}" alt="Preview Logo" class="w-full h-full object-cover" />`;
+        if (resetBtn) resetBtn.classList.remove('hidden');
+      } else {
+        previewEl.innerHTML = getWatercolorDuckSvg('set_prev', 'w-12 h-12');
+        if (resetBtn) resetBtn.classList.add('hidden');
+      }
+    }
+
+    function handleLogoFileUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const maxDim = 256;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          pendingCustomLogo = canvas.toDataURL('image/png', 0.9);
+          updateSettingsLogoPreview();
+          showToast('Preview logo siap disimpan!');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetCustomLogo() {
+      pendingCustomLogo = '';
+      const fileInput = document.getElementById('sLogoFileInput');
+      if (fileInput) fileInput.value = '';
+      updateSettingsLogoPreview();
+    }
+
+    // ==================== MAIN RENDER ENGINE ====================
+    function renderAll() {
+      updateGreeting();
+      renderBrandLogo();
+
+      const brandName = appState.settings.brandName || 'Yellow Duck Studio';
+      const brandSubtitle = appState.settings.brandSubtitle || 'Video Editor Agency';
+      const editorName = appState.settings.editorName || 'Sam';
+
+      document.title = `${brandName} — ${brandSubtitle}`;
+      document.getElementById('sidebarBrandName').textContent = brandName;
+      document.getElementById('sidebarBrandSubtitle').textContent = brandSubtitle;
+      document.getElementById('mobileBrandName').textContent = brandName;
+      document.getElementById('mobileBrandSubtitle').textContent = brandSubtitle;
+      document.getElementById('editorNameDisplay').textContent = editorName;
+      document.getElementById('quoteAgencyTag').textContent = brandName;
+      document.getElementById('installModalBrandName').textContent = brandName;
+      document.getElementById('heroAgencyPill').innerHTML = `<span class="w-2 h-2 rounded-full bg-duck-500"></span>${brandName.toUpperCase()} • PRODUCTION DESK`;
+      document.getElementById('navProjectCount').textContent = appState.projects.length;
+
+      // Calculations
+      const totalGross = appState.projects.reduce((s, p) => s + (Number(p.price) || 0), 0);
+      const totalPaid = appState.projects.reduce((s, p) => s + getPaidAmount(p), 0);
+      const totalPending = appState.projects.reduce((s, p) => s + getRemainingAmount(p), 0);
+      const totalProjectCosts = appState.projects.reduce((s, p) => s + (Number(p.extraCost) || 0), 0);
+      const totalOpExpenses = appState.expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+      const netProfit = totalGross - totalProjectCosts - totalOpExpenses;
+
+      const activeProjects = appState.projects.filter(p => p.prodStatus !== 'Delivered');
+      const unpaidInvoicesCount = appState.projects.filter(p => getRemainingAmount(p) > 0).length;
+      const target = Number(appState.settings.monthlyTarget) || 15000000;
+
+      // Hero Banner
+      const avgRate = appState.projects.length ? Math.round(totalGross / appState.projects.length) : 0;
+      animateMetric('avgProjectRate', avgRate, formatRupiah);
+      document.getElementById('heroHeadline').textContent = activeProjects.length > 0
+        ? `${activeProjects.length} project aktif sedang berjalan — cek prioritas di bawah.`
+        : `Semua project selesai! Siap menerima order video baru.`;
+      renderHeroPriorityAlerts();
+
+      // 4 Pastel KPI Cards
+      animateMetric('kpiGrossRevenue', totalGross, formatRupiah);
+      const targetPct = Math.min(100, Math.round((totalGross / target) * 100));
+      document.getElementById('kpiTotalProjectsLabel').textContent = `${appState.projects.length} project`;
+      document.getElementById('kpiTargetShare').textContent = targetPct + '%';
+      document.getElementById('barGrossShare').style.width = targetPct + '%';
+
+      animateMetric('kpiPaidAmount', totalPaid, formatRupiah);
+      const paidPct = totalGross > 0 ? Math.round((totalPaid / totalGross) * 100) : 0;
+      document.getElementById('kpiPaidPercent').textContent = paidPct + '%';
+      document.getElementById('barPaidPercent').style.width = Math.min(100, paidPct) + '%';
+
+      animateMetric('kpiPendingAmount', totalPending, formatRupiah);
+      const pendingPct = totalGross > 0 ? Math.round((totalPending / totalGross) * 100) : 0;
+      document.getElementById('kpiUnpaidCount').textContent = `${unpaidInvoicesCount} invoice`;
+      document.getElementById('kpiPendingPercent').textContent = pendingPct + '%';
+      document.getElementById('barPendingPercent').style.width = Math.min(100, pendingPct) + '%';
+
+      animateMetric('kpiNetProfit', netProfit, formatRupiah);
+      const marginPct = totalGross > 0 ? Math.max(0, Math.round((netProfit / totalGross) * 100)) : 0;
+      document.getElementById('kpiProfitMargin').textContent = marginPct + '%';
+      document.getElementById('barProfitMargin').style.width = Math.min(100, marginPct) + '%';
+
+      // Right Panel: Circular Target Gauge
+      const circumference = 251.2;
+      const offset = circumference - (targetPct / 100) * circumference;
+      document.getElementById('targetRingCircle').style.strokeDashoffset = offset;
+      animateMetric('targetRingText', targetPct, v => v + '%');
+      animateMetric('targetCurrentLabel', totalGross, formatRupiah);
+      document.getElementById('targetGoalLabel').textContent = formatRupiah(target);
+      document.getElementById('targetStatusTitle').textContent = targetPct >= 100 ? 'Target bulanan tercapai! 🎉' : 'On track bulan ini!';
+
+      // Render sub-views
+      renderDashboardCards();
+      renderUpcomingDeadlines();
+      renderProjectsTable();
+      renderExpensesTable(totalOpExpenses);
+
+      lucide.createIcons();
+    }
+
+    function updateGreeting() {
+      const hr = new Date().getHours();
+      let greet = 'Selamat Malam,';
+      if (hr >= 4 && hr < 11) greet = 'Selamat Pagi,';
+      else if (hr >= 11 && hr < 15) greet = 'Selamat Siang,';
+      else if (hr >= 15 && hr < 19) greet = 'Selamat Sore,';
+      const el = document.getElementById('greetingSubtitle');
+      if (el) el.textContent = greet;
+    }
+
+    function getFilteredProjects() {
+      return appState.projects.filter(p => {
+        if (searchQuery) {
+          const match = p.name.toLowerCase().includes(searchQuery) ||
+                        p.client.toLowerCase().includes(searchQuery) ||
+                        p.id.toLowerCase().includes(searchQuery);
+          if (!match) return false;
+        }
+        if (currentFilter === 'ACTIVE') return p.prodStatus !== 'Delivered';
+        if (currentFilter === 'REVISI') return p.prodStatus === 'Revisi';
+        if (currentFilter === 'UNPAID') return getRemainingAmount(p) > 0;
+        if (currentFilter === 'DONE') return p.prodStatus === 'Delivered';
+        return true;
+      });
+    }
+
+    function getStatusBadgeClass(status) {
+      switch (status) {
+        case 'Delivered': return 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300';
+        case 'Final': return 'bg-duck-100 dark:bg-[#332A18] text-duck-700 dark:text-duck-300';
+        case 'Revisi': return 'bg-pastelPeach-100 dark:bg-[#38271F] text-orange-700 dark:text-orange-300';
+        case 'Rough Cut': return 'bg-pastelBlue-100 dark:bg-[#1C2D3E] text-blue-700 dark:text-sky-300';
+        default: return 'bg-stone-100 dark:bg-[#26231D] text-mutedInk dark:text-[#A8A29E]';
+      }
+    }
+
+    function renderDashboardCards() {
+      const grid = document.getElementById('dashboardProjectsGrid');
+      if (!grid) return;
+      const list = appState.projects.filter(p => {
+        if (!searchQuery) return true;
+        return p.name.toLowerCase().includes(searchQuery) || p.client.toLowerCase().includes(searchQuery);
+      }).slice(0, 4);
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white dark:bg-darkCard rounded-2xl p-6 text-center text-xs text-mutedInk dark:text-[#A8A29E] border border-stone-200/80 dark:border-darkBorder">Belum ada project yang cocok. Klik <strong>+ Project Baru</strong> untuk menambah order.</div>`;
         return;
       }
 
-      let reply = "";
-      if (q.includes("deadline") || q.includes("ingetin") || q.includes("tenggat")) {
-        reply = buildDeadlineReminder();
-      } else if (q.includes("capek") || q.includes("semangat") || q.includes("males") || q.includes("lelah")) {
-        reply = "💛 Tarik napas dulu ya! Nggak harus selesai semua sekaligus. Kerjain 1 bagian kecil aja selama 15 menit, abis itu boleh istirahat sebentar. Kamu pasti bisa!";
-      } else if (q.includes("ide") || q.includes("hook") || q.includes("edit")) {
-        ideaIdx = (ideaIdx + 1) % ideasAndBoosts.length;
-        reply = ideasAndBoosts[ideaIdx];
-      } else {
-        reply = `${buildDeadlineReminder()} ${ideasAndBoosts[ideaIdx % ideasAndBoosts.length]}`;
-      }
+      grid.innerHTML = list.map((p) => {
+        const realIdx = appState.projects.findIndex(item => item.id === p.id);
+        const rem = getRemainingAmount(p);
+        const hasCanva = p.canvaLink && p.canvaLink.trim() !== '';
 
-      document.getElementById("coachMessage").textContent = reply;
-      inputEl.value = "";
-    }
+        return `
+          <div class="ios-card bg-white dark:bg-darkCard border border-stone-200/80 dark:border-darkBorder rounded-[24px] p-4 shadow-card flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <span class="text-[11px] font-bold text-duck-600 dark:text-duck-400 uppercase tracking-wider">${escapeHtml(p.category)}</span>
+                  <h4 class="font-bold text-sm text-ink dark:text-[#F5F5F4] mt-0.5 line-clamp-1">${escapeHtml(p.name)}</h4>
+                  <p class="text-xs text-mutedInk dark:text-[#A8A29E]">${escapeHtml(p.client)} • <span class="font-semibold text-ink/80 dark:text-[#D6D3D1]">DL: ${formatDateIndo(p.deadline)}</span></p>
+                </div>
+                <button onclick="cycleProjectStatus(${realIdx})" title="Tap untuk ganti status cepat" class="ios-tap px-2.5 py-1 rounded-full text-[11px] font-bold shrink-0 cursor-pointer ${getStatusBadgeClass(p.prodStatus)}">
+                  ${escapeHtml(p.prodStatus)}
+                </button>
+              </div>
 
-    function copySummaryAndOpenChatGPT() {
-      const lines = [
-        "Halo ChatGPT, ini ringkasan project Yellow Duck Studio-ku hari ini. Tolong kasih saran prioritas, ide kreatif, dan semangat ya:",
-        ""
-      ];
-      if (!state.projects.length) {
-        lines.push("- Belum ada project aktif tercatat.");
-      } else {
-        state.projects.forEach(p => {
-          const d = daysUntil(p.deadline);
-          const dText = d === null ? "tanpa tanggal" : (d < 0 ? `lewat ${Math.abs(d)} hari` : `H-${d}`);
-          lines.push(`- ${p.title} | Klien: ${p.client} | Status: ${p.status} | Deadline: ${p.deadline || "-"} (${dText}) | Tarif: ${formatRp(p.price)}, DP: ${formatRp(p.paid)}`);
-        });
-      }
-      const text = lines.join("\n");
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).catch(() => {});
-      }
-      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
-      showToast("Ringkasan disalin! Tinggal Paste (Ctrl+V) di ChatGPT.");
-    }
-
-    function exportData() {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "yellow-duck-studio-backup.json";
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast("File backup JSON diunduh!");
-    }
-
-    function renderAll() {
-      const total = state.projects.reduce((s, p) => s + Number(p.price || 0), 0);
-      const paid = state.projects.reduce((s, p) => s + Number(p.paid || 0), 0);
-      const remaining = Math.max(0, total - paid);
-      const activeCount = state.projects.filter(p => p.status !== "Selesai").length;
-
-      document.getElementById("kpiTotal").textContent = formatRp(total);
-      document.getElementById("kpiPaid").textContent = formatRp(paid);
-      document.getElementById("kpiRemaining").textContent = formatRp(remaining);
-      document.getElementById("kpiCount").textContent = `${activeCount} Project Aktif`;
-      document.getElementById("heroTitle").textContent = activeCount > 0
-        ? `${activeCount} project aktif lagi jalan — tetap santai tapi terarah!`
-        : "Belum ada project aktif — siap mulai hari baru!";
-
-      const listEl = document.getElementById("projectList");
-      if (!state.projects.length) {
-        listEl.innerHTML = `<p style="color:var(--muted);font-size:0.9rem;">Belum ada project. Tambahkan lewat form di atas ya!</p>`;
-      } else {
-        listEl.innerHTML = state.projects.map(p => {
-          const d = daysUntil(p.deadline);
-          const isUrgent = p.status !== "Selesai" && d !== null && d <= 3;
-          const badgeClass = p.status === "Selesai" ? "badge done" : (isUrgent ? "badge urgent" : "badge");
-          const dLabel = p.deadline ? `Deadline: ${p.deadline}` : "Tanpa deadline";
-          return `
-            <div class="project-item">
-              <div>
-                <strong>${escapeHtml(p.title)}</strong> <span style="color:var(--muted);font-size:0.85rem;">• ${escapeHtml(p.client)}</span>
-                <div style="font-size:0.84rem;color:var(--muted);margin-top:4px;">
-                  ${dLabel} • Tarif: ${formatRp(p.price)} • DP: ${formatRp(p.paid)}
+              <div class="mt-3.5 pt-3 border-t border-stone-100 dark:border-darkBorder flex items-center justify-between text-xs">
+                <div>
+                  <span class="text-stone-400 dark:text-[#78716C] block text-[11px]">Tarif Project</span>
+                  <span class="font-extrabold text-ink dark:text-[#F5F5F4] tabular-nums">${formatRupiah(p.price)}</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-stone-400 dark:text-[#78716C] block text-[11px]">Sisa Tagihan</span>
+                  <span class="font-bold tabular-nums ${rem > 0 ? 'text-orange-600 dark:text-orange-300' : 'text-emerald-600 dark:text-emerald-300'}">${rem > 0 ? formatRupiah(rem) : 'Lunas'}</span>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="${badgeClass}">${escapeHtml(p.status)}</span>
-                <button class="btn-danger" onclick="deleteProject(${p.id})">Hapus</button>
+            </div>
+
+            <div class="mt-3.5 flex max-lg:flex-wrap items-center justify-between gap-2">
+              ${hasCanva 
+                ? `<a href="${escapeHtml(p.canvaLink)}" target="_blank" rel="noopener noreferrer" class="ios-tap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-pastelBlue-100 dark:bg-[#1C2D3E] hover:bg-blue-200/70 dark:hover:bg-[#243A50] text-blue-700 dark:text-sky-300 text-xs font-bold">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    Canva Brief
+                   </a>`
+                : `<button onclick="openProjectModal(${realIdx})" class="ios-tap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-dashed border-stone-300 dark:border-darkBorder hover:border-duck-500 dark:hover:border-duck-400 text-mutedInk dark:text-[#A8A29E] hover:text-duck-700 dark:hover:text-duck-300 text-xs font-semibold">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    Tempel Link Canva
+                   </button>`
+              }
+
+              <div class="flex items-center gap-1.5">
+                <div class="inline-flex items-center gap-1.5 bg-sidebarBg dark:bg-darkBg px-2 py-1 rounded-xl text-[11px] font-bold text-mutedInk dark:text-[#A8A29E] border border-stone-200/60 dark:border-darkBorder">
+                  <button onclick="incrementRevision(${realIdx}, -1)" class="ios-tap w-4 h-4 rounded-md hover:bg-white dark:hover:bg-darkCard flex items-center justify-center text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">-</button>
+                  <span class="tabular-nums ${p.revUsed > p.revMax ? 'text-red-600 dark:text-red-400 font-extrabold' : 'text-ink dark:text-[#F5F5F4]'}">Rev ${p.revUsed}/${p.revMax}</span>
+                  <button onclick="incrementRevision(${realIdx}, 1)" class="ios-tap w-4 h-4 rounded-md hover:bg-white dark:hover:bg-darkCard flex items-center justify-center text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">+</button>
+                </div>
+                <button onclick="openProjectModal(${realIdx})" class="ios-tap p-1.5 rounded-xl bg-sidebarBg dark:bg-darkBg hover:bg-duck-100 dark:hover:bg-[#332A18] text-mutedInk dark:text-[#A8A29E] hover:text-duck-700 dark:hover:text-duck-300" title="Edit Project">
+                  <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                </button>
               </div>
             </div>
-          `;
-        }).join("");
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderUpcomingDeadlines() {
+      const container = document.getElementById('upcomingDeadlinesList');
+      if (!container) return;
+      const upcoming = appState.projects
+        .filter(p => p.prodStatus !== 'Delivered')
+        .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+        .slice(0, 4);
+
+      if (upcoming.length === 0) {
+        container.innerHTML = `<p class="text-xs text-mutedInk dark:text-[#A8A29E] py-2">Tidak ada deadline aktif saat ini.</p>`;
+        return;
       }
 
-      refreshCoachDefault();
+      container.innerHTML = upcoming.map((p) => {
+        const realIdx = appState.projects.findIndex(item => item.id === p.id);
+        const days = getDaysUntil(p.deadline);
+        let badgeHtml = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-duck-100 dark:bg-[#332A18] text-duck-700 dark:text-duck-300">${days}h lagi</span>`;
+        if (days < 0) badgeHtml = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950/70 text-red-700 dark:text-red-300">Lewat</span>`;
+        else if (days <= 2) badgeHtml = `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-pastelPeach-100 dark:bg-[#38271F] text-orange-700 dark:text-orange-300">${days === 0 ? 'Hari ini' : days + 'h lagi'}</span>`;
+
+        return `
+          <div onclick="openProjectModal(${realIdx})" class="ios-tap cursor-pointer flex items-start justify-between gap-2 p-1.5 rounded-xl hover:bg-duck-50/70 dark:hover:bg-[#26231D]">
+            <div class="min-w-0 flex-1">
+              <p class="text-xs font-bold text-ink dark:text-[#F5F5F4] truncate">${escapeHtml(p.name)}</p>
+              <p class="text-[11px] text-mutedInk dark:text-[#A8A29E] truncate">${escapeHtml(p.client)} • ${formatDateIndo(p.deadline)}</p>
+            </div>
+            <div class="shrink-0 mt-0.5">${badgeHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderProjectsTable() {
+      const tbody = document.getElementById('projectsTableBody');
+      if (!tbody) return;
+      const projects = getFilteredProjects();
+
+      if (projects.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-xs text-mutedInk dark:text-[#A8A29E]">Tidak ada data project pada filter ini.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = projects.map(p => {
+        const realIdx = appState.projects.findIndex(item => item.id === p.id);
+        const rem = getRemainingAmount(p);
+        const profit = getProjectProfit(p);
+        const hasCanva = p.canvaLink && p.canvaLink.trim() !== '';
+
+        return `
+          <tr class="hover:bg-duck-50/50 dark:hover:bg-[#24211B] transition">
+            <td class="py-3.5 px-4">
+              <span class="text-[11px] font-bold text-stone-400 dark:text-[#78716C]">${escapeHtml(p.id)}</span>
+              <p class="font-bold text-ink dark:text-[#F5F5F4] text-sm">${escapeHtml(p.name)}</p>
+              <p class="text-xs text-mutedInk dark:text-[#A8A29E]">${escapeHtml(p.client)}</p>
+            </td>
+            <td class="py-3.5 px-3">
+              <span class="px-2.5 py-1 rounded-lg bg-sidebarBg dark:bg-darkBg text-ink/80 dark:text-[#D6D3D1] text-xs font-semibold whitespace-nowrap">${escapeHtml(p.category)}</span>
+            </td>
+            <td class="py-3.5 px-3 text-xs font-semibold text-ink/80 dark:text-[#D6D3D1] whitespace-nowrap">
+              ${formatDateIndo(p.deadline)}
+            </td>
+            <td class="py-3.5 px-3">
+              <select onchange="quickUpdateStatus(${realIdx}, this.value)" class="px-2.5 py-1 rounded-full text-xs font-bold border-0 cursor-pointer focus:outline-none ${getStatusBadgeClass(p.prodStatus)}">
+                ${['Antre', 'Rough Cut', 'Revisi', 'Final', 'Delivered'].map(st => 
+                  `<option value="${st}" class="bg-white dark:bg-darkCard text-ink dark:text-[#F5F5F4]" ${p.prodStatus === st ? 'selected' : ''}>${st}</option>`
+                ).join('')}
+              </select>
+            </td>
+            <td class="py-3.5 px-3">
+              ${hasCanva 
+                ? `<div class="flex items-center gap-1.5">
+                    <a href="${escapeHtml(p.canvaLink)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-pastelBlue-100 dark:bg-[#1C2D3E] text-blue-700 dark:text-sky-300 hover:bg-blue-200/70 dark:hover:bg-[#243A50] text-xs font-bold transition whitespace-nowrap">
+                      <i data-lucide="external-link" class="w-3 h-3"></i> Buka Canva
+                    </a>
+                    <button onclick="openProjectModal(${realIdx})" class="text-stone-400 dark:text-[#78716C] hover:text-ink dark:hover:text-[#F5F5F4]" title="Ubah link">
+                      <i data-lucide="edit-2" class="w-3 h-3"></i>
+                    </button>
+                   </div>`
+                : `<button onclick="openProjectModal(${realIdx})" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-stone-300 dark:border-darkBorder hover:border-duck-500 dark:hover:border-duck-400 text-mutedInk dark:text-[#A8A29E] hover:text-duck-700 dark:hover:text-duck-300 text-xs font-medium transition whitespace-nowrap">
+                    + Link Canva
+                   </button>`
+              }
+            </td>
+            <td class="py-3.5 px-3 whitespace-nowrap">
+              <div class="inline-flex items-center gap-1.5 bg-sidebarBg dark:bg-darkBg px-2 py-1 rounded-lg text-xs font-bold">
+                <button onclick="incrementRevision(${realIdx}, -1)" class="text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">-</button>
+                <span class="${p.revUsed > p.revMax ? 'text-red-600 dark:text-red-400 font-extrabold' : 'text-ink dark:text-[#F5F5F4]'}">${p.revUsed}/${p.revMax}</span>
+                <button onclick="incrementRevision(${realIdx}, 1)" class="text-mutedInk dark:text-[#A8A29E] hover:text-ink dark:hover:text-[#F5F5F4]">+</button>
+              </div>
+            </td>
+            <td class="py-3.5 px-3 whitespace-nowrap">
+              <p class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] tabular-nums">${formatRupiah(p.price)}</p>
+              <p class="text-[11px] text-mutedInk dark:text-[#A8A29E] tabular-nums">DP: ${formatRupiah(getPaidAmount(p))}</p>
+            </td>
+            <td class="py-3.5 px-3 whitespace-nowrap">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold inline-block mb-1 ${
+                p.payStatus === 'Lunas' ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300' :
+                p.payStatus === 'DP Paid' ? 'bg-pastelBlue-100 dark:bg-[#1C2D3E] text-blue-700 dark:text-sky-300' :
+                'bg-pastelPeach-100 dark:bg-[#38271F] text-orange-700 dark:text-orange-300'
+              }">${escapeHtml(p.payStatus)}</span>
+              <p class="text-[11px] tabular-nums ${rem > 0 ? 'text-orange-600 dark:text-orange-300 font-bold' : 'text-stone-400 dark:text-[#78716C]'}">
+                ${rem > 0 ? 'Sisa: ' + formatRupiah(rem) : 'Terbayar'}
+              </p>
+            </td>
+            <td class="py-3.5 px-3 whitespace-nowrap">
+              <span class="text-xs font-extrabold text-duck-700 dark:text-duck-300 tabular-nums">${formatRupiah(profit)}</span>
+            </td>
+            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+              <button onclick="openProjectModal(${realIdx})" class="p-1.5 rounded-lg hover:bg-duck-100 dark:hover:bg-[#332A18] text-mutedInk dark:text-[#A8A29E] hover:text-duck-700 dark:hover:text-duck-300 transition" title="Edit">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </button>
+              <button onclick="deleteProject(${realIdx})" class="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/60 text-stone-400 dark:text-[#78716C] hover:text-red-600 dark:hover:text-red-400 transition" title="Hapus">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderExpensesTable(totalOpExpenses) {
+      const totalHeader = document.getElementById('expensesTotalHeader');
+      if (totalHeader) totalHeader.textContent = formatRupiah(totalOpExpenses);
+      const tbody = document.getElementById('expensesTableBody');
+      if (!tbody) return;
+
+      if (appState.expenses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-xs text-mutedInk dark:text-[#A8A29E]">Belum ada catatan biaya operasional studio.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = appState.expenses.map((exp, idx) => `
+        <tr class="hover:bg-duck-50/40 dark:hover:bg-[#24211B] transition">
+          <td class="py-3.5 px-5 text-xs text-mutedInk dark:text-[#A8A29E]">${formatDateIndo(exp.date)}</td>
+          <td class="py-3.5 px-4 font-bold text-ink dark:text-[#F5F5F4] text-sm">${escapeHtml(exp.title)}</td>
+          <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-lg bg-sidebarBg dark:bg-darkBg text-xs text-ink/80 dark:text-[#D6D3D1] font-medium">${escapeHtml(exp.category)}</span></td>
+          <td class="py-3.5 px-4 font-extrabold text-orange-700 dark:text-orange-300 text-xs tabular-nums">${formatRupiah(exp.amount)}</td>
+          <td class="py-3.5 px-5 text-right">
+            <button onclick="deleteExpense(${idx})" class="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/60 text-stone-400 dark:text-[#78716C] hover:text-red-600 dark:hover:text-red-400 transition">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
     }
 
     function escapeHtml(str) {
-      return String(str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
-    loadState();
+    function renderHeroPriorityAlerts() {
+      const boxEl = document.getElementById('heroPriorityBox');
+      const headerEl = document.getElementById('heroPriorityHeader');
+      const countBadgeEl = document.getElementById('heroPriorityCountBadge');
+      const listEl = document.getElementById('heroPriorityList');
+      if (!boxEl || !headerEl || !countBadgeEl || !listEl) return;
+
+      const alerts = [];
+
+      appState.projects.forEach((p, realIdx) => {
+        if (p.prodStatus === 'Delivered') return;
+
+        const days = getDaysUntil(p.deadline);
+        const isOverdue = days < 0;
+        const isTightDeadline = days >= 0 && days <= 3;
+        const isOverRev = (Number(p.revUsed) || 0) > (Number(p.revMax) || 0);
+        const isInRevision = p.prodStatus === 'Revisi';
+        const isInProgress = ['Rough Cut', 'Revisi', 'Final'].includes(p.prodStatus);
+        const isUnpaidDp = p.payStatus === 'Belum DP' && (isInProgress || isOverdue || isTightDeadline);
+        const isMissingCanva = (!p.canvaLink || p.canvaLink.trim() === '') && (isInProgress || isOverdue || isTightDeadline);
+
+        let severity = 99;
+        let tagText = '';
+        let pillClass = '';
+        let dotClass = '';
+
+        if (isOverdue) {
+          severity = 1;
+          tagText = `LEWAT ${Math.abs(days)} HARI`;
+          pillClass = 'bg-red-100/95 dark:bg-red-950/80 text-red-800 dark:text-red-200 border-red-300/80 dark:border-red-800/70 hover:bg-red-200/80 dark:hover:bg-red-900/70';
+          dotClass = 'bg-red-600 dark:bg-red-400';
+        } else if (isTightDeadline) {
+          severity = days === 0 ? 2 : 3;
+          tagText = days === 0 ? 'HARI INI' : (days === 1 ? 'BESOK / H-1' : `H-${days}`);
+          pillClass = 'bg-orange-100/95 dark:bg-[#3A251B] text-orange-800 dark:text-orange-200 border-orange-300/80 dark:border-orange-700/60 hover:bg-orange-200/80 dark:hover:bg-[#492E21]';
+          dotClass = 'bg-orange-500 dark:bg-orange-300';
+        } else if (isOverRev || isInRevision) {
+          severity = 4;
+          tagText = isOverRev ? `REVISI OVER (${p.revUsed}/${p.revMax})` : `REVISI (${p.revUsed}/${p.revMax})`;
+          pillClass = 'bg-amber-100/95 dark:bg-[#382D16] text-amber-900 dark:text-amber-200 border-amber-300/80 dark:border-amber-600/50 hover:bg-amber-200/80 dark:hover:bg-[#47391C]';
+          dotClass = 'bg-amber-500 dark:bg-amber-300';
+        } else if (isUnpaidDp || isMissingCanva) {
+          severity = 5;
+          tagText = isUnpaidDp ? 'BELUM DP' : 'NO CANVA BRIEF';
+          pillClass = 'bg-sky-100/90 dark:bg-[#1A2B3B] text-sky-900 dark:text-sky-200 border-sky-300/70 dark:border-sky-700/60 hover:bg-sky-200/70 dark:hover:bg-[#22374C]';
+          dotClass = 'bg-sky-500 dark:bg-sky-300';
+        } else {
+          return;
+        }
+
+        const extraNotes = [];
+        if (!isOverdue && !isTightDeadline && days <= 7) extraNotes.push(`H-${days}`);
+        if ((isOverdue || isTightDeadline) && (isOverRev || isInRevision)) extraNotes.push(`Rev ${p.revUsed}/${p.revMax}`);
+        if ((isOverdue || isTightDeadline || isInRevision) && isUnpaidDp) extraNotes.push('Belum DP');
+        if ((isOverdue || isTightDeadline || isInRevision) && isMissingCanva) extraNotes.push('Link Canva kosong');
+
+        alerts.push({
+          realIdx,
+          severity,
+          days,
+          name: p.name,
+          client: p.client,
+          tagText,
+          extraText: extraNotes.length ? ` • ${extraNotes.join(' • ')}` : '',
+          pillClass,
+          dotClass
+        });
+      });
+
+      alerts.sort((a, b) => a.severity - b.severity || a.days - b.days);
+
+      if (alerts.length === 0) {
+        boxEl.className = 'mt-3.5 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/45 backdrop-blur-md border border-emerald-300/60 dark:border-emerald-700/40 p-3.5 shadow-2xs';
+        headerEl.className = 'inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 dark:text-emerald-300';
+        headerEl.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400"></i> Status Prioritas Studio`;
+        countBadgeEl.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/70 text-emerald-800 dark:text-emerald-200';
+        countBadgeEl.textContent = 'Aman';
+        listEl.innerHTML = `<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-200">Semua aman terkendali, belum ada deadline mepet!</p>`;
+        return;
+      }
+
+      boxEl.className = 'mt-3.5 rounded-2xl bg-white/85 dark:bg-darkCard/85 backdrop-blur-md border border-amber-300/70 dark:border-amber-500/25 p-3.5 shadow-2xs';
+      headerEl.className = 'inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-duck-300';
+      headerEl.innerHTML = `<i data-lucide="bell-ring" class="w-3.5 h-3.5 text-amber-600 dark:text-duck-400"></i> Perhatian Khusus & Pengingat Deadline`;
+      countBadgeEl.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-[#38271F] text-orange-800 dark:text-orange-200 tabular-nums';
+      countBadgeEl.textContent = `${alerts.length} perlu dicek`;
+
+      listEl.innerHTML = alerts.map(item => `
+        <button type="button" onclick="openProjectModal(${item.realIdx})" title="Klik untuk buka & edit project ini" class="ios-tap inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-left text-xs font-semibold transition-colors max-w-full ${item.pillClass}">
+          <span class="w-2 h-2 rounded-full shrink-0 ${item.dotClass}"></span>
+          <span class="font-extrabold tracking-tight shrink-0">[${escapeHtml(item.tagText)}]</span>
+          <span class="truncate font-bold">${escapeHtml(item.name)}</span>
+          <span class="opacity-80 truncate hidden sm:inline">(${escapeHtml(item.client)}${escapeHtml(item.extraText)})</span>
+        </button>
+      `).join('');
+    }
+
+    // ==================== QUICK INLINE ACTIONS ====================
+    function cycleProjectStatus(idx) {
+      const stages = ['Antre', 'Rough Cut', 'Revisi', 'Final', 'Delivered'];
+      const current = appState.projects[idx].prodStatus;
+      const next = stages[(stages.indexOf(current) + 1) % stages.length];
+      quickUpdateStatus(idx, next);
+    }
+
+    function quickUpdateStatus(idx, newStatus) {
+      appState.projects[idx].prodStatus = newStatus;
+      persistState();
+      renderAll();
+      showToast(`Status → ${newStatus}`);
+    }
+
+    function incrementRevision(idx, delta) {
+      const next = Math.max(0, (Number(appState.projects[idx].revUsed) || 0) + delta);
+      appState.projects[idx].revUsed = next;
+      persistState();
+      renderAll();
+      showToast(`Revisi: ${next}/${appState.projects[idx].revMax}`);
+    }
+
+    async function pasteCanvaFromClipboard() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          if (text && text.trim()) {
+            document.getElementById('fCanvaLink').value = text.trim();
+            showToast('Link Canva ditempel!');
+            return;
+          }
+        }
+      } catch (e) {}
+      const input = document.getElementById('fCanvaLink');
+      input.focus();
+      showToast('Tekan Ctrl+V / Cmd+V di kolom link Canva');
+    }
+
+    function deleteProject(idx) {
+      appState.projects.splice(idx, 1);
+      persistState();
+      renderAll();
+      showToast('Project dihapus');
+    }
+
+    function deleteExpense(idx) {
+      appState.expenses.splice(idx, 1);
+      persistState();
+      renderAll();
+      showToast('Biaya dihapus');
+    }
+
+    // ==================== MODALS: PROJECT CRUD ====================
+    function showIosModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      requestAnimationFrame(() => {
+        modal.classList.add('is-open');
+      });
+    }
+
+    function hideIosModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.remove('is-open');
+    }
+
+    function openProjectModal(editIdx = -1) {
+      document.getElementById('editProjectIndex').value = editIdx;
+
+      if (editIdx >= 0) {
+        const p = appState.projects[editIdx];
+        document.getElementById('projectModalTitle').textContent = 'Edit Project Video';
+        document.getElementById('fId').value = p.id;
+        document.getElementById('fName').value = p.name;
+        document.getElementById('fClient').value = p.client;
+        document.getElementById('fCategory').value = p.category;
+        document.getElementById('fDeadline').value = p.deadline;
+        document.getElementById('fCanvaLink').value = p.canvaLink || '';
+        document.getElementById('fDriveLink').value = p.driveLink || '';
+        document.getElementById('fPrice').value = p.price;
+        document.getElementById('fDp').value = p.dp;
+        document.getElementById('fPayStatus').value = p.payStatus;
+        document.getElementById('fProdStatus').value = p.prodStatus;
+        document.getElementById('fRevUsed').value = p.revUsed;
+        document.getElementById('fRevMax').value = p.revMax;
+        document.getElementById('fExtraCost').value = p.extraCost || 0;
+        document.getElementById('fNotes').value = p.notes || '';
+      } else {
+        document.getElementById('projectModalTitle').textContent = 'Tambah Project Video Baru';
+        const nextNum = String(appState.projects.length + 1).padStart(3, '0');
+        document.getElementById('fId').value = `PRJ-${nextNum}`;
+        document.getElementById('fName').value = '';
+        document.getElementById('fClient').value = '';
+        document.getElementById('fCategory').value = 'YouTube Long-form';
+        document.getElementById('fDeadline').value = getOffsetDate(5);
+        document.getElementById('fCanvaLink').value = ''; // Empty by default
+        document.getElementById('fDriveLink').value = '';
+        document.getElementById('fPrice').value = '';
+        document.getElementById('fDp').value = 0;
+        document.getElementById('fPayStatus').value = 'Belum DP';
+        document.getElementById('fProdStatus').value = 'Antre';
+        document.getElementById('fRevUsed').value = 0;
+        document.getElementById('fRevMax').value = 2;
+        document.getElementById('fExtraCost').value = 0;
+        document.getElementById('fNotes').value = '';
+      }
+
+      syncPaymentPreview();
+      showIosModal('projectModal');
+      lucide.createIcons();
+    }
+
+    function closeProjectModal() {
+      hideIosModal('projectModal');
+    }
+
+    function syncPaymentPreview() {
+      const price = Number(document.getElementById('fPrice').value) || 0;
+      const dp = Number(document.getElementById('fDp').value) || 0;
+      const status = document.getElementById('fPayStatus').value;
+      const rem = status === 'Lunas' ? 0 : Math.max(0, price - dp);
+      document.getElementById('modalRemainingPreview').textContent = formatRupiah(rem);
+    }
+
+    function saveProject(e) {
+      e.preventDefault();
+      const idx = Number(document.getElementById('editProjectIndex').value);
+      const price = Number(document.getElementById('fPrice').value) || 0;
+      const payStatus = document.getElementById('fPayStatus').value;
+      const dp = payStatus === 'Lunas' ? price : (Number(document.getElementById('fDp').value) || 0);
+
+      const data = {
+        id: document.getElementById('fId').value.trim(),
+        name: document.getElementById('fName').value.trim(),
+        client: document.getElementById('fClient').value.trim(),
+        category: document.getElementById('fCategory').value,
+        deadline: document.getElementById('fDeadline').value,
+        canvaLink: document.getElementById('fCanvaLink').value.trim(),
+        driveLink: document.getElementById('fDriveLink').value.trim(),
+        price,
+        dp,
+        payStatus,
+        prodStatus: document.getElementById('fProdStatus').value,
+        revUsed: Number(document.getElementById('fRevUsed').value) || 0,
+        revMax: Number(document.getElementById('fRevMax').value) || 2,
+        extraCost: Number(document.getElementById('fExtraCost').value) || 0,
+        notes: document.getElementById('fNotes').value.trim()
+      };
+
+      if (idx >= 0) {
+        appState.projects[idx] = data;
+        showToast('Perubahan project disimpan!');
+      } else {
+        appState.projects.unshift(data);
+        showToast('Project baru ditambahkan!');
+      }
+
+      persistState();
+      closeProjectModal();
+      renderAll();
+    }
+
+    // ==================== MODALS: EXPENSE, SETTINGS, INSTALL ====================
+    function openExpenseModal() {
+      document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('eTitle').value = '';
+      document.getElementById('eAmount').value = '';
+      showIosModal('expenseModal');
+    }
+
+    function closeExpenseModal() {
+      hideIosModal('expenseModal');
+    }
+
+    function saveExpense(e) {
+      e.preventDefault();
+      appState.expenses.unshift({
+        id: 'EXP-' + Date.now(),
+        date: document.getElementById('eDate').value,
+        title: document.getElementById('eTitle').value.trim(),
+        category: document.getElementById('eCategory').value,
+        amount: Number(document.getElementById('eAmount').value) || 0
+      });
+      persistState();
+      closeExpenseModal();
+      renderAll();
+      showToast('Biaya operasional dicatat!');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('sBrandName').value = appState.settings.brandName || 'Yellow Duck Studio';
+      document.getElementById('sBrandSubtitle').value = appState.settings.brandSubtitle || 'Video Editor Agency';
+      document.getElementById('sEditorName').value = appState.settings.editorName || 'Sam';
+      document.getElementById('sMonthlyTarget').value = appState.settings.monthlyTarget || 15000000;
+      pendingCustomLogo = appState.settings.customLogo || '';
+      const fileInput = document.getElementById('sLogoFileInput');
+      if (fileInput) fileInput.value = '';
+      updateSettingsLogoPreview();
+      showIosModal('settingsModal');
+      lucide.createIcons();
+    }
+
+    function closeSettingsModal() {
+      hideIosModal('settingsModal');
+    }
+
+    function saveSettings(e) {
+      e.preventDefault();
+      appState.settings.brandName = document.getElementById('sBrandName').value.trim() || 'Yellow Duck Studio';
+      appState.settings.brandSubtitle = document.getElementById('sBrandSubtitle').value.trim() || 'Video Editor Agency';
+      appState.settings.editorName = document.getElementById('sEditorName').value.trim() || 'Sam';
+      appState.settings.monthlyTarget = Number(document.getElementById('sMonthlyTarget').value) || 15000000;
+      appState.settings.customLogo = pendingCustomLogo || '';
+      persistState();
+      closeSettingsModal();
+      renderAll();
+      showToast('Pengaturan studio diperbarui!');
+    }
+
+    function resetDemoData() {
+      appState = JSON.parse(JSON.stringify(defaultState));
+      persistState();
+      closeSettingsModal();
+      renderAll();
+      showToast('Data dikembalikan ke contoh Yellow Duck Studio');
+    }
+
+    function openInstallModal() {
+      showIosModal('installModal');
+      lucide.createIcons();
+    }
+
+    function closeInstallModal() {
+      hideIosModal('installModal');
+    }
+
+    // ==================== BACKUP & RESTORE (.JSON) ====================
+    let pendingRestorePayload = null;
+
+    function openBackupModal() {
+      pendingRestorePayload = null;
+      document.getElementById('restoreConfirmBox').classList.add('hidden');
+      document.getElementById('restoreErrorBox').classList.add('hidden');
+      document.getElementById('restoreFileInput').value = '';
+      document.getElementById('backupSummaryText').textContent =
+        `${appState.projects.length} project & ${appState.expenses.length} pengeluaran`;
+
+      showIosModal('backupModal');
+      lucide.createIcons();
+    }
+
+    function closeBackupModal() {
+      pendingRestorePayload = null;
+      hideIosModal('backupModal');
+    }
+
+    function downloadJsonBackup() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const backupPayload = {
+        app: appState.settings.brandName || 'Yellow Duck Studio',
+        version: '2.0',
+        exportedAt: new Date().toISOString(),
+        darkMode: isDark,
+        data: appState
+      };
+      const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const today = new Date().toISOString().split('T')[0];
+      a.href = url;
+      a.download = `yellow-duck-studio-backup-${today}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Backup JSON berhasil diunduh!');
+    }
+
+    function handleRestoreFileSelect(event) {
+      const file = event.target.files && event.target.files[0];
+      const errBox = document.getElementById('restoreErrorBox');
+      const confirmBox = document.getElementById('restoreConfirmBox');
+      errBox.classList.add('hidden');
+      confirmBox.classList.add('hidden');
+      pendingRestorePayload = null;
+
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const candidate = parsed && parsed.data ? parsed.data : parsed;
+          if (!candidate || !Array.isArray(candidate.projects) || !Array.isArray(candidate.expenses)) {
+            throw new Error('Struktur file backup tidak valid.');
+          }
+          let restoredTheme = null;
+          if (typeof parsed.darkMode === 'boolean') restoredTheme = parsed.darkMode ? 'dark' : 'light';
+          else if (parsed.theme) restoredTheme = parsed.theme;
+
+          pendingRestorePayload = {
+            data: candidate,
+            theme: restoredTheme
+          };
+          const exportedLabel = parsed.exportedAt
+            ? ` (${new Date(parsed.exportedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })})`
+            : '';
+          document.getElementById('restorePreviewDetails').textContent =
+            `Ditemukan ${candidate.projects.length} project & ${candidate.expenses.length} pengeluaran${exportedLabel}.`;
+          confirmBox.classList.remove('hidden');
+        } catch (err) {
+          errBox.textContent = 'Gagal membaca file: pastikan file berasal dari backup JSON dashboard ini.';
+          errBox.classList.remove('hidden');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function cancelPendingRestore() {
+      pendingRestorePayload = null;
+      document.getElementById('restoreConfirmBox').classList.add('hidden');
+      document.getElementById('restoreFileInput').value = '';
+    }
+
+    function confirmRestoreData() {
+      if (!pendingRestorePayload) return;
+      appState = {
+        settings: Object.assign({}, defaultState.settings, pendingRestorePayload.data.settings || {}),
+        projects: pendingRestorePayload.data.projects || [],
+        expenses: pendingRestorePayload.data.expenses || []
+      };
+      persistState();
+      if (pendingRestorePayload.theme) {
+        applyTheme(pendingRestorePayload.theme, true);
+      }
+      closeBackupModal();
+      renderAll();
+      showToast('Data berhasil dipulihkan!');
+    }
+
+    function exportProjectsCSV() {
+      const headers = ['ID Project', 'Nama Project', 'Klien', 'Kategori', 'Deadline', 'Status Produksi', 'Harga Project', 'DP Masuk', 'Sisa Tagihan', 'Status Bayar', 'Revisi Terpakai', 'Jatah Revisi', 'Biaya Khusus', 'Profit Project', 'Link Canva Brief', 'Link Drive', 'Catatan'];
+      const rows = appState.projects.map(p => [
+        p.id, p.name, p.client, p.category, p.deadline, p.prodStatus,
+        p.price, getPaidAmount(p), getRemainingAmount(p), p.payStatus,
+        p.revUsed, p.revMax, p.extraCost || 0, getProjectProfit(p), p.canvaLink || '', p.driveLink || '', p.notes || ''
+      ]);
+      const csvContent = [headers, ...rows]
+        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `YellowDuckStudio-Projects-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Export CSV Project berhasil!');
+    }
+
+    function exportExpensesCSV() {
+      const headers = ['Tanggal', 'Keterangan Biaya', 'Kategori', 'Nominal'];
+      const rows = appState.expenses.map(e => [e.date, e.title, e.category, e.amount]);
+      const csvContent = [headers, ...rows]
+        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `YellowDuckStudio-Expenses-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Export CSV Expenses berhasil!');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        ['projectModal', 'expenseModal', 'settingsModal', 'backupModal', 'syncModal', 'installModal'].forEach(hideIosModal);
+      }
+    });
+
+    // Initial render
     renderAll();
   </script>
 </body>
