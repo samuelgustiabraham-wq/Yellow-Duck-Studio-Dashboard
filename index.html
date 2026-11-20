@@ -1341,31 +1341,36 @@
           <div class="flex items-center gap-2.5 min-w-0">
             <span id="modalSyncDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
             <div class="min-w-0">
-              <p id="modalSyncStateTitle" class="text-xs font-extrabold text-emerald-900 dark:text-emerald-200">Auto-Sync Cloud Aktif</p>
+              <p id="modalSyncStateTitle" class="text-xs font-extrabold text-emerald-900 dark:text-emerald-200">Google Sheets Auto-Sync Aktif</p>
               <p id="modalSyncLastTime" class="text-[11px] text-emerald-700 dark:text-emerald-300 truncate">Menunggu sinkronisasi...</p>
             </div>
           </div>
-          <button type="button" onclick="forcePushCloudSync()" class="ios-tap shrink-0 px-3 py-1.5 rounded-xl bg-white dark:bg-darkBg border border-emerald-200 dark:border-emerald-700/60 text-emerald-800 dark:text-emerald-200 text-xs font-bold shadow-2xs">
-            Sync Sekarang
-          </button>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="pullFromGoogleSheets(false)" class="ios-tap px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkBg border border-emerald-200 dark:border-emerald-700/60 text-emerald-800 dark:text-emerald-200 text-xs font-bold shadow-2xs">
+              Tarik Data
+            </button>
+            <button type="button" onclick="forcePushCloudSync()" class="ios-tap px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-2xs">
+              Sync Sekarang
+            </button>
+          </div>
         </div>
 
-        <!-- Studio Sync Code -->
+        <!-- Google Apps Script Endpoint -->
         <div class="p-4 rounded-2xl bg-duck-50 dark:bg-[#2B2416] border border-duck-200/80 dark:border-amber-500/20 space-y-3">
           <div>
-            <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider">Kode Studio (Samakan di Laptop & iPhone)</h4>
+            <h4 class="text-xs font-extrabold text-ink dark:text-[#F5F5F4] uppercase tracking-wider">Endpoint Google Sheets (Terpasang Otomatis)</h4>
             <p class="text-xs text-mutedInk dark:text-[#D6D3D1] mt-1 leading-relaxed">
-              Masukkan <strong>Kode Studio</strong> yang sama persis di laptop dan di iPhone (Safari / Home Screen) agar kedua perangkat terhubung ke ruang data yang sama.
+              URL Google Apps Script sudah tertanam langsung di kode aplikasi ini, sehingga laptop dan iPhone (Safari / Home Screen) otomatis memakai database Google Sheets yang sama.
             </p>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="studioSyncCodeInput" placeholder="Contoh: yellowduck-sam" class="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-duck-300/80 dark:border-darkBorder text-sm font-extrabold text-ink dark:text-[#F5F5F4] tracking-wide focus:outline-none focus:ring-2 focus:ring-duck-400" />
+            <input type="url" id="studioSyncCodeInput" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-duck-300/80 dark:border-darkBorder text-xs font-bold text-ink dark:text-[#F5F5F4] focus:outline-none focus:ring-2 focus:ring-duck-400" />
             <button type="button" onclick="copyStudioSyncCode()" class="ios-tap px-3.5 py-2.5 rounded-xl bg-white dark:bg-darkBg border border-duck-200 dark:border-darkBorder text-xs font-bold text-ink dark:text-[#F5F5F4]">
-              Salin Kode
+              Salin URL
             </button>
             <button type="button" onclick="applyStudioSyncCode()" class="ios-tap px-4 py-2.5 rounded-xl bg-duck-500 hover:bg-duck-600 text-white text-xs font-bold shadow-2xs">
-              Hubungkan
+              Simpan URL
             </button>
           </div>
         </div>
@@ -1377,9 +1382,9 @@
             Cara Pakai di Safari iPhone (Add to Home Screen)
           </h4>
           <ol class="list-decimal list-inside space-y-1 text-xs text-mutedInk dark:text-[#D6D3D1] leading-relaxed">
-            <li>Buka link website dashboard ini di <strong>Safari iPhone</strong>, lalu masukkan <strong>Kode Studio</strong> di atas.</li>
+            <li>Buka link GitHub Pages dashboard ini di <strong>Safari iPhone</strong> (status atas otomatis hijau <strong>Google Sheets Sync Aktif</strong>).</li>
             <li>Ketuk tombol <strong>Share (<span class="font-bold">↑</span>)</strong> di bar bawah Safari → pilih <strong>Add to Home Screen</strong>.</li>
-            <li>Buka ikon <strong>Yellow Duck Studio</strong> dari Home Screen iPhone — setiap kali kamu tambah/edit project di laptop atau iPhone, datanya langsung tersinkron otomatis!</li>
+            <li>Buka ikon <strong>Yellow Duck Studio</strong> dari Home Screen iPhone — setiap perubahan di laptop atau iPhone langsung tersinkron otomatis ke Google Sheets!</li>
           </ol>
         </div>
       </div>
@@ -1442,14 +1447,10 @@
     <span id="toastMsg">Tersimpan!</span>
   </div>
 
-  <!-- FIREBASE REAL-TIME AUTO-SYNC ENGINE -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+  <!-- GOOGLE SHEETS REAL-TIME AUTO-SYNC ENGINE -->
+  <script>
+    const GOOGLE_SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzPaelrmZw8nVOC51U0zB2RKYEYriLqYNGCUzrLTZ3ogPf0fj-ssQR0kt8GIZQNJyiM/exec';
     const SYNC_CODE_STORAGE_KEY = 'yellow_duck_studio_sync_code_v1';
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'yellow-duck-studio-prod';
 
     function sanitizeSyncCode(raw) {
       const cleaned = String(raw || '')
@@ -1477,13 +1478,11 @@
     }
 
     window.cloudSyncState = {
-      ready: false,
-      user: null,
-      db: null,
+      ready: Boolean(GOOGLE_SHEETS_WEBAPP_URL),
       syncCode: getStudioSyncCode(),
-      unsubscribe: null,
       lastSyncedAt: null,
-      isApplyingRemote: false
+      isSyncing: false,
+      pollTimer: null
     };
 
     function updateSyncUi(status, labelText, detailText = '') {
@@ -1500,17 +1499,17 @@
         if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
         if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-emerald-500';
         if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0';
-        if (modalTitle) modalTitle.textContent = `Tersinkron Otomatis (${window.cloudSyncState.syncCode})`;
+        if (modalTitle) modalTitle.textContent = `Auto-Sync Google Sheets Aktif (${window.cloudSyncState.syncCode})`;
       } else if (status === 'syncing') {
         if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
         if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
         if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0';
-        if (modalTitle) modalTitle.textContent = 'Menyinkronkan perubahan...';
+        if (modalTitle) modalTitle.textContent = 'Menyinkronkan ke Google Sheets...';
       } else {
         if (dot) dot.className = 'w-2 h-2 rounded-full bg-orange-400';
         if (sideDot) sideDot.className = 'w-2 h-2 rounded-full bg-orange-400';
         if (modalDot) modalDot.className = 'w-2.5 h-2.5 rounded-full bg-orange-400 shrink-0';
-        if (modalTitle) modalTitle.textContent = 'Mode Lokal / Offline';
+        if (modalTitle) modalTitle.textContent = 'Offline (Tersimpan Lokal)';
       }
 
       if (modalLast && detailText) {
@@ -1518,107 +1517,107 @@
       }
     }
 
-    function getWorkspaceDocRef() {
-      return doc(
-        window.cloudSyncState.db,
-        'artifacts',
-        appId,
-        'public',
-        'data',
-        'studio_workspaces',
-        window.cloudSyncState.syncCode
-      );
-    }
-
     window.pushStateToCloud = async function(silent = true) {
-      if (!window.cloudSyncState.ready || !window.cloudSyncState.user || !window.cloudSyncState.db) return;
-      if (window.cloudSyncState.isApplyingRemote) return;
+      if (!GOOGLE_SHEETS_WEBAPP_URL) return;
+      if (window.cloudSyncState.isSyncing) return;
 
       try {
-        updateSyncUi('syncing', 'Menyimpan...', 'Mengirim perubahan ke cloud...');
+        window.cloudSyncState.isSyncing = true;
+        updateSyncUi('syncing', 'Menyimpan...', 'Mengirim perubahan ke Google Sheets...');
         const nowIso = new Date().toISOString();
         const payload = {
           syncCode: window.cloudSyncState.syncCode,
           updatedAt: nowIso,
-          settingsJson: JSON.stringify(window.appState.settings || {}),
-          projectsJson: JSON.stringify(window.appState.projects || []),
-          expensesJson: JSON.stringify(window.appState.expenses || [])
+          settings: window.appState.settings || {},
+          projects: window.appState.projects || [],
+          expenses: window.appState.expenses || []
         };
-        await setDoc(getWorkspaceDocRef(), payload, { merge: true });
+
+        await fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
         window.cloudSyncState.lastSyncedAt = nowIso;
         const timeStr = new Date(nowIso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        updateSyncUi('synced', 'Auto-Sync Aktif', `Terakhir sinkron pukul ${timeStr} WIB`);
+        updateSyncUi('synced', 'Auto-Sync Aktif', `Terakhir tersimpan pukul ${timeStr} WIB`);
         if (!silent && typeof window.showToast === 'function') {
-          window.showToast('Data berhasil disinkronkan ke cloud!');
+          window.showToast('Data berhasil disinkronkan ke Google Sheets!');
         }
       } catch (err) {
-        console.warn('Cloud push skipped:', err);
-        updateSyncUi('offline', 'Offline (Lokal)', 'Tersimpan di perangkat ini, akan sinkron saat online.');
+        console.warn('Google Sheets push error:', err);
+        updateSyncUi('offline', 'Offline (Lokal)', 'Gagal terhubung ke internet; data aman tersimpan di perangkat.');
+      } finally {
+        window.cloudSyncState.isSyncing = false;
       }
     };
 
-    function subscribeToWorkspace() {
-      if (!window.cloudSyncState.ready || !window.cloudSyncState.user || !window.cloudSyncState.db) return;
-      if (typeof window.cloudSyncState.unsubscribe === 'function') {
-        window.cloudSyncState.unsubscribe();
-      }
+    window.pullStateFromCloud = async function(isInitial = false) {
+      if (!GOOGLE_SHEETS_WEBAPP_URL) return;
+      if (window.cloudSyncState.isSyncing) return;
 
-      updateSyncUi('syncing', 'Menghubungkan...', `Memuat ruang studio "${window.cloudSyncState.syncCode}"...`);
-
-      window.cloudSyncState.unsubscribe = onSnapshot(
-        getWorkspaceDocRef(),
-        async (snap) => {
-          if (!snap.exists()) {
-            // Inisialisasi dokumen cloud dari data lokal saat ini
-            await window.pushStateToCloud(true);
-            return;
-          }
-
-          const remote = snap.data() || {};
-          if (remote.updatedAt && remote.updatedAt === window.cloudSyncState.lastSyncedAt) {
-            return;
-          }
-
-          try {
-            window.cloudSyncState.isApplyingRemote = true;
-            const parsedSettings = remote.settingsJson ? JSON.parse(remote.settingsJson) : null;
-            const parsedProjects = remote.projectsJson ? JSON.parse(remote.projectsJson) : null;
-            const parsedExpenses = remote.expensesJson ? JSON.parse(remote.expensesJson) : null;
-
-            if (parsedSettings && Array.isArray(parsedProjects) && Array.isArray(parsedExpenses)) {
-              window.appState = {
-                settings: Object.assign({}, window.appState.settings, parsedSettings),
-                projects: parsedProjects,
-                expenses: parsedExpenses
-              };
-              try {
-                localStorage.setItem('yellow_duck_studio_v1', JSON.stringify(window.appState));
-              } catch (e) {}
-
-              if (typeof window.renderAll === 'function') {
-                window.renderAll();
-              }
-            }
-
-            window.cloudSyncState.lastSyncedAt = remote.updatedAt || new Date().toISOString();
-            const timeStr = new Date(window.cloudSyncState.lastSyncedAt).toLocaleTimeString('id-ID', {
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit'
-            });
-            updateSyncUi('synced', 'Auto-Sync Aktif', `Tersinkron real-time • ${timeStr} WIB`);
-          } catch (parseErr) {
-            console.error('Failed to parse remote workspace:', parseErr);
-          } finally {
-            window.cloudSyncState.isApplyingRemote = false;
-          }
-        },
-        (err) => {
-          console.warn('Firestore snapshot error:', err);
-          updateSyncUi('offline', 'Offline (Lokal)', 'Koneksi cloud terganggu; data aman tersimpan lokal.');
+      try {
+        if (isInitial) {
+          updateSyncUi('syncing', 'Menghubungkan...', 'Mengambil data terbaru dari Google Sheets...');
         }
-      );
-    }
+        const sep = GOOGLE_SHEETS_WEBAPP_URL.includes('?') ? '&' : '?';
+        const res = await fetch(`${GOOGLE_SHEETS_WEBAPP_URL}${sep}t=${Date.now()}`, {
+          method: 'GET',
+          cache: 'no-store'
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const text = await res.text();
+        let remote = null;
+        try {
+          remote = JSON.parse(text);
+        } catch (e) {
+          remote = null;
+        }
+
+        // Jika Google Sheet masih kosong (baru dibuat), kirim data awal dari perangkat ini
+        if (!remote || !Array.isArray(remote.projects)) {
+          await window.pushStateToCloud(true);
+          return;
+        }
+
+        // Cek kesamaan Kode Studio
+        if (remote.syncCode && sanitizeSyncCode(remote.syncCode) !== window.cloudSyncState.syncCode) {
+          if (isInitial) {
+            await window.pushStateToCloud(true);
+          }
+          return;
+        }
+
+        const timeStr = new Date(remote.updatedAt || Date.now()).toLocaleTimeString('id-ID', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+
+        if (remote.updatedAt && remote.updatedAt !== window.cloudSyncState.lastSyncedAt) {
+          window.appState = {
+            settings: Object.assign({}, window.appState.settings, remote.settings || {}),
+            projects: Array.isArray(remote.projects) ? remote.projects : [],
+            expenses: Array.isArray(remote.expenses) ? remote.expenses : []
+          };
+          try {
+            localStorage.setItem('yellow_duck_studio_v1', JSON.stringify(window.appState));
+          } catch (e) {}
+
+          window.cloudSyncState.lastSyncedAt = remote.updatedAt;
+          if (typeof window.renderAll === 'function') {
+            window.renderAll();
+          }
+        }
+
+        updateSyncUi('synced', 'Auto-Sync Aktif', `Tersinkron dengan Google Sheets • ${timeStr} WIB`);
+      } catch (err) {
+        console.warn('Google Sheets pull error:', err);
+        updateSyncUi('offline', 'Offline (Lokal)', 'Koneksi internet terputus; data tetap tersimpan lokal.');
+      }
+    };
 
     window.changeStudioSyncCode = function(newRawCode) {
       const normalized = sanitizeSyncCode(newRawCode);
@@ -1627,51 +1626,27 @@
       try {
         localStorage.setItem(SYNC_CODE_STORAGE_KEY, normalized);
       } catch (e) {}
-      subscribeToWorkspace();
+      window.pullStateFromCloud(true);
     };
 
-    (async function initCloudSync() {
-      try {
-        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
-          updateSyncUi('offline', 'Tersimpan Lokal', 'Konfigurasi cloud tidak tersedia di mode offline.');
-          return;
+    // Jalankan sinkronisasi otomatis saat halaman dibuka + polling setiap 12 detik
+    window.addEventListener('load', () => {
+      window.pullStateFromCloud(true);
+      window.cloudSyncState.pollTimer = setInterval(() => {
+        if (document.visibilityState === 'visible') {
+          window.pullStateFromCloud(false);
         }
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+      }, 12000);
+    });
 
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-
-        if (!auth.currentUser) {
-          updateSyncUi('offline', 'Tersimpan Lokal', 'Autentikasi cloud belum aktif.');
-          return;
-        }
-
-        window.cloudSyncState.user = auth.currentUser;
-        window.cloudSyncState.db = db;
-        window.cloudSyncState.ready = true;
-        subscribeToWorkspace();
-      } catch (e) {
-        console.warn('Cloud sync init fallback to local:', e);
-        updateSyncUi('offline', 'Tersimpan Lokal', 'Berjalan dalam mode penyimpanan lokal perangkat.');
-      }
-    })();
-
-    // Auto-pull & re-sync saat iPhone / Safari kembali aktif dari background
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && window.cloudSyncState.ready) {
-        subscribeToWorkspace();
+      if (document.visibilityState === 'visible') {
+        window.pullStateFromCloud(false);
       }
     });
+
     window.addEventListener('online', () => {
-      if (window.cloudSyncState.ready) {
-        window.pushStateToCloud(true);
-      }
+      window.pullStateFromCloud(false);
     });
   </script>
 
@@ -1974,7 +1949,7 @@
     function openSyncModal() {
       const input = document.getElementById('studioSyncCodeInput');
       if (input && window.cloudSyncState) {
-        input.value = window.cloudSyncState.syncCode || 'yellowduck-sam';
+        input.value = window.cloudSyncState.endpointUrl || DEFAULT_GAS_WEBAPP_URL;
       }
       showIosModal('syncModal');
       lucide.createIcons();
@@ -1989,28 +1964,27 @@
       if (!input) return;
       const val = input.value.trim();
       if (!val) {
-        showToast('Masukkan Kode Studio terlebih dahulu!');
+        showToast('Masukkan URL Google Apps Script terlebih dahulu!');
         return;
       }
-      if (typeof window.changeStudioSyncCode === 'function') {
-        window.changeStudioSyncCode(val);
-        input.value = window.cloudSyncState.syncCode;
-        showToast(`Terhubung ke studio: ${window.cloudSyncState.syncCode}`);
+      if (typeof window.changeStudioSyncCode === 'function' && window.changeStudioSyncCode(val)) {
+        input.value = window.cloudSyncState.endpointUrl;
+        showToast('URL Google Sheets berhasil dihubungkan!');
       }
     }
 
     function copyStudioSyncCode() {
       const input = document.getElementById('studioSyncCodeInput');
-      const code = (input && input.value.trim()) || (window.cloudSyncState && window.cloudSyncState.syncCode) || 'yellowduck-sam';
+      const code = (input && input.value.trim()) || (window.cloudSyncState && window.cloudSyncState.endpointUrl) || DEFAULT_GAS_WEBAPP_URL;
       const temp = document.createElement('textarea');
       temp.value = code;
       document.body.appendChild(temp);
       temp.select();
       try {
         document.execCommand('copy');
-        showToast(`Kode "${code}" disalin! Tempel di iPhone.`);
+        showToast('URL Google Apps Script disalin!');
       } catch (e) {
-        showToast(`Kode Studio: ${code}`);
+        showToast('Gagal menyalin URL');
       }
       document.body.removeChild(temp);
     }
