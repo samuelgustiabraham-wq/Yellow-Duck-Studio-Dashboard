@@ -1,10 +1,123 @@
 <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FDE047" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Yellow Duck Studio" />
   <title>Yellow Duck Studio — Video Editor Agency Dashboard</title>
-  <link id="dynamicFavicon" rel="icon" type="image/jpeg" href="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg" />
-  <link id="dynamicAppleIcon" rel="apple-touch-icon" sizes="180x180" href="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg" />
+
+  <link id="faviconLink" rel="icon" type="image/png" href="" />
+  <link id="appleTouchIconLink" rel="apple-touch-icon" sizes="180x180" href="" />
+
+  <!-- Immediate HD Full-Bleed Yellow Duck Icon Generator for Browser Tab & iPhone Home Screen -->
+  <script>
+    (function () {
+      function drawFullBleedDuckCanvas(size) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const s = size / 512;
+
+        // 1. Full-bleed vibrant yellow background (#FACC15)
+        ctx.fillStyle = '#FACC15';
+        ctx.fillRect(0, 0, size, size);
+
+        // Geometry coordinates (512x512 reference grid)
+        const cx = 236 * s;
+        const cy = 264 * s;
+        const r = 136 * s;
+        const shadowDx = 18 * s;
+        const shadowDy = 16 * s;
+        const strokeW = 14 * s;
+
+        function traceBeakPath(offsetX, offsetY) {
+          ctx.beginPath();
+          ctx.moveTo((338 + offsetX) * s, (238 + offsetY) * s);
+          ctx.quadraticCurveTo((392 + offsetX) * s, (246 + offsetY) * s, (426 + offsetX) * s, (268 + offsetY) * s);
+          ctx.quadraticCurveTo((434 + offsetX) * s, (274 + offsetY) * s, (424 + offsetX) * s, (282 + offsetY) * s);
+          ctx.quadraticCurveTo((388 + offsetX) * s, (302 + offsetY) * s, (336 + offsetX) * s, (306 + offsetY) * s);
+          ctx.quadraticCurveTo((324 + offsetX) * s, (272 + offsetY) * s, (338 + offsetX) * s, (238 + offsetY) * s);
+          ctx.closePath();
+        }
+
+        // 2. Solid black 3D offset block shadow (right & bottom) for head circle
+        ctx.fillStyle = '#111111';
+        ctx.beginPath();
+        ctx.arc(cx + shadowDx, cy + shadowDy, r + strokeW * 0.48, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3. Solid black 3D offset block shadow (right & bottom) for beak
+        traceBeakPath(18, 16);
+        ctx.lineWidth = strokeW;
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#111111';
+        ctx.fillStyle = '#111111';
+        ctx.fill();
+        ctx.stroke();
+
+        // 4. Main yellow circular duck head with crisp solid black outline
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fillStyle = '#FDE047';
+        ctx.fill();
+        ctx.lineWidth = strokeW;
+        ctx.strokeStyle = '#111111';
+        ctx.stroke();
+
+        // 5. Crisp solid black dot eye
+        ctx.beginPath();
+        ctx.arc(294 * s, 212 * s, 17 * s, 0, Math.PI * 2);
+        ctx.fillStyle = '#111111';
+        ctx.fill();
+
+        // 6. Vibrant orange beak with thick black outline
+        traceBeakPath(0, 0);
+        ctx.fillStyle = '#F97316';
+        ctx.fill();
+        ctx.lineWidth = strokeW;
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#111111';
+        ctx.stroke();
+
+        return canvas.toDataURL('image/png');
+      }
+
+      try {
+        const png180 = drawFullBleedDuckCanvas(180);
+        const png512 = drawFullBleedDuckCanvas(512);
+        window.__YDS_DEFAULT_DUCK_PNG__ = png180;
+        window.__YDS_DEFAULT_DUCK_512__ = png512;
+
+        const fav = document.getElementById('faviconLink');
+        const apple = document.getElementById('appleTouchIconLink');
+        if (fav) fav.href = png180;
+        if (apple) apple.href = png180;
+
+        // Dynamic manifest.json for iPhone Safari & Android/Desktop PWA install
+        const manifest = {
+          name: 'Yellow Duck Studio — Video Editor Agency',
+          short_name: 'Yellow Duck',
+          start_url: '.',
+          display: 'standalone',
+          background_color: '#FCFBF7',
+          theme_color: '#FDE047',
+          icons: [
+            { src: png180, sizes: '180x180', type: 'image/png', purpose: 'any' },
+            { src: png512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = URL.createObjectURL(blob);
+        document.head.appendChild(manifestLink);
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -84,7 +197,6 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* Highlighter marker stripe behind bold zine headlines */
     .highlighter-pink {
       background: linear-gradient(180deg, transparent 34%, #F9C6D3 34%, #F9C6D3 88%, transparent 88%);
       padding: 0 6px;
@@ -103,7 +215,6 @@
       background: linear-gradient(180deg, transparent 32%, rgba(250, 204, 21, 0.34) 32%, rgba(250, 204, 21, 0.34) 90%, transparent 90%);
     }
 
-    /* Sticker / Speech-Bubble Tag styling */
     .zine-sticker {
       border: 1.5px solid #141312;
       box-shadow: 2.5px 2.5px 0px #141312;
@@ -121,7 +232,6 @@
       box-shadow: 3.5px 3.5px 0px #E7E5E4;
     }
 
-    /* Zine hard-shadow card vs soft studio card */
     .theme-zine .studio-card {
       background: var(--card-bg);
       border: 1.5px solid #141312;
@@ -141,7 +251,6 @@
       transform: translateY(-2px);
     }
 
-    /* Speech bubble pointer */
     .bubble-tail::after {
       content: "";
       position: absolute;
@@ -158,7 +267,6 @@
       border-color: #E7E5E4;
     }
 
-    /* Modal transitions */
     .modal-backdrop {
       opacity: 0;
       pointer-events: none;
@@ -176,7 +284,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Toast */
     #toast {
       transform: translate(-50%, -140%);
       opacity: 0;
@@ -194,21 +301,10 @@
   <header class="sticky top-0 z-30 backdrop-blur-md bg-[#FCFBF7]/90 dark:bg-[#12110F]/90 border-b-[1.5px] border-[#141312] dark:border-[#3A352C]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
 
-      <!-- Left: Brand & Duck Mascot -->
+      <!-- Left: Brand & Full-Bleed Yellow Duck Mascot -->
       <div class="flex items-center gap-3 min-w-0">
-        <button type="button" onclick="openSettingsModal()" title="Pengaturan Studio & Brand" class="w-11 h-11 rounded-2xl bg-[#FDE047] dark:bg-[#3B3014] border-[1.5px] border-[#141312] dark:border-amber-400/50 flex items-center justify-center shrink-0 shadow-[2px_2px_0px_#141312] dark:shadow-none hover:-translate-y-0.5 transition">
-          <img
-            id="brandLogoImg"
-            src="Gemini_Generated_Image_ejpuhiejpuhiejpu.jpg"
-            alt="Yellow Duck Studio"
-            class="w-9 h-9 rounded-xl object-cover"
-            onerror="this.style.display='none'; document.getElementById('brandFallbackSvg').classList.remove('hidden');"
-          />
-          <svg id="brandFallbackSvg" class="w-8 h-8 hidden" viewBox="0 0 120 120" fill="none">
-            <circle cx="60" cy="64" r="36" fill="#FACC15" stroke="#141312" stroke-width="4"/>
-            <circle cx="74" cy="48" r="4.5" fill="#141312"/>
-            <path d="M84 60C94 58 104 62 104 66C104 71 93 74 83 71Z" fill="#FB923C" stroke="#141312" stroke-width="3.5"/>
-          </svg>
+        <button type="button" onclick="openSettingsModal()" title="Pengaturan Studio & Logo" class="w-11 h-11 rounded-2xl bg-[#FACC15] border-[1.5px] border-[#141312] dark:border-amber-400/70 flex items-center justify-center shrink-0 overflow-hidden shadow-[2px_2px_0px_#141312] dark:shadow-none hover:-translate-y-0.5 transition">
+          <div id="headerDuckLogoWrap" class="w-full h-full flex items-center justify-center"></div>
         </button>
         <div class="min-w-0">
           <div class="flex items-center gap-2">
@@ -218,7 +314,7 @@
         </div>
       </div>
 
-      <!-- Right: Auto-Sync Status, Dark Mode & Quick Actions -->
+      <!-- Right: Auto-Sync Status, Backup, Dark Mode & Quick Actions -->
       <div class="flex items-center gap-2 flex-wrap">
         <button
           type="button"
@@ -229,6 +325,15 @@
         >
           <span id="syncDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="syncStatusLabel">Auto-Sync Sheets</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="openBackupModal()"
+          title="Backup & Restore JSON"
+          class="p-2 rounded-full bg-white dark:bg-[#1E1C18] border border-[#141312]/30 dark:border-[#3A352C] text-[#141312] dark:text-[#F5F5F4] hover:bg-[#FEF3C7] dark:hover:bg-[#2B2416] transition"
+        >
+          <i data-lucide="database-backup" class="w-4 h-4"></i>
         </button>
 
         <button
@@ -257,7 +362,6 @@
 
     <!-- EDITORIAL ZINE HERO COLLAGE BANNER -->
     <section class="studio-card p-6 sm:p-8 relative overflow-hidden">
-      <!-- Decorative Sticker Accents -->
       <div class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B8DFEA] text-[#141312] text-xs font-extrabold zine-sticker rotate-2 absolute top-5 right-6">
         <span class="w-2 h-2 rounded-full bg-[#F472B6]"></span>
         <span>This Week’s Cut List</span>
@@ -265,42 +369,65 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Bold Zine Typography + Highlighter Stripes -->
-        <div class="lg:col-span-7 space-y-3">
+        <div class="lg:col-span-7 space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8E68E] text-[#141312] text-[11px] font-extrabold uppercase tracking-wider border border-[#141312]">
             <span>●</span>
             <span>Yellow Duck Studio • Production Desk</span>
           </div>
 
-          <!-- Right Collage Card: Deadline & Attention Reminder ("Anti-Skip") -->
-          <div class="lg:col-span-5 space-y-3">
-            <div class="rounded-2xl bg-[#FFFDF5] dark:bg-[#25211A] border-[1.5px] border-[#141312] dark:border-[#3A352C] p-4 shadow-[3px_3px_0px_#141312] dark:shadow-none space-y-3">
-              <div class="flex items-center justify-between gap-2">
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F9C6D3] text-[#141312] text-xs font-extrabold border border-[#141312] relative bubble-tail">
-                  <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
-                  <span>Perhatian Khusus & Deadline</span>
-                </div>
-                <span id="reminderCountPill" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-[#FDE047] text-[#141312] border border-[#141312]">0 item</span>
-              </div>
+          <h1 class="font-serif font-extrabold text-3xl sm:text-5xl leading-[1.08] tracking-tight">
+            Cut <span class="highlighter-pink">sharper</span>, ship <span class="highlighter-yellow">faster</span>, zero missed deadlines.
+          </h1>
 
-              <div id="attentionList" class="space-y-2 max-h-52 overflow-y-auto pr-0.5">
-                <!-- Populated dynamically -->
-              </div>
-            </div>
+          <p class="text-xs sm:text-sm text-[#57534E] dark:text-[#A8A29E] max-w-xl leading-relaxed">
+            Pantau status editing setiap klien, kuota revisi, link Canva brief & Google Drive, sekaligus progres target pendapatan bulanan yang otomatis tersinkron ke laptop & iPhone.
+          </p>
 
-            <!-- Revenue Target & Avg Client Rate Strip -->
-            <div class="rounded-2xl bg-white dark:bg-[#1B1916] border-[1.5px] border-[#141312] dark:border-[#3A352C] p-3.5 shadow-[3px_3px_0px_#141312] dark:shadow-none flex items-center justify-between gap-3">
-              <div class="min-w-0">
-                <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#57534E] dark:text-[#A8A29E] block">Target Pendapatan</span>
-                <div class="flex items-baseline gap-2 mt-0.5">
-                  <span id="targetProgressPct" class="text-xl font-extrabold tabular-nums">0%</span>
-                  <span id="targetDetailLabel" class="text-xs text-[#57534E] dark:text-[#A8A29E] truncate tabular-nums">Rp 0 / Rp 15.000.000</span>
-                </div>
-              </div>
-              <button type="button" onclick="openSettingsModal()" class="px-3 py-1.5 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312] shrink-0">Atur Target</button>
-            </div>
+          <div class="flex flex-wrap items-center gap-2.5 pt-1">
+            <button type="button" onclick="openProjectModal()" class="zine-sticker px-4 py-2 rounded-full bg-[#FDE047] text-[#141312] text-xs font-extrabold flex items-center gap-1.5">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Tambah Project Baru</span>
+            </button>
+            <button type="button" onclick="openSettingsModal()" class="px-4 py-2 rounded-full bg-white dark:bg-[#141311] text-xs font-extrabold border border-[#141312]/30 dark:border-[#3A352C] hover:border-[#141312] transition">
+              Atur Target & Brand
+            </button>
+            <button type="button" onclick="openIosGuideModal()" class="px-3.5 py-2 rounded-full bg-[#DFCEFF] text-[#141312] text-xs font-extrabold border border-[#141312] flex items-center gap-1.5">
+              <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+              <span>Install iPhone Safari</span>
+            </button>
           </div>
         </div>
-      </section>
+
+        <!-- Right Collage Card: Deadline & Attention Reminder ("Anti-Skip") -->
+        <div class="lg:col-span-5 space-y-3">
+          <div class="rounded-2xl bg-[#FFFDF5] dark:bg-[#25211A] border-[1.5px] border-[#141312] dark:border-[#3A352C] p-4 shadow-[3px_3px_0px_#141312] dark:shadow-none space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F9C6D3] text-[#141312] text-xs font-extrabold border border-[#141312] relative bubble-tail">
+                <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
+                <span>Perhatian Khusus & Deadline</span>
+              </div>
+              <span id="reminderCountPill" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-[#FDE047] text-[#141312] border border-[#141312]">0 item</span>
+            </div>
+
+            <div id="attentionList" class="space-y-2 max-h-52 overflow-y-auto pr-0.5">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Revenue Target & Avg Client Rate Strip -->
+          <div class="rounded-2xl bg-white dark:bg-[#1B1916] border-[1.5px] border-[#141312] dark:border-[#3A352C] p-3.5 shadow-[3px_3px_0px_#141312] dark:shadow-none flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#57534E] dark:text-[#A8A29E] block">Target Pendapatan</span>
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span id="targetProgressPct" class="text-xl font-extrabold tabular-nums">0%</span>
+                <span id="targetDetailLabel" class="text-xs text-[#57534E] dark:text-[#A8A29E] truncate tabular-nums">Rp 0 / Rp 15.000.000</span>
+              </div>
+            </div>
+            <button type="button" onclick="openSettingsModal()" class="px-3 py-1.5 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312] shrink-0">Atur Target</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- 4 PRODUCTION & REVENUE STICKER KPI CARDS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -349,7 +476,7 @@
             <span class="font-serif italic">Project</span>
             <span class="highlighter-yellow">Tracker</span>
           </h2>
-          <p class="text-xs text-[#57534E] dark:text-[#A8A29E]">Kelola status produksi, revisi (- / +), link Canva brief, dan folder footage Drive.</p>
+          <p class="text-xs text-[#57534E] dark:text-[#A8A29E]">Klik badge status untuk ganti cepat, atur revisi (- / +), buka Canva brief, atau folder footage Drive.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
@@ -514,16 +641,31 @@
     </div>
   </div>
 
-  <!-- MODAL: BRAND & EDITOR SETTINGS -->
+  <!-- MODAL: BRAND, LOGO & EDITOR SETTINGS -->
   <div id="settingsModal" onclick="if(event.target===this) closeSettingsModal()" class="modal-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="modal-box studio-card max-w-md w-full p-6 space-y-4">
+    <div class="modal-box studio-card max-w-md w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-extrabold">Pengaturan Studio</h3>
+        <h3 class="text-lg font-extrabold">Pengaturan Studio & Ikon</h3>
         <button type="button" onclick="closeSettingsModal()" class="p-1.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
       <form onsubmit="saveSettings(event)" class="space-y-3">
+        <div class="p-3 rounded-2xl bg-[#FFFDF5] dark:bg-[#12110F] border border-[#141312]/25 dark:border-[#3A352C] flex items-center gap-3">
+          <div id="settingsDuckLogoPreview" class="w-14 h-14 rounded-2xl bg-[#FACC15] border-[1.5px] border-[#141312] shrink-0 overflow-hidden flex items-center justify-center"></div>
+          <div class="min-w-0 flex-1 space-y-1.5">
+            <p class="text-xs font-extrabold">Ikon Tab & iPhone Home Screen</p>
+            <p class="text-[11px] text-[#57534E] dark:text-[#A8A29E] leading-tight">Default bebek kuning penuh dengan outline hitam & embos 3D kanan-bawah.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <label class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312] cursor-pointer">
+                Upload Kustom
+                <input type="file" accept="image/*" onchange="handleCustomLogoUpload(event)" class="hidden" />
+              </label>
+              <button type="button" onclick="resetToDefaultDuckLogo()" class="px-2.5 py-1 rounded-full text-[11px] font-bold border border-[#141312]/30 dark:border-[#3A352C]">Reset Default</button>
+            </div>
+          </div>
+        </div>
+
         <div>
           <label class="block text-xs font-bold mb-1">Nama Agency</label>
           <input type="text" id="setBrandName" required class="w-full px-3.5 py-2 rounded-xl text-sm bg-[#FCFBF7] dark:bg-[#12110F] border border-[#141312]/30 dark:border-[#3A352C]" />
@@ -544,9 +686,65 @@
     </div>
   </div>
 
+  <!-- MODAL: IPHONE SAFARI ADD TO HOME SCREEN GUIDE -->
+  <div id="iosGuideModal" onclick="if(event.target===this) closeIosGuideModal()" class="modal-backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="modal-box studio-card max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-extrabold">Pasang Ikon Bebek di iPhone</h3>
+        <button type="button" onclick="closeIosGuideModal()" class="p-1.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <ol class="list-decimal list-inside space-y-2 text-xs text-[#57534E] dark:text-[#D6D3D1] leading-relaxed">
+        <li>Buka link GitHub Pages dashboard ini menggunakan browser <strong>Safari</strong> di iPhone.</li>
+        <li>Ketuk tombol <strong>Share</strong> (kotak dengan panah ke atas) di bagian bawah Safari.</li>
+        <li>Pilih <strong>Add to Home Screen</strong> → lalu ketuk <strong>Add</strong>.</li>
+        <li>Ikon penuh bebek kuning dengan outline hitam & embos 3D akan langsung muncul di layar depan iPhone dan auto-sync dengan laptop.</li>
+      </ol>
+      <div class="flex justify-end">
+        <button type="button" onclick="closeIosGuideModal()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Siap!</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxj779VHJiYZOjO5COIqyueSj9CDXd2WilpUta_2rHTkRiV2YF3yapIMlCnu5LX-EgD/exec';
     const STORAGE_KEY = 'yds_zine_preview_v1';
+
+    function getDefaultDuckSvg(cls = 'w-full h-full') {
+      return `
+        <svg class="${cls}" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="512" height="512" fill="#FACC15"/>
+          <circle cx="254" cy="280" r="142" fill="#111111"/>
+          <path d="M356 254 Q410 262 444 284 Q452 290 442 298 Q406 318 354 322 Q342 288 356 254 Z" fill="#111111" stroke="#111111" stroke-width="14" stroke-linejoin="round"/>
+          <circle cx="236" cy="264" r="136" fill="#FDE047" stroke="#111111" stroke-width="14"/>
+          <circle cx="294" cy="212" r="17" fill="#111111"/>
+          <path d="M338 238 Q392 246 426 268 Q434 274 424 282 Q388 302 336 306 Q324 272 338 238 Z" fill="#F97316" stroke="#111111" stroke-width="14" stroke-linejoin="round"/>
+        </svg>
+      `;
+    }
+
+    function applyBrowserAndPhoneIcons(customDataUrl) {
+      const iconUrl = (customDataUrl && customDataUrl.trim())
+        ? customDataUrl.trim()
+        : (window.__YDS_DEFAULT_DUCK_PNG__ || 'image_f299d1.jpg');
+
+      const fav = document.getElementById('faviconLink');
+      const apple = document.getElementById('appleTouchIconLink');
+      if (fav) fav.href = iconUrl;
+      if (apple) apple.href = iconUrl;
+
+      const headerWrap = document.getElementById('headerDuckLogoWrap');
+      const previewWrap = document.getElementById('settingsDuckLogoPreview');
+      if (customDataUrl && customDataUrl.trim()) {
+        const imgTag = `<img src="${escapeHtml(customDataUrl)}" alt="Yellow Duck Studio" class="w-full h-full object-cover" />`;
+        if (headerWrap) headerWrap.innerHTML = imgTag;
+        if (previewWrap) previewWrap.innerHTML = imgTag;
+      } else {
+        if (headerWrap) headerWrap.innerHTML = getDefaultDuckSvg('w-full h-full');
+        if (previewWrap) previewWrap.innerHTML = getDefaultDuckSvg('w-full h-full');
+      }
+    }
 
     function offsetDate(days) {
       const d = new Date();
@@ -561,7 +759,8 @@
       settings: {
         brandName: 'Yellow Duck Studio',
         editorName: 'Sam',
-        monthlyTarget: 15000000
+        monthlyTarget: 15000000,
+        customLogo: ''
       },
       projects: [
         {
@@ -715,6 +914,7 @@
     }
 
     function renderAll() {
+      applyBrowserAndPhoneIcons(state.settings.customLogo || '');
       document.getElementById('brandNameLabel').textContent = state.settings.brandName || 'Yellow Duck Studio';
       document.getElementById('greetingUserLabel').textContent = `Halo, ${state.settings.editorName || 'Sam'}`;
 
@@ -933,12 +1133,42 @@
       document.getElementById('setBrandName').value = state.settings.brandName || 'Yellow Duck Studio';
       document.getElementById('setEditorName').value = state.settings.editorName || 'Sam';
       document.getElementById('setMonthlyTarget').value = Number(state.settings.monthlyTarget) || 15000000;
+      applyBrowserAndPhoneIcons(state.settings.customLogo || '');
       document.getElementById('settingsModal').classList.add('open');
       lucide.createIcons();
     }
 
     function closeSettingsModal() {
       document.getElementById('settingsModal').classList.remove('open');
+    }
+
+    function handleCustomLogoUpload(ev) {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 180;
+          canvas.height = 180;
+          canvas.getContext('2d').drawImage(img, 0, 0, 180, 180);
+          state.settings.customLogo = canvas.toDataURL('image/png');
+          applyBrowserAndPhoneIcons(state.settings.customLogo);
+          saveLocalAndSync(true);
+          showToast('Ikon kustom terpasang!');
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+      ev.target.value = '';
+    }
+
+    function resetToDefaultDuckLogo() {
+      state.settings.customLogo = '';
+      applyBrowserAndPhoneIcons('');
+      saveLocalAndSync(true);
+      showToast('Kembali ke ikon bebek kuning default');
     }
 
     function saveSettings(ev) {
@@ -950,6 +1180,15 @@
       closeSettingsModal();
       renderAll();
       showToast('Pengaturan diperbarui!');
+    }
+
+    function openIosGuideModal() {
+      document.getElementById('iosGuideModal').classList.add('open');
+      lucide.createIcons();
+    }
+
+    function closeIosGuideModal() {
+      document.getElementById('iosGuideModal').classList.remove('open');
     }
 
     function openBackupModal() {
