@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FDE047" />
+  <meta name="theme-color" content="#FFD600" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Yellow Duck Studio" />
   <title>Yellow Duck Studio — Video Editor Agency Dashboard</title>
 
-  <link id="faviconLink" rel="icon" type="image/png" href="" />
+  <!-- Static Base64 SVG Favicon & Shortcut Icon (Parsed immediately by browsers before JS executes) -->
+  <link id="faviconLink" rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iI0ZGRDYwMCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI4MiIgcj0iMTQ0IiBmaWxsPSIjMTExMTExIi8+PHBhdGggZD0iTTM1OCAyNTYgUTQxMiAyNjQgNDQ2IDI4NiBRNDU0IDI5MiA0NDQgMzAwIFE0MDggMzIwIDM1NiAzMjQgUTM0NCAyOTAgMzU4IDI1NiBaIiBmaWxsPSIjMTExMTExIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSIyMzYiIGN5PSIyNjQiIHI9IjEzOCIgZmlsbD0iI0ZGRDYwMCIgc3Ryb2tlPSIjMTExMTExIiBzdHJva2Utd2lkdGg9IjE2Ii8+PGNpcmNsZSBjeD0iMjk2IiBjeT0iMjEyIiByPSIxOCIgZmlsbD0iIzExMTExMSIvPjxwYXRoIGQ9Ik0zMzggMjM4IFEzOTIgMjQ2IDQyNiAyNjggUTQzNCAyNzQgNDI0IDI4MiBMMzg4IDMwMiBMMzM2IDMwNiBRMzI0IDI3MiAzMzggMjM4IFoiIGZpbGw9IiNGOTczMTYiIHN0cm9rZT0iIzExMTExMSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==" />
+  <link id="shortcutIconLink" rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iI0ZGRDYwMCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI4MiIgcj0iMTQ0IiBmaWxsPSIjMTExMTExIi8+PHBhdGggZD0iTTM1OCAyNTYgUTQxMiAyNjQgNDQ2IDI4NiBRNDU0IDI5MiA0NDQgMzAwIFE0MDggMzIwIDM1NiAzMjQgUTM0NCAyOTAgMzU4IDI1NiBaIiBmaWxsPSIjMTExMTExIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSIyMzYiIGN5PSIyNjQiIHI9IjEzOCIgZmlsbD0iI0ZGRDYwMCIgc3Ryb2tlPSIjMTExMTExIiBzdHJva2Utd2lkdGg9IjE2Ii8+PGNpcmNsZSBjeD0iMjk2IiBjeT0iMjEyIiByPSIxOCIgZmlsbD0iIzExMTExMSIvPjxwYXRoIGQ9Ik0zMzggMjM4IFEzOTIgMjQ2IDQyNiAyNjggUTQzNCAyNzQgNDI0IDI4MiBMMzg4IDMwMiBMMzM2IDMwNiBRMzI0IDI3MiAzMzggMjM4IFoiIGZpbGw9IiNGOTczMTYiIHN0cm9rZT0iIzExMTExMSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==" />
   <link id="appleTouchIconLink" rel="apple-touch-icon" sizes="180x180" href="" />
 
-  <!-- Immediate HD Full-Bleed Yellow Duck Icon Generator for Browser Tab & iPhone Home Screen -->
+  <!-- Immediate HD PNG Generator for iPhone Safari apple-touch-icon & manifest.json -->
   <script>
     (function () {
+      const STATIC_SVG_DATA_URI =
+        'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iI0ZGRDYwMCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI4MiIgcj0iMTQ0IiBmaWxsPSIjMTExMTExIi8+PHBhdGggZD0iTTM1OCAyNTYgUTQxMiAyNjQgNDQ2IDI4NiBRNDU0IDI5MiA0NDQgMzAwIFE0MDggMzIwIDM1NiAzMjQgUTM0NCAyOTAgMzU4IDI1NiBaIiBmaWxsPSIjMTExMTExIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSIyMzYiIGN5PSIyNjQiIHI9IjEzOCIgZmlsbD0iI0ZGRDYwMCIgc3Ryb2tlPSIjMTExMTExIiBzdHJva2Utd2lkdGg9IjE2Ii8+PGNpcmNsZSBjeD0iMjk2IiBjeT0iMjEyIiByPSIxOCIgZmlsbD0iIzExMTExMSIvPjxwYXRoIGQ9Ik0zMzggMjM4IFEzOTIgMjQ2IDQyNiAyNjggUTQzNCAyNzQgNDI0IDI4MiBMMzg4IDMwMiBMMzM2IDMwNiBRMzI0IDI3MiAzMzggMjM4IFoiIGZpbGw9IiNGOTczMTYiIHN0cm9rZT0iIzExMTExMSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==';
+
+      window.__YDS_DEFAULT_DUCK_SVG_URI__ = STATIC_SVG_DATA_URI;
+
       function drawFullBleedDuckCanvas(size) {
         const canvas = document.createElement('canvas');
         canvas.width = size;
@@ -22,17 +29,16 @@
         const ctx = canvas.getContext('2d');
         const s = size / 512;
 
-        // 1. Full-bleed vibrant yellow background (#FACC15)
-        ctx.fillStyle = '#FACC15';
+        // 1. Full-bleed bright yellow background (#FFD600)
+        ctx.fillStyle = '#FFD600';
         ctx.fillRect(0, 0, size, size);
 
-        // Geometry coordinates (512x512 reference grid)
         const cx = 236 * s;
         const cy = 264 * s;
-        const r = 136 * s;
-        const shadowDx = 18 * s;
-        const shadowDy = 16 * s;
-        const strokeW = 14 * s;
+        const r = 138 * s;
+        const shadowDx = 20 * s;
+        const shadowDy = 18 * s;
+        const strokeW = 16 * s;
 
         function traceBeakPath(offsetX, offsetY) {
           ctx.beginPath();
@@ -44,14 +50,14 @@
           ctx.closePath();
         }
 
-        // 2. Solid black 3D offset block shadow (right & bottom) for head circle
+        // 2. Bold black 3D offset drop shadow (right & bottom) for head circle
         ctx.fillStyle = '#111111';
         ctx.beginPath();
-        ctx.arc(cx + shadowDx, cy + shadowDy, r + strokeW * 0.48, 0, Math.PI * 2);
+        ctx.arc(cx + shadowDx, cy + shadowDy, r + strokeW * 0.45, 0, Math.PI * 2);
         ctx.fill();
 
-        // 3. Solid black 3D offset block shadow (right & bottom) for beak
-        traceBeakPath(18, 16);
+        // 3. Bold black 3D offset drop shadow (right & bottom) for beak
+        traceBeakPath(20, 18);
         ctx.lineWidth = strokeW;
         ctx.lineJoin = 'round';
         ctx.strokeStyle = '#111111';
@@ -59,22 +65,22 @@
         ctx.fill();
         ctx.stroke();
 
-        // 4. Main yellow circular duck head with crisp solid black outline
+        // 4. Main bright yellow (#FFD600) circular duck head with thick black outline
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.fillStyle = '#FDE047';
+        ctx.fillStyle = '#FFD600';
         ctx.fill();
         ctx.lineWidth = strokeW;
         ctx.strokeStyle = '#111111';
         ctx.stroke();
 
-        // 5. Crisp solid black dot eye
+        // 5. Solid black dot eye
         ctx.beginPath();
-        ctx.arc(294 * s, 212 * s, 17 * s, 0, Math.PI * 2);
+        ctx.arc(296 * s, 212 * s, 18 * s, 0, Math.PI * 2);
         ctx.fillStyle = '#111111';
         ctx.fill();
 
-        // 6. Vibrant orange beak with thick black outline
+        // 6. Vibrant orange beak (#F97316) with thick black outline
         traceBeakPath(0, 0);
         ctx.fillStyle = '#F97316';
         ctx.fill();
@@ -92,19 +98,18 @@
         window.__YDS_DEFAULT_DUCK_PNG__ = png180;
         window.__YDS_DEFAULT_DUCK_512__ = png512;
 
-        const fav = document.getElementById('faviconLink');
+        // Apple Touch Icon requires PNG for iOS Safari Add to Home Screen
         const apple = document.getElementById('appleTouchIconLink');
-        if (fav) fav.href = png180;
         if (apple) apple.href = png180;
 
-        // Dynamic manifest.json for iPhone Safari & Android/Desktop PWA install
+        // Dynamic manifest.json with PNG & SVG icons
         const manifest = {
           name: 'Yellow Duck Studio — Video Editor Agency',
           short_name: 'Yellow Duck',
           start_url: '.',
           display: 'standalone',
           background_color: '#FCFBF7',
-          theme_color: '#FDE047',
+          theme_color: '#FFD600',
           icons: [
             { src: png180, sizes: '180x180', type: 'image/png', purpose: 'any' },
             { src: png512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
@@ -146,7 +151,7 @@
               100: '#FEF3C7',
               200: '#FDE68A',
               300: '#FCD34D',
-              400: '#FBBF24',
+              400: '#FFD600',
               500: '#F59E0B',
               600: '#D97706',
               700: '#B45309',
@@ -207,12 +212,12 @@
     }
 
     .highlighter-yellow {
-      background: linear-gradient(180deg, transparent 32%, #FDE047 32%, #FDE047 90%, transparent 90%);
+      background: linear-gradient(180deg, transparent 32%, #FFD600 32%, #FFD600 90%, transparent 90%);
       padding: 0 6px;
       border-radius: 4px;
     }
     html.dark .highlighter-yellow {
-      background: linear-gradient(180deg, transparent 32%, rgba(250, 204, 21, 0.34) 32%, rgba(250, 204, 21, 0.34) 90%, transparent 90%);
+      background: linear-gradient(180deg, transparent 32%, rgba(255, 214, 0, 0.34) 32%, rgba(255, 214, 0, 0.34) 90%, transparent 90%);
     }
 
     .zine-sticker {
@@ -303,7 +308,7 @@
 
       <!-- Left: Brand & Full-Bleed Yellow Duck Mascot -->
       <div class="flex items-center gap-3 min-w-0">
-        <button type="button" onclick="openSettingsModal()" title="Pengaturan Studio & Logo" class="w-11 h-11 rounded-2xl bg-[#FACC15] border-[1.5px] border-[#141312] dark:border-amber-400/70 flex items-center justify-center shrink-0 overflow-hidden shadow-[2px_2px_0px_#141312] dark:shadow-none hover:-translate-y-0.5 transition">
+        <button type="button" onclick="openSettingsModal()" title="Pengaturan Studio & Logo" class="w-11 h-11 rounded-2xl bg-[#FFD600] border-[1.5px] border-[#141312] dark:border-amber-400/70 flex items-center justify-center shrink-0 overflow-hidden shadow-[2px_2px_0px_#141312] dark:shadow-none hover:-translate-y-0.5 transition">
           <div id="headerDuckLogoWrap" class="w-full h-full flex items-center justify-center"></div>
         </button>
         <div class="min-w-0">
@@ -349,7 +354,7 @@
         <button
           type="button"
           onclick="openProjectModal()"
-          class="zine-sticker px-3.5 py-1.5 rounded-full bg-[#FDE047] text-[#141312] text-xs font-extrabold flex items-center gap-1"
+          class="zine-sticker px-3.5 py-1.5 rounded-full bg-[#FFD600] text-[#141312] text-xs font-extrabold flex items-center gap-1"
         >
           <i data-lucide="plus" class="w-3.5 h-3.5"></i>
           <span>+ Project</span>
@@ -384,7 +389,7 @@
           </p>
 
           <div class="flex flex-wrap items-center gap-2.5 pt-1">
-            <button type="button" onclick="openProjectModal()" class="zine-sticker px-4 py-2 rounded-full bg-[#FDE047] text-[#141312] text-xs font-extrabold flex items-center gap-1.5">
+            <button type="button" onclick="openProjectModal()" class="zine-sticker px-4 py-2 rounded-full bg-[#FFD600] text-[#141312] text-xs font-extrabold flex items-center gap-1.5">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i>
               <span>Tambah Project Baru</span>
             </button>
@@ -406,7 +411,7 @@
                 <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
                 <span>Perhatian Khusus & Deadline</span>
               </div>
-              <span id="reminderCountPill" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-[#FDE047] text-[#141312] border border-[#141312]">0 item</span>
+              <span id="reminderCountPill" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-[#FFD600] text-[#141312] border border-[#141312]">0 item</span>
             </div>
 
             <div id="attentionList" class="space-y-2 max-h-52 overflow-y-auto pr-0.5">
@@ -423,7 +428,7 @@
                 <span id="targetDetailLabel" class="text-xs text-[#57534E] dark:text-[#A8A29E] truncate tabular-nums">Rp 0 / Rp 15.000.000</span>
               </div>
             </div>
-            <button type="button" onclick="openSettingsModal()" class="px-3 py-1.5 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312] shrink-0">Atur Target</button>
+            <button type="button" onclick="openSettingsModal()" class="px-3 py-1.5 rounded-full text-[11px] font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312] shrink-0">Atur Target</button>
           </div>
         </div>
       </div>
@@ -433,7 +438,7 @@
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="studio-card p-4 relative overflow-hidden">
         <div class="flex items-center justify-between mb-2">
-          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">TARGET PENDAPATAN</span>
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">TARGET PENDAPATAN</span>
           <span id="kpiTargetBadge" class="text-xs font-extrabold text-amber-700 dark:text-amber-300 tabular-nums">0%</span>
         </div>
         <p id="kpiTargetPct" class="text-2xl font-extrabold tracking-tight tabular-nums">0%</p>
@@ -485,7 +490,7 @@
             id="searchProjectInput"
             oninput="renderAll()"
             placeholder="Cari judul atau klien..."
-            class="px-3.5 py-2 rounded-full text-xs bg-[#FCFBF7] dark:bg-[#12110F] border border-[#141312]/30 dark:border-[#3A352C] focus:outline-none focus:ring-2 focus:ring-[#FDE047]"
+            class="px-3.5 py-2 rounded-full text-xs bg-[#FCFBF7] dark:bg-[#12110F] border border-[#141312]/30 dark:border-[#3A352C] focus:outline-none focus:ring-2 focus:ring-[#FFD600]"
           />
           <select
             id="statusFilterSelect"
@@ -502,7 +507,7 @@
           <button
             type="button"
             onclick="openProjectModal()"
-            class="px-3.5 py-2 rounded-full text-xs font-extrabold bg-[#141312] dark:bg-[#FDE047] text-[#FDE047] dark:text-[#141312] hover:opacity-90 transition"
+            class="px-3.5 py-2 rounded-full text-xs font-extrabold bg-[#141312] dark:bg-[#FFD600] text-[#FFD600] dark:text-[#141312] hover:opacity-90 transition"
           >
             + Project
           </button>
@@ -517,7 +522,7 @@
   </main>
 
   <!-- TOAST -->
-  <div id="toast" class="fixed top-5 left-1/2 z-50 px-4 py-2.5 rounded-full bg-[#141312] text-[#FDE047] border border-[#FDE047]/40 text-xs font-extrabold shadow-xl">
+  <div id="toast" class="fixed top-5 left-1/2 z-50 px-4 py-2.5 rounded-full bg-[#141312] text-[#FFD600] border border-[#FFD600]/40 text-xs font-extrabold shadow-xl">
     <span id="toastText">Tersimpan!</span>
   </div>
 
@@ -589,7 +594,7 @@
         </div>
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeProjectModal()" class="px-4 py-2 rounded-full text-xs font-bold border border-[#141312]/30 dark:border-[#3A352C]">Batal</button>
-          <button type="submit" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Simpan Project</button>
+          <button type="submit" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">Simpan Project</button>
         </div>
       </form>
     </div>
@@ -615,7 +620,7 @@
       <div class="flex flex-wrap justify-between gap-2 pt-2">
         <button type="button" onclick="pullFromSheets(true)" class="px-3.5 py-2 rounded-full text-xs font-bold border border-[#141312]/30 dark:border-[#3A352C]">Tarik dari Sheets</button>
         <div class="flex gap-2">
-          <button type="button" onclick="saveGasEndpoint()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Simpan & Sync</button>
+          <button type="button" onclick="saveGasEndpoint()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">Simpan & Sync</button>
         </div>
       </div>
     </div>
@@ -632,7 +637,7 @@
       </div>
       <p class="text-xs text-[#57534E] dark:text-[#A8A29E]">Unduh salinan JSON seluruh project produksi, atau pulihkan dari file JSON sebelumnya.</p>
       <div class="flex flex-wrap gap-2">
-        <button type="button" onclick="exportJsonData()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Unduh Backup JSON</button>
+        <button type="button" onclick="exportJsonData()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">Unduh Backup JSON</button>
         <label class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#B8DFEA] text-[#141312] border border-[#141312] cursor-pointer">
           Restore File JSON
           <input type="file" accept=".json,application/json" onchange="importJsonData(event)" class="hidden" />
@@ -652,12 +657,12 @@
       </div>
       <form onsubmit="saveSettings(event)" class="space-y-3">
         <div class="p-3 rounded-2xl bg-[#FFFDF5] dark:bg-[#12110F] border border-[#141312]/25 dark:border-[#3A352C] flex items-center gap-3">
-          <div id="settingsDuckLogoPreview" class="w-14 h-14 rounded-2xl bg-[#FACC15] border-[1.5px] border-[#141312] shrink-0 overflow-hidden flex items-center justify-center"></div>
+          <div id="settingsDuckLogoPreview" class="w-14 h-14 rounded-2xl bg-[#FFD600] border-[1.5px] border-[#141312] shrink-0 overflow-hidden flex items-center justify-center"></div>
           <div class="min-w-0 flex-1 space-y-1.5">
             <p class="text-xs font-extrabold">Ikon Tab & iPhone Home Screen</p>
-            <p class="text-[11px] text-[#57534E] dark:text-[#A8A29E] leading-tight">Default bebek kuning penuh dengan outline hitam & embos 3D kanan-bawah.</p>
+            <p class="text-[11px] text-[#57534E] dark:text-[#A8A29E] leading-tight">Default bebek kuning penuh (#FFD600) dengan outline hitam & embos 3D kanan-bawah.</p>
             <div class="flex flex-wrap gap-1.5">
-              <label class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312] cursor-pointer">
+              <label class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312] cursor-pointer">
                 Upload Kustom
                 <input type="file" accept="image/*" onchange="handleCustomLogoUpload(event)" class="hidden" />
               </label>
@@ -680,7 +685,7 @@
         </div>
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-full text-xs font-bold border border-[#141312]/30 dark:border-[#3A352C]">Batal</button>
-          <button type="submit" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Simpan</button>
+          <button type="submit" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">Simpan</button>
         </div>
       </form>
     </div>
@@ -702,7 +707,7 @@
         <li>Ikon penuh bebek kuning dengan outline hitam & embos 3D akan langsung muncul di layar depan iPhone dan auto-sync dengan laptop.</li>
       </ol>
       <div class="flex justify-end">
-        <button type="button" onclick="closeIosGuideModal()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FDE047] text-[#141312] border border-[#141312]">Siap!</button>
+        <button type="button" onclick="closeIosGuideModal()" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#FFD600] text-[#141312] border border-[#141312]">Siap!</button>
       </div>
     </div>
   </div>
@@ -714,29 +719,44 @@
     function getDefaultDuckSvg(cls = 'w-full h-full') {
       return `
         <svg class="${cls}" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="512" height="512" fill="#FACC15"/>
-          <circle cx="254" cy="280" r="142" fill="#111111"/>
-          <path d="M356 254 Q410 262 444 284 Q452 290 442 298 Q406 318 354 322 Q342 288 356 254 Z" fill="#111111" stroke="#111111" stroke-width="14" stroke-linejoin="round"/>
-          <circle cx="236" cy="264" r="136" fill="#FDE047" stroke="#111111" stroke-width="14"/>
-          <circle cx="294" cy="212" r="17" fill="#111111"/>
-          <path d="M338 238 Q392 246 426 268 Q434 274 424 282 Q388 302 336 306 Q324 272 338 238 Z" fill="#F97316" stroke="#111111" stroke-width="14" stroke-linejoin="round"/>
+          <rect width="512" height="512" fill="#FFD600"/>
+          <circle cx="256" cy="282" r="144" fill="#111111"/>
+          <path d="M358 256 Q412 264 446 286 Q454 292 444 300 Q408 320 356 324 Q344 290 358 256 Z" fill="#111111" stroke="#111111" stroke-width="16" stroke-linejoin="round"/>
+          <circle cx="236" cy="264" r="138" fill="#FFD600" stroke="#111111" stroke-width="16"/>
+          <circle cx="296" cy="212" r="18" fill="#111111"/>
+          <path d="M338 238 Q392 246 426 268 Q434 274 424 282 Q388 302 336 306 Q324 272 338 238 Z" fill="#F97316" stroke="#111111" stroke-width="16" stroke-linejoin="round"/>
         </svg>
       `;
     }
 
     function applyBrowserAndPhoneIcons(customDataUrl) {
-      const iconUrl = (customDataUrl && customDataUrl.trim())
+      const hasCustom = Boolean(customDataUrl && customDataUrl.trim());
+      const favUrl = hasCustom
         ? customDataUrl.trim()
-        : (window.__YDS_DEFAULT_DUCK_PNG__ || 'image_f299d1.jpg');
+        : (window.__YDS_DEFAULT_DUCK_SVG_URI__ || window.__YDS_DEFAULT_DUCK_PNG__);
+      const appleUrl = hasCustom
+        ? customDataUrl.trim()
+        : (window.__YDS_DEFAULT_DUCK_PNG__ || window.__YDS_DEFAULT_DUCK_SVG_URI__);
 
       const fav = document.getElementById('faviconLink');
+      const shortcut = document.getElementById('shortcutIconLink');
       const apple = document.getElementById('appleTouchIconLink');
-      if (fav) fav.href = iconUrl;
-      if (apple) apple.href = iconUrl;
+
+      if (fav) {
+        fav.type = hasCustom ? 'image/png' : 'image/svg+xml';
+        fav.href = favUrl;
+      }
+      if (shortcut) {
+        shortcut.type = hasCustom ? 'image/png' : 'image/svg+xml';
+        shortcut.href = favUrl;
+      }
+      if (apple) {
+        apple.href = appleUrl;
+      }
 
       const headerWrap = document.getElementById('headerDuckLogoWrap');
       const previewWrap = document.getElementById('settingsDuckLogoPreview');
-      if (customDataUrl && customDataUrl.trim()) {
+      if (hasCustom) {
         const imgTag = `<img src="${escapeHtml(customDataUrl)}" alt="Yellow Duck Studio" class="w-full h-full object-cover" />`;
         if (headerWrap) headerWrap.innerHTML = imgTag;
         if (previewWrap) previewWrap.innerHTML = imgTag;
@@ -814,7 +834,7 @@
         case 'Revisi':
           return 'bg-[#FFD6B8] text-[#141312] dark:bg-orange-400 dark:text-[#141312]';
         case 'Final':
-          return 'bg-[#FDE047] text-[#141312] dark:bg-amber-300 dark:text-[#141312]';
+          return 'bg-[#FFD600] text-[#141312] dark:bg-amber-300 dark:text-[#141312]';
         case 'Delivered':
         case 'Selesai':
           return 'bg-[#C8E68E] text-[#141312] dark:bg-emerald-400 dark:text-[#141312]';
@@ -927,7 +947,7 @@
         alertBox.innerHTML = `<div class="p-3 rounded-xl bg-[#C8E68E]/60 dark:bg-emerald-950/50 text-xs font-bold">✅ Semua project aman! Tidak ada deadline mepet atau catatan tertinggal.</div>`;
       } else {
         alertBox.innerHTML = alerts.map(a => {
-          const badgeBg = a.priority <= 1 ? 'bg-[#F9C6D3]' : 'bg-[#FDE047]';
+          const badgeBg = a.priority <= 1 ? 'bg-[#F9C6D3]' : 'bg-[#FFD600]';
           return `
             <button type="button" onclick="openProjectModal('${a.project.id}')" class="w-full text-left p-2.5 rounded-xl bg-white dark:bg-[#1B1916] border border-[#141312]/25 dark:border-[#3A352C] hover:border-[#141312] transition flex items-start justify-between gap-2">
               <div class="min-w-0">
@@ -999,7 +1019,7 @@
                   <p class="text-xs text-[#57534E] dark:text-[#A8A29E]">${escapeHtml(p.client || 'Klien')} • DL: ${p.deadline ? escapeHtml(p.deadline) : '-'}</p>
                   ${p.notes ? `<p class="text-[11px] text-[#57534E] dark:text-[#A8A29E] mt-1">${escapeHtml(p.notes)}</p>` : ''}
                 </div>
-                <button type="button" onclick="openProjectModal('${p.id}')" class="px-2.5 py-1 rounded-full text-[11px] font-bold border border-[#141312]/30 dark:border-[#3A352C] hover:bg-[#FDE047] hover:text-[#141312] transition shrink-0">Edit</button>
+                <button type="button" onclick="openProjectModal('${p.id}')" class="px-2.5 py-1 rounded-full text-[11px] font-bold border border-[#141312]/30 dark:border-[#3A352C] hover:bg-[#FFD600] hover:text-[#141312] transition shrink-0">Edit</button>
               </div>
 
               <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-[#141312]/10 dark:border-[#3A352C]">
